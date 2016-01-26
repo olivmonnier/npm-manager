@@ -1,0 +1,7 @@
+extends ./layout
+
+block content
+  h1 Projects
+  ul.list-group
+    each project in projects
+      li.list-group-item: a(href="/" + project)= project

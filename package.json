@@ -4,14 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "compile:css": "node-sass public/sass/app.scss public/style.css",
+    "start": "npm run compile:css && node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.14.2",
+    "bootstrap": "^3.3.6",
+    "bootstrap-sass": "^3.3.6",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "jquery": "^2.2.0",
+    "node-sass": "^3.4.2"
   }
 }
