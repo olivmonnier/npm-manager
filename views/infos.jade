@@ -1,5 +1,7 @@
 extends ./layout
 
 block content
-  h1= infos.name
-  p!= JSON.stringify(infos)
+  h1!= infos.name
+  .form-group
+    label package.json
+    textarea.form-control(rows="20")!= JSON.stringify(infos, null, 4)
