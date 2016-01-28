@@ -34,12 +34,37 @@ router.route('/:name')
   .get(function(req, res) {
     return res.render('infos', {
       title: 'Project ' + req.params.name,
-      infos: Pkg.infos('../projects/' + req.params.name)
+      infos: Pkg.infos('projects/' + req.params.name)
     });
   })
   .post(function(req, res) {
-    Project.create(req.body);
+    Project.update(req.body);
+    Pkg.install('projects/' + req.body.name);
+    if (req.body.pkgDev) {
+      Pkg.add(req.body.pkgDev, 'projects/' + req.body.name, true);
+    }
+    if (req.body.pkgProd) {
+      Pkg.add(req.body.pkgProd, 'projects/' + req.body.name, false);
+    }
+    return res.render('infos', {
+      title: 'Project ' + req.body.name,
+      infos: Pkg.infos('projects/' + req.body.name)
+    });
+  });
+
+router.route('/:name/delete')
+  .post(function(req, res) {
+    Project.delete(req.params.name);
     return res.redirect('/projects');
+  });
+
+router.route('/:name/packages/:pkgName/delete')
+  .post(function(req, res) {
+    Pkg.uninstall(req.params.pkgName, 'projects/' + req.body.name, (req.body.env == "true") ? true : false);
+    return res.render('infos', {
+      title: 'Project ' + req.body.name,
+      infos: Pkg.infos('projects/' + req.body.name)
+    });
   });
 
 module.exports = router;

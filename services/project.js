@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var rimraf = require('rimraf');
 
 function packageContent(args) {
   return {
@@ -23,7 +24,17 @@ module.exports = {
     fs.writeFileSync(path.join('projects/' + project.name +'/package.json'), JSON.stringify(packageContent(project), null, 2), 'utf8');
     return;
   },
+  update: function(project) {
+    if (!project.name) return;
+
+    if (project.configFile) {
+      fs.writeFileSync(path.join('projects/' + project.name +'/package.json'), JSON.stringify(project.configFile, null, 2), 'utf8');
+    }
+
+    return;
+  },
   delete: function(projectName) {
-    fs.rmdirSync(path.join('projects/' + projectName));
+    rimraf.sync(path.join('projects/' + projectName));
+    return;
   }
 }

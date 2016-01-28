@@ -1,7 +1,57 @@
 extends ./layout
 
 block content
-  h1!= infos.name
-  .form-group
-    label package.json
-    textarea.form-control(rows="20")!= JSON.stringify(infos, null, 4)
+  nav.pull-right
+    form(action="/projects/" + infos.name + "/delete", method="POST")
+      input.btn.btn-danger(type="submit", value="Delete") 
+  .page-header
+    h1= capitalize(infos.name)
+    
+  h2 Run scripts
+  each script, task in infos.scripts
+    a.btn.btn-primary(href="/projects/" + infos.name + "/scripts?name=" + task)= task
+    
+  h2 Add Packages
+  h3 Development
+  table.table.table-bordered
+    each version, pkgName in infos.devDependencies
+      tr
+        td(style="vertical-align: middle;"): a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
+        td
+          form(action="/projects/" + infos.name + "/packages/" + pkgName + "/delete", method="POST")
+            input(type="hidden", name="name", value= infos.name)
+            input(type="hidden", name="env", value="true")
+            button.btn.btn-warning(type="submit") Remove
+  form(action="/projects/" + infos.name, method="POST")
+    .form-group
+      label Add packages in dev env (separate by a whitespace)
+      .form-inline
+        input(type="hidden", name="name", value= infos.name)
+        input.form-control(type="text", name="pkgDev")
+        button.btn.btn-default(type="submit") Add
+  h3 Production
+  table.table.table-bordered
+    each version, pkgName in infos.dependencies
+      tr
+        td(style="vertical-align: middle;"): a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
+        td
+          form(action="/projects/" + infos.name + "/packages/" + pkgName + "/delete", method="POST")
+            input(type="hidden", name="name", value= infos.name)
+            input(type="hidden", name="env", value="false")
+            button.btn.btn-warning(type="submit") Remove
+  form(action="/projects/" + infos.name, method="POST")
+    .form-group
+      label Add packages in prod env (separate by a whitespace)
+      .form-inline
+        input(type="hidden", name="name", value= infos.name)
+        input.form-control(type="text", name="pkgProd")
+        button.btn.btn-default(type="submit") Add
+        
+  h2 Config file
+  form(action="/projects/" + infos.name, method="POST")
+    input(type="hidden", name="name", value= infos.name)
+    .form-group
+      label package.json
+      textarea.form-control(rows="20", name="configFile")!= JSON.stringify(infos, null, 4)
+    .form-group
+      input.btn.btn-default(type="submit", value="Update")

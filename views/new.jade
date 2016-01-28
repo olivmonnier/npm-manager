@@ -1,7 +1,8 @@
 extends ./layout
 
 block content
-  h1 New Project
+  .page-header
+    h1 New Project
   form(method="POST" action="/projects/new")
     .form-group
       label Name
@@ -19,4 +20,4 @@ block content
       label Packages in prod env (separate by a whitespace)
       input.form-control(type="text", name"pkgProd")
     .form-group
-      input.btn.btn-primary(type="submit")
+      input.btn.btn-primary(type="submit", value="Submit") 

@@ -1,4 +1,5 @@
 var exec = require('child_process').execSync;
+var fs = require('fs');
 var log = require('./log');
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
   },
   infos: function(path) {
     var cmdPath = path || './';
-    return require(cmdPath + '/package.json');
+    return JSON.parse(fs.readFileSync(cmdPath + '/package.json', 'utf8'));
   },
   install: function(path) {
     var cmdPath = path || './';
@@ -19,5 +20,9 @@ module.exports = {
     var saveEnv = (dev) ? '-D' : '-S';
     var cmdPath = path || './';
     return exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName, log);
+  },
+  exec: function(scriptName, path) {
+    var cmdPath = path || './';
+    return exec('cd ' + cmdPath + ' && npm run ' + scriptName, log);
   }
 }
