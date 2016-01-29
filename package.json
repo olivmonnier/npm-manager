@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.14.2",
-    "bootstrap": "^3.3.6",
     "bootstrap-sass": "^3.3.6",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
