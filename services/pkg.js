@@ -1,4 +1,5 @@
-var exec = require('child_process').execSync;
+var exec= require('child_process').exec;
+var execSync= require('child_process').execSync;
 var fs = require('fs');
 var log = require('./log');
 
@@ -6,7 +7,7 @@ module.exports = {
   add: function(pkgName, path, dev) {
     var saveEnv = (dev) ? '-D' : '-S';
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName);
+    return execSync('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName);
   },
   infos: function(path) {
     var cmdPath = path || './';
@@ -14,15 +15,18 @@ module.exports = {
   },
   install: function(path) {
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm install');
+    return execSync('cd ' + cmdPath + ' && npm install');
   },
   uninstall: function(pkgName, path, dev) {
     var saveEnv = (dev) ? '-D' : '-S';
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
+    return execSync('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
   },
   exec: function(scriptName, path) {
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm run ' + scriptName);
+    return exec('cd ' + cmdPath + ' && npm run ' + scriptName, function(error, stdout, stderr) {
+      if (error) return error;
+      return stdout;
+    });
   }
 }

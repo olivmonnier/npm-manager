@@ -15,8 +15,8 @@ block content
       #collapseOne.panel-collapse.collapse.in(role="tabpanel")
         .panel-body
           each script, task in infos.scripts
-            a.btn.btn-primary(href="/projects/" + infos.name + "/scripts?name=" + task)= task
-          .container-log
+            a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task)= task
+          #container-result
     
     .panel.panel-default
       .panel-heading 

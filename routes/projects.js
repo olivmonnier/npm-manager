@@ -60,8 +60,8 @@ router.route('/:name/delete')
 
 router.route('/:name/scripts')
   .get(function(req, res) {
-    var task = Pkg.exec(Pkg.infos('projects/' + req.params.name)['scripts'][req.query.name]);
-    res.send(task);
+    var task = Pkg.exec(req.query.name, 'projects/' + req.params.name);
+    res.send(task)
   });
 
 router.route('/:name/packages/:pkgName/delete')
