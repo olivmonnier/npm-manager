@@ -6,7 +6,7 @@ module.exports = {
   add: function(pkgName, path, dev) {
     var saveEnv = (dev) ? '-D' : '-S';
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName, log);
+    return exec('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName);
   },
   infos: function(path) {
     var cmdPath = path || './';
@@ -14,15 +14,15 @@ module.exports = {
   },
   install: function(path) {
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm install', log);
+    return exec('cd ' + cmdPath + ' && npm install');
   },
   uninstall: function(pkgName, path, dev) {
     var saveEnv = (dev) ? '-D' : '-S';
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName, log);
+    return exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
   },
   exec: function(scriptName, path) {
     var cmdPath = path || './';
-    return exec('cd ' + cmdPath + ' && npm run ' + scriptName, log);
+    return exec('cd ' + cmdPath + ' && npm run ' + scriptName);
   }
 }

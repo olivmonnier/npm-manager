@@ -58,6 +58,12 @@ router.route('/:name/delete')
     return res.redirect('/projects');
   });
 
+router.route('/:name/scripts')
+  .get(function(req, res) {
+    var task = Pkg.exec(Pkg.infos('projects/' + req.params.name)['scripts'][req.query.name]);
+    res.send(task);
+  });
+
 router.route('/:name/packages/:pkgName/delete')
   .post(function(req, res) {
     Pkg.uninstall(req.params.pkgName, 'projects/' + req.body.name, (req.body.env == "true") ? true : false);

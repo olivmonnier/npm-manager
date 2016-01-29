@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "compile:js": "node scripts/compile.js",
     "compile:css": "node-sass public/sass/app.scss public/style.css",
-    "start": "npm run compile:css && node app.js"
+    "compile": "npm run compile:js && npm run compile:css",
+    "prestart": "npm run compile",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.14.2",
     "bootstrap-sass": "^3.3.6",
+    "concat": "^1.0.0",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "jade": "^1.11.0",

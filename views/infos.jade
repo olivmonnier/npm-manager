@@ -16,11 +16,12 @@ block content
         .panel-body
           each script, task in infos.scripts
             a.btn.btn-primary(href="/projects/" + infos.name + "/scripts?name=" + task)= task
+          .container-log
     
     .panel.panel-default
       .panel-heading 
         a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseTwo", expanded="true", aria-controls="collapseTwo")
-          h2.panel-title Add Packages
+          h2.panel-title Packages
       #collapseTwo.panel-collapse.collapse(role="tabpanel")
         .panel-body
           h3 Development
