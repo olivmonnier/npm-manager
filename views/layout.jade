@@ -5,6 +5,8 @@ html(lang="en")
     meta(name='viewport', content='width=device-width')
     title= title
     link(rel="stylesheet", href="/style.css")
+    script.
+      window.ROOM = '';
   body
     .container
       ul.nav.nav-pills
@@ -13,5 +15,5 @@ html(lang="en")
       block content
       
     script(src="/vendor.js")
-    script(src="/js/utils.js")
+    script(src="/socket.io/socket.io.js")
     script(src="/js/app.js")

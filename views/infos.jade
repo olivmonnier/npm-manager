@@ -1,11 +1,15 @@
 extends ./layout
 
 block content
+  script. 
+    ROOM = "#{infos.name}"
   nav.pull-right
     form(action="/projects/" + infos.name + "/delete", method="POST")
       input.btn.btn-danger(type="submit", value="Delete") 
   .page-header
     h1= capitalize(infos.name)
+  
+  #logs.well
   
   .panel-group#accordion(role="tablist", aria-multiselectable="true")  
     .panel.panel-default
@@ -16,7 +20,6 @@ block content
         .panel-body
           each script, task in infos.scripts
             a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task)= task
-          #container-result
     
     .panel.panel-default
       .panel-heading 

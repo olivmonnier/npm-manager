@@ -5,72 +5,73 @@ var router = express.Router();
 var Pkg = require('../services/pkg');
 var Project = require('../services/project');
 
-router.route('/')
-  .get(function(req, res) {
-    return res.render('projects', {
-      title: 'Projects',
-      projects: Project.list()
+module.exports = function(io) {
+  router.route('/')
+    .get(function(req, res) {
+      return res.render('projects', {
+        title: 'Projects',
+        projects: Project.list()
+      });
     });
-  });
 
-router.route('/new')
-  .get(function(req, res) {
-    return res.render('new', {
-      title: 'New Project'
+  router.route('/new')
+    .get(function(req, res) {
+      return res.render('new', {
+        title: 'New Project'
+      });
+    })
+    .post(function(req, res) {
+      Project.create(req.body);
+      if (req.body.pkgDev) {
+        Pkg.add(req.body.pkgDev, 'projects/' + req.body.name, true);
+      }
+      if (req.body.pkgProd) {
+        Pkg.add(req.body.pkgProd, 'projects/' + req.body.name, false);
+      }
+      return res.redirect('/projects');
     });
-  })
-  .post(function(req, res) {
-    Project.create(req.body);
-    if (req.body.pkgDev) {
-      Pkg.add(req.body.pkgDev, 'projects/' + req.body.name, true);
-    }
-    if (req.body.pkgProd) {
-      Pkg.add(req.body.pkgProd, 'projects/' + req.body.name, false);
-    }
-    return res.redirect('/projects');
-  });
 
-router.route('/:name')
-  .get(function(req, res) {
-    return res.render('infos', {
-      title: 'Project ' + req.params.name,
-      infos: Pkg.infos('projects/' + req.params.name)
+  router.route('/:name')
+    .get(function(req, res) {
+      return res.render('infos', {
+        title: 'Project ' + req.params.name,
+        infos: Pkg.infos('projects/' + req.params.name)
+      });
+    })
+    .post(function(req, res) {
+      Project.update(req.body);
+      Pkg.install('projects/' + req.body.name);
+      if (req.body.pkgDev) {
+        Pkg.add(req.body.pkgDev, 'projects/' + req.body.name, true);
+      }
+      if (req.body.pkgProd) {
+        Pkg.add(req.body.pkgProd, 'projects/' + req.body.name, false);
+      }
+      return res.render('infos', {
+        title: 'Project ' + req.body.name,
+        infos: Pkg.infos('projects/' + req.body.name)
+      });
     });
-  })
-  .post(function(req, res) {
-    Project.update(req.body);
-    Pkg.install('projects/' + req.body.name);
-    if (req.body.pkgDev) {
-      Pkg.add(req.body.pkgDev, 'projects/' + req.body.name, true);
-    }
-    if (req.body.pkgProd) {
-      Pkg.add(req.body.pkgProd, 'projects/' + req.body.name, false);
-    }
-    return res.render('infos', {
-      title: 'Project ' + req.body.name,
-      infos: Pkg.infos('projects/' + req.body.name)
+
+  router.route('/:name/delete')
+    .post(function(req, res) {
+      Project.delete(req.params.name);
+      return res.redirect('/projects');
     });
-  });
 
-router.route('/:name/delete')
-  .post(function(req, res) {
-    Project.delete(req.params.name);
-    return res.redirect('/projects');
-  });
-
-router.route('/:name/scripts')
-  .get(function(req, res) {
-    var task = Pkg.exec(req.query.name, 'projects/' + req.params.name);
-    res.send(task)
-  });
-
-router.route('/:name/packages/:pkgName/delete')
-  .post(function(req, res) {
-    Pkg.uninstall(req.params.pkgName, 'projects/' + req.body.name, (req.body.env == "true") ? true : false);
-    return res.render('infos', {
-      title: 'Project ' + req.body.name,
-      infos: Pkg.infos('projects/' + req.body.name)
+  router.route('/:name/scripts')
+    .get(function(req, res) {
+      Pkg.exec(req.query.name, req.params.name, io);
+      res.status(200).end();
     });
-  });
 
-module.exports = router;
+  router.route('/:name/packages/:pkgName/delete')
+    .post(function(req, res) {
+      Pkg.uninstall(req.params.pkgName, 'projects/' + req.body.name, (req.body.env == "true") ? true : false);
+      return res.render('infos', {
+        title: 'Project ' + req.body.name,
+        infos: Pkg.infos('projects/' + req.body.name)
+      });
+    });
+  return router;
+}
