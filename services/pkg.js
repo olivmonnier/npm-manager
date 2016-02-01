@@ -62,7 +62,11 @@ module.exports = {
       ROOMS[roomIndex].logs.push(data);
       io.to(project).emit('log', data);
     });
-    child.on('close', function(code) {
+    child.on('error', function(data) {
+      ROOMS[roomIndex].logs.push(data);
+      io.to(project).emit('log', data);
+    });
+    child.on('close', function(data) {
       ROOMS[roomIndex].logs.push(data);
       io.to(project).emit('log', data);
     });
