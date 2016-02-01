@@ -5,6 +5,9 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var _ = require('lodash');
+
+global.ROOMS = [];
 
 // Routes
 var projects = require('./routes/projects')(io);
@@ -32,7 +35,14 @@ server.listen(app.get('port'), function() {
 });
 
 io.on('connection', function(socket) {
-    socket.on('room', function(room) {
-        socket.join(room);
-    });
+  socket.on('room', function(room) {
+    var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == room; });
+
+    socket.join(room);
+    if(roomIndex == '-1') {
+      ROOMS.push({ name: room, logs: [] });
+    }
+  });
+  
+  socket.emit('logs', ROOMS);
 });
