@@ -24,12 +24,17 @@ module.exports = {
   },
   exec: function(scriptName, project, io) {
     var cmdPath = 'projects/' + project;
-    exec('cd ' + cmdPath + ' && npm run ' + scriptName, function(error, stdout, stderr) {
-      if (error) {
-        io.to(project).emit('log', error);
-        return;
-      };
-      io.to(project).emit('log', stdout);
+    var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);
+    
+    io.to(project).emit('log', 'Command running');
+    child.stdout.on('data', function(data) {
+      io.to(project).emit('log', data);
+    });
+    child.stderr.on('data', function(data) {
+      io.to(project).emit('log', data);
+    });
+    child.on('close', function(code) {
+      io.to(project).emit('log', data);
     });
   }
 }
