@@ -40,9 +40,9 @@ io.on('connection', function(socket) {
 
     socket.join(room);
     if(roomIndex == '-1') {
-      ROOMS.push({ name: room, logs: [] });
+      ROOMS.push({ name: room, logs: [], processes: [] });
     }
   });
-  
+
   socket.emit('logs', ROOMS);
 });

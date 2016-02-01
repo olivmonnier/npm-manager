@@ -3,6 +3,7 @@ var execSync = require('child_process').execSync;
 var fs = require('fs');
 var psTree = require('ps-tree');
 var _ = require('lodash');
+var cp = require('child_process');
 
 function killProcess(pid, signal, callback) {
   signal = signal || 'SIGKILL';
@@ -27,6 +28,27 @@ function killProcess(pid, signal, callback) {
   }
 };
 
+function streamEventsProcess(project, processChild, io) {
+  var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
+
+  processChild.stdout.on('data', function(data) {
+    ROOMS[roomIndex].logs.push(data);
+    io.to(project).emit('log', data);
+  });
+  processChild.stderr.on('data', function(data) {
+    ROOMS[roomIndex].logs.push(data);
+    io.to(project).emit('log', data);
+  });
+  processChild.on('error', function(data) {
+    ROOMS[roomIndex].logs.push(data);
+    io.to(project).emit('log', data);
+  });
+  processChild.on('close', function(data) {
+    ROOMS[roomIndex].logs.push(data);
+    io.to(project).emit('log', data);
+  });
+}
+
 module.exports = {
   add: function(pkgName, path, dev) {
     var saveEnv = (dev) ? '-D' : '-S';
@@ -50,33 +72,19 @@ module.exports = {
     var cmdPath = 'projects/' + project;
     var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);
     var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
-    var logRun = 'Command running'
+    var logRun = 'Command running';
 
     ROOMS[roomIndex].logs.push(logRun);
+    ROOMS[roomIndex].processes.push({name: scriptName, pid: child.pid});
     io.to(project).emit('log', logRun);
-    child.stdout.on('data', function(data) {
-      ROOMS[roomIndex].logs.push(data);
-      io.to(project).emit('log', data);
-    });
-    child.stderr.on('data', function(data) {
-      ROOMS[roomIndex].logs.push(data);
-      io.to(project).emit('log', data);
-    });
-    child.on('error', function(data) {
-      ROOMS[roomIndex].logs.push(data);
-      io.to(project).emit('log', data);
-    });
-    child.on('close', function(data) {
-      ROOMS[roomIndex].logs.push(data);
-      io.to(project).emit('log', data);
-    });
+
+    streamEventsProcess(project, child, io);
   },
   kill: function(pid, signal, callback) {
     var isWin = /^win/.test(process.platform);
     if(!isWin) {
       killProcess(pid, signal, callback);
     } else {
-      var cp = require('child_process');
       cp.exec('taskkill /PID ' + pid + ' /T /F');
     }
   }

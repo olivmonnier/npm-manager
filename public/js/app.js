@@ -1,8 +1,9 @@
 var socket = io.connect();
 
 socket.on('connect', function(data) {
-   console.log(data);
-   socket.emit('room', ROOM);
+  if (ROOMS) {
+    socket.emit('room', ROOM);
+  }
 });
 
 socket.on('logs', function(data) {
