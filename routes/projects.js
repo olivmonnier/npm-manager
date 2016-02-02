@@ -61,7 +61,14 @@ module.exports = function(io) {
 
   router.route('/:name/scripts')
     .get(function(req, res) {
-      Pkg.exec(req.query.name, req.params.name, io);
+      var action = req.query.action;
+
+      if(action == "exec") {
+        Pkg.exec(req.query.name, req.params.name, io);
+      }
+      if(action == "kill") {
+        Pkg.kill(req.query.pid, req.params.name, io);
+      }
       res.status(200).end();
     });
 

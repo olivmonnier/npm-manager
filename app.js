@@ -44,5 +44,5 @@ io.on('connection', function(socket) {
     }
   });
 
-  socket.emit('logs', ROOMS);
+  socket.emit('init', ROOMS);
 });

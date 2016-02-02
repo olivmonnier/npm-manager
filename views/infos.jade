@@ -18,8 +18,12 @@ block content
           h2.panel-title Run scripts
       #collapseOne.panel-collapse.collapse.in(role="tabpanel")
         .panel-body
-          each script, task in infos.scripts
-            a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task)= task
+          h3 Running
+          ul.list-inline#processes
+          h3 List
+          ul.list-inline
+            each script, task in infos.scripts
+              li: a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task + "&action=exec")= task
     
     .panel.panel-default
       .panel-heading 

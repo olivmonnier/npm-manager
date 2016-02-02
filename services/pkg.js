@@ -28,8 +28,15 @@ function killProcess(pid, signal, callback) {
   }
 };
 
-function streamEventsProcess(project, processChild, io) {
+function streamEventsProcess(project, scriptName, processChild, io) {
   var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
+  var logRun = 'Command running';
+  var child = {name: scriptName, pid: processChild.pid};
+
+  ROOMS[roomIndex].logs.push(logRun);
+  ROOMS[roomIndex].processes.push(child);
+  io.to(project).emit('log', logRun);
+  io.to(project).emit('process', child);
 
   processChild.stdout.on('data', function(data) {
     ROOMS[roomIndex].logs.push(data);
@@ -45,7 +52,11 @@ function streamEventsProcess(project, processChild, io) {
   });
   processChild.on('close', function(data) {
     ROOMS[roomIndex].logs.push(data);
-    io.to(project).emit('log', data);
+    ROOMS[roomIndex].processes = _.remove(ROOMS[roomIndex].processes, function(process) {
+      return process.pid != child.pid;
+    });
+    io.to(project).emit('killProcess', child.pid);
+    io.to(project).emit('log', 'close: ' + data);
   });
 }
 
@@ -71,19 +82,14 @@ module.exports = {
   exec: function(scriptName, project, io) {
     var cmdPath = 'projects/' + project;
     var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);
-    var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
-    var logRun = 'Command running';
 
-    ROOMS[roomIndex].logs.push(logRun);
-    ROOMS[roomIndex].processes.push({name: scriptName, pid: child.pid});
-    io.to(project).emit('log', logRun);
-
-    streamEventsProcess(project, child, io);
+    streamEventsProcess(project, scriptName, child, io);
   },
-  kill: function(pid, signal, callback) {
+  kill: function(pid, project, io) {
     var isWin = /^win/.test(process.platform);
+
     if(!isWin) {
-      killProcess(pid, signal, callback);
+      killProcess(pid);
     } else {
       cp.exec('taskkill /PID ' + pid + ' /T /F');
     }
