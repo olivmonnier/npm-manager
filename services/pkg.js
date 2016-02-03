@@ -53,19 +53,23 @@ module.exports = function(project, io) {
       io.to(project).emit('log', data);
     });
     processChild.on('close', function(data) {
-      ROOMS[roomIndex].logs.push(data);
+      var log = 'Process finished';
+      ROOMS[roomIndex].logs.push(log);
       ROOMS[roomIndex].processes = _.remove(ROOMS[roomIndex].processes, function(process) {
         return process.pid != child.pid;
       });
       io.to(project).emit('killProcess', child.pid);
-      io.to(project).emit('log', 'close: ' + data);
+      io.to(project).emit('log', log);
     });
   }
 
   return {
-    add: function(pkgName, dev) {
-      var saveEnv = (dev) ? '-D' : '-S';
-      return execSync('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName);
+    add: function(pkgName, env) {
+      var saveEnv = (env == 'dev') ? '-D' : '-S';
+      var child = exec('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName);
+
+      streamEventsProcess('pkgAdd', child, 'Install ' + pkgName + ' package');
+      io.to(project).emit('pkgAdd', {name: pkgName, env: env});
     },
     infos: function() {
       return JSON.parse(fs.readFileSync(cmdPath + '/package.json', 'utf8'));
@@ -73,9 +77,12 @@ module.exports = function(project, io) {
     install: function() {
       return execSync('cd ' + cmdPath + ' && npm install');
     },
-    uninstall: function(pkgName, dev) {
-      var saveEnv = (dev) ? '-D' : '-S';
-      return execSync('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
+    uninstall: function(pkgName, env) {
+      var saveEnv = (env == 'dev') ? '-D' : '-S';
+      var child = exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
+
+      streamEventsProcess('pkgDelete', child, 'Uninstall ' + pkgName + ' package');
+      io.to(project).emit('pkgDelete', {name: pkgName, env: env});
     },
     exec: function(scriptName) {
       var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);

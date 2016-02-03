@@ -1,2 +1,18 @@
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 $icon-font-path: "public/fonts/";
+
+#logs {
+  height: 130px;
+  overflow: scroll;
+  overflow-x:hidden;
+}
+.pkg-list {
+  .list-group-item {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .btn {
+    margin-top: -7px;
+  }
+}

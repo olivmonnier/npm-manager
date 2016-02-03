@@ -9,73 +9,72 @@ block content
   .page-header
     h1= capitalize(infos.name)
   
-  #logs.well
+  .row
+    .col-xs-12
+      #logs.well
   
-  .panel-group#accordion(role="tablist", aria-multiselectable="true")  
-    .panel.panel-default
-      .panel-heading(role="tab")
-        a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseOne", expanded="true", aria-controls="collapseOne")
-          h2.panel-title Run scripts
-      #collapseOne.panel-collapse.collapse.in(role="tabpanel")
-        .panel-body
-          h3 Running
-          ul.list-inline#processes
-          h3 List
-          ul.list-inline
-            each script, task in infos.scripts
-              li: a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task + "&action=exec")= task
-    
-    .panel.panel-default
-      .panel-heading 
-        a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseTwo", expanded="true", aria-controls="collapseTwo")
-          h2.panel-title Packages
-      #collapseTwo.panel-collapse.collapse(role="tabpanel")
-        .panel-body
-          h3 Development
-          table.table.table-bordered
-            each version, pkgName in infos.devDependencies
-              tr
-                td(style="vertical-align: middle;"): a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
-                td
-                  form(action="/projects/" + infos.name + "/packages/" + pkgName + "/delete", method="POST")
-                    input(type="hidden", name="name", value= infos.name)
-                    input(type="hidden", name="env", value="true")
-                    button.btn.btn-warning(type="submit") Remove
-          form(action="/projects/" + infos.name, method="POST")
-            .form-group
-              label Add packages in dev env (separate by a whitespace)
-              .form-inline
+  .row
+    .col-sm-8
+    .col-sm-4
+      .panel-group#accordion(role="tablist", aria-multiselectable="true")  
+        .panel.panel-default
+          .panel-heading(role="tab")
+            a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseOne", expanded="true", aria-controls="collapseOne")
+              h2.panel-title Run scripts
+          #collapseOne.panel-collapse.collapse.in(role="tabpanel")
+            .panel-body
+              h3 Running
+              ul.list-inline#processes
+              h3 List
+              ul.list-inline
+                each script, task in infos.scripts
+                  li: a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task + "&action=exec")= task
+        
+        .panel.panel-default
+          .panel-heading 
+            a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseTwo", expanded="true", aria-controls="collapseTwo")
+              h2.panel-title Packages
+          #collapseTwo.panel-collapse.collapse(role="tabpanel")
+            .panel-body
+              h3 Development
+              ul.list-group.pkg-list.dev
+                each version, pkgName in infos.devDependencies
+                  li.list-group-item(data-pkg=pkgName)
+                    a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
+                    .pull-right
+                      a.btn.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=dev&action=delete") Remove
+              .form-group
+                label Add packages in dev env (separate by a whitespace)
+                .form-inline
+                  input(type="hidden", name="name", value= infos.name)
+                  input(type="hidden", name="env", value= "dev")
+                  input.form-control(type="text", name="pkgName")
+                  button.btn.btn-default.btn-add-pkg Add
+              h3 Production
+              ul.list-group.pkg-list.prod
+                each version, pkgName in infos.dependencies
+                  li.list-group-item(data-pkg=pkgName)
+                    a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
+                    .pull-right
+                      a.btn.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=prod&action=delete") Remove
+              .form-group
+                label Add packages in prod env (separate by a whitespace)
+                .form-inline
+                  input(type="hidden", name="name", value= infos.name)
+                  input(type="hidden", name="env", value= "prod")
+                  input.form-control(type="text", name="pkgName")              
+                  button.btn.btn-default.btn-add-pkg Add
+        
+        .panel.panel-default  
+          .panel-heading
+            a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseThree", expanded="true", aria-controls="collapseThree")
+              h2.panel-title Config file
+          #collapseThree.panel-collapse.collapse(role="tabpanel")
+            .panel-body
+              form(action="/projects/" + infos.name, method="POST")
                 input(type="hidden", name="name", value= infos.name)
-                input.form-control(type="text", name="pkgDev")
-                button.btn.btn-default(type="submit") Add
-          h3 Production
-          table.table.table-bordered
-            each version, pkgName in infos.dependencies
-              tr
-                td(style="vertical-align: middle;"): a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
-                td
-                  form(action="/projects/" + infos.name + "/packages/" + pkgName + "/delete", method="POST")
-                    input(type="hidden", name="name", value= infos.name)
-                    input(type="hidden", name="env", value="false")
-                    button.btn.btn-warning(type="submit") Remove
-          form(action="/projects/" + infos.name, method="POST")
-            .form-group
-              label Add packages in prod env (separate by a whitespace)
-              .form-inline
-                input(type="hidden", name="name", value= infos.name)
-                input.form-control(type="text", name="pkgProd")
-                button.btn.btn-default(type="submit") Add
-    
-    .panel.panel-default  
-      .panel-heading
-        a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseThree", expanded="true", aria-controls="collapseThree")
-          h2.panel-title Config file
-      #collapseThree.panel-collapse.collapse(role="tabpanel")
-        .panel-body
-          form(action="/projects/" + infos.name, method="POST")
-            input(type="hidden", name="name", value= infos.name)
-            .form-group
-              label package.json
-              textarea.form-control(rows="20", name="configFile")!= JSON.stringify(infos, null, 4)
-            .form-group
-              input.btn.btn-default(type="submit", value="Update")
+                .form-group
+                  label package.json
+                  textarea.form-control(rows="20", name="configFile")!= JSON.stringify(infos, null, 4)
+                .form-group
+                  input.btn.btn-default(type="submit", value="Update")

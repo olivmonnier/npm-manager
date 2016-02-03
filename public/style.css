@@ -5816,3 +5816,15 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+
+#logs {
+  height: 130px;
+  overflow: scroll;
+  overflow-x: hidden; }
+
+.pkg-list .list-group-item {
+  padding-top: 15px;
+  padding-bottom: 15px; }
+
+.pkg-list .btn {
+  margin-top: -7px; }

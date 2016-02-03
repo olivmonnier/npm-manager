@@ -41,12 +41,7 @@ module.exports = function(io) {
     .post(function(req, res) {
       Project.update(req.body);
       Pkg(req.body.name, io).install();
-      if (req.body.pkgDev) {
-        Pkg(req.body.name, io).add(req.body.pkgDev, true);
-      }
-      if (req.body.pkgProd) {
-        Pkg(req.body.name, io).add(req.body.pkgProd, false);
-      }
+
       return res.render('infos', {
         title: 'Project ' + req.body.name,
         infos: Pkg(req.body.name, io).infos()
@@ -69,16 +64,20 @@ module.exports = function(io) {
       if(action == "kill") {
         Pkg(req.params.name, io).kill(req.query.pid);
       }
-      res.status(200).end();
+      return res.status(200).end();
     });
 
-  router.route('/:name/packages/:pkgName/delete')
-    .post(function(req, res) {
-      Pkg(req.body.name, io).uninstall(req.params.pkgName, (req.body.env == "true") ? true : false);
-      return res.render('infos', {
-        title: 'Project ' + req.body.name,
-        infos: Pkg(req.body.name).infos()
-      });
+  router.route('/:name/packages')
+    .get(function(req, res) {
+      var action = req.query.action;
+
+      if(action == 'delete') {
+        Pkg(req.params.name, io).uninstall(req.query.name, req.query.env);
+      }
+      if (action == 'add') {
+        Pkg(req.params.name, io).add(req.query.name, req.query.env);
+      }
+      return res.status(200).end();
     });
   return router;
 }

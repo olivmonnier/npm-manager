@@ -9,7 +9,7 @@ socket.on('connect', function(data) {
 socket.on('init', function(data) {
   var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
 
-  if (data[roomIndex].logs && data[roomIndex].processes) {
+  if (data[roomIndex]) {
     data[roomIndex].logs.forEach(function(log) {
       $('#logs').append(log + '<br/>');
     });
@@ -45,9 +45,33 @@ socket.on('killProcess', function(pid) {
   $('[data-process=' + pid + ']').remove();
 });
 
+socket.on('pkgAdd', function(data) {
+  $('.pkg-list.' + data.env).append(
+    '<li class="list-group-item" data-pkg="' + data.name + '">' +
+      '<a href="https://www.npmjs.com/search?q=' + data.name + '" target="_blank">' + data.name + '</a>' +
+      '<div class="pull-right">' +
+        '<a class="btn btn-warning btn-ajax" href="/projects/' + ROOM + '/packages?name=' + data.name + '&env=' + data.env + '&action=delete">Remove</a>' +
+      '</div>' +
+    '</li>'
+  );
+});
+
+socket.on('pkgDelete', function(data) {
+  $('.pkg-list.' + data.env).find('[data-pkg=' + data.name + ']').remove();
+});
+
 $(document).on('click', '.btn-ajax', function(e) {
   e.preventDefault();
-  var url = $(this).attr('href');
 
-  $.get(url);
+  $.get($(this).attr('href'));
+});
+
+$(document).on('click', '.btn-add-pkg', function() {
+  var parent = $(this).parent();
+
+  $.get('/projects/' + parent.find('[name=name]').val() + '/packages', {
+    action: 'add',
+    name: parent.find('[name=pkgName]').val(),
+    env: parent.find('[name=env]').val()
+  });
 });
