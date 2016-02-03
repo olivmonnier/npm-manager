@@ -22,19 +22,16 @@ module.exports = {
 
     fs.mkdirSync(path.join('projects/' + project.name));
     fs.writeFileSync(path.join('projects/' + project.name +'/package.json'), JSON.stringify(packageContent(project), null, 2), 'utf8');
-    return;
   },
   update: function(project) {
     if (!project.name) return;
 
     if (project.configFile) {
       fs.writeFileSync(path.join('projects/' + project.name +'/package.json'), JSON.stringify(project.configFile, null, 2), 'utf8');
+      rimraf.sync(path.join('projects/' + projectName + '/node_modules'));
     }
-
-    return;
   },
   delete: function(projectName) {
     rimraf.sync(path.join('projects/' + projectName));
-    return;
   }
 }

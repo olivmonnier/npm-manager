@@ -75,7 +75,9 @@ module.exports = function(project, io) {
       return JSON.parse(fs.readFileSync(cmdPath + '/package.json', 'utf8'));
     },
     install: function() {
-      return execSync('cd ' + cmdPath + ' && npm install');
+      var child = exec('cd ' + cmdPath + ' && npm install');
+
+      streamEventsProcess('npmInstall', child, 'Install packages');
     },
     uninstall: function(pkgName, env) {
       var saveEnv = (env == 'dev') ? '-D' : '-S';

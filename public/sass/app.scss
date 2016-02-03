@@ -6,6 +6,13 @@ $icon-font-path: "public/fonts/";
   overflow: scroll;
   overflow-x:hidden;
 }
+.form-inline {
+  input.form-control + .btn {
+    @media (min-width: $screen-xs-max) {
+      margin-left: 4px;
+    }
+  }
+}
 .pkg-list {
   .list-group-item {
     padding-top: 15px;

@@ -5822,6 +5822,10 @@ button.close {
   overflow: scroll;
   overflow-x: hidden; }
 
+@media (min-width: 767px) {
+  .form-inline input.form-control + .btn {
+    margin-left: 4px; } }
+
 .pkg-list .list-group-item {
   padding-top: 15px;
   padding-bottom: 15px; }

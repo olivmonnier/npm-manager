@@ -35,17 +35,14 @@ module.exports = function(io) {
     .get(function(req, res) {
       return res.render('infos', {
         title: 'Project ' + req.params.name,
-        infos: Pkg(req.params.name, io).infos()
+        infos: Pkg(req.params.name).infos()
       });
     })
     .post(function(req, res) {
       Project.update(req.body);
       Pkg(req.body.name, io).install();
 
-      return res.render('infos', {
-        title: 'Project ' + req.body.name,
-        infos: Pkg(req.body.name, io).infos()
-      });
+      return res.redirect('/projects/' + req.params.name);
     });
 
   router.route('/:name/delete')

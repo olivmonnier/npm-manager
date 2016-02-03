@@ -18,7 +18,7 @@ socket.on('init', function(data) {
         '<li data-process="' + process.pid + '">' +
           '<a href="/projects/' + ROOM + '/scripts?name=' + process.name + '&action=kill&pid=' + process.pid + '" class="btn btn-link btn-ajax">' +
             process.name +
-            ' <span class="glyphicon glyphicon-remove"></span>' +
+            ' <i class="glyphicon glyphicon-remove"></i>' +
           '</a>' +
         '</li>'
       );
@@ -35,7 +35,7 @@ socket.on('process', function(data) {
     '<li data-process="' + data.pid + '">' +
       '<a href="/projects/' + ROOM + '/scripts?name=' + data.name + '&action=kill&pid=' + data.pid + '" class="btn btn-link btn-ajax">' +
         data.name +
-        ' <span class="glyphicon glyphicon-remove"></span>' +
+        ' <i class="glyphicon glyphicon-remove"></i>' +
       '</a>' +
     '</li>'
   );
@@ -50,7 +50,9 @@ socket.on('pkgAdd', function(data) {
     '<li class="list-group-item" data-pkg="' + data.name + '">' +
       '<a href="https://www.npmjs.com/search?q=' + data.name + '" target="_blank">' + data.name + '</a>' +
       '<div class="pull-right">' +
-        '<a class="btn btn-warning btn-ajax" href="/projects/' + ROOM + '/packages?name=' + data.name + '&env=' + data.env + '&action=delete">Remove</a>' +
+        '<a class="btn btn-warning btn-ajax" href="/projects/' + ROOM + '/packages?name=' + data.name + '&env=' + data.env + '&action=delete">' +
+          '<i class="glyphicon glyphicon-trash"></i>' +
+        '</a>' +
       '</div>' +
     '</li>'
   );
