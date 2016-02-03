@@ -23,10 +23,10 @@ module.exports = function(io) {
     .post(function(req, res) {
       Project.create(req.body);
       if (req.body.pkgDev) {
-        Pkg.add(req.body.pkgDev, 'projects/' + req.body.name, true);
+        Pkg(req.body.name, io).add(req.body.pkgDev, true);
       }
       if (req.body.pkgProd) {
-        Pkg.add(req.body.pkgProd, 'projects/' + req.body.name, false);
+        Pkg(req.body.name, io).add(req.body.pkgProd, false);
       }
       return res.redirect('/projects');
     });
@@ -35,21 +35,21 @@ module.exports = function(io) {
     .get(function(req, res) {
       return res.render('infos', {
         title: 'Project ' + req.params.name,
-        infos: Pkg.infos('projects/' + req.params.name)
+        infos: Pkg(req.params.name, io).infos()
       });
     })
     .post(function(req, res) {
       Project.update(req.body);
-      Pkg.install('projects/' + req.body.name);
+      Pkg(req.body.name, io).install();
       if (req.body.pkgDev) {
-        Pkg.add(req.body.pkgDev, 'projects/' + req.body.name, true);
+        Pkg(req.body.name, io).add(req.body.pkgDev, true);
       }
       if (req.body.pkgProd) {
-        Pkg.add(req.body.pkgProd, 'projects/' + req.body.name, false);
+        Pkg(req.body.name, io).add(req.body.pkgProd, false);
       }
       return res.render('infos', {
         title: 'Project ' + req.body.name,
-        infos: Pkg.infos('projects/' + req.body.name)
+        infos: Pkg(req.body.name, io).infos()
       });
     });
 
@@ -64,20 +64,20 @@ module.exports = function(io) {
       var action = req.query.action;
 
       if(action == "exec") {
-        Pkg.exec(req.query.name, req.params.name, io);
+        Pkg(req.params.name, io).exec(req.query.name);
       }
       if(action == "kill") {
-        Pkg.kill(req.query.pid, req.params.name, io);
+        Pkg(req.params.name, io).kill(req.query.pid);
       }
       res.status(200).end();
     });
 
   router.route('/:name/packages/:pkgName/delete')
     .post(function(req, res) {
-      Pkg.uninstall(req.params.pkgName, 'projects/' + req.body.name, (req.body.env == "true") ? true : false);
+      Pkg(req.body.name, io).uninstall(req.params.pkgName, (req.body.env == "true") ? true : false);
       return res.render('infos', {
         title: 'Project ' + req.body.name,
-        infos: Pkg.infos('projects/' + req.body.name)
+        infos: Pkg(req.body.name).infos()
       });
     });
   return router;

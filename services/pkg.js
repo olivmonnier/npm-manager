@@ -28,70 +28,68 @@ function killProcess(pid, signal, callback) {
   }
 };
 
-function streamEventsProcess(project, scriptName, processChild, io) {
-  var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
-  var logRun = 'Command running';
-  var child = {name: scriptName, pid: processChild.pid};
+module.exports = function(project, io) {
+  var cmdPath = 'projects/' + project;
+  var streamEventsProcess = function (scriptName, processChild, logRun) {
+    var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
+    var logRun = logRun || 'Command running';
+    var child = {name: scriptName, pid: processChild.pid};
 
-  ROOMS[roomIndex].logs.push(logRun);
-  ROOMS[roomIndex].processes.push(child);
-  io.to(project).emit('log', logRun);
-  io.to(project).emit('process', child);
+    ROOMS[roomIndex].logs.push(logRun);
+    ROOMS[roomIndex].processes.push(child);
+    io.to(project).emit('log', logRun);
+    io.to(project).emit('process', child);
 
-  processChild.stdout.on('data', function(data) {
-    ROOMS[roomIndex].logs.push(data);
-    io.to(project).emit('log', data);
-  });
-  processChild.stderr.on('data', function(data) {
-    ROOMS[roomIndex].logs.push(data);
-    io.to(project).emit('log', data);
-  });
-  processChild.on('error', function(data) {
-    ROOMS[roomIndex].logs.push(data);
-    io.to(project).emit('log', data);
-  });
-  processChild.on('close', function(data) {
-    ROOMS[roomIndex].logs.push(data);
-    ROOMS[roomIndex].processes = _.remove(ROOMS[roomIndex].processes, function(process) {
-      return process.pid != child.pid;
+    processChild.stdout.on('data', function(data) {
+      ROOMS[roomIndex].logs.push(data);
+      io.to(project).emit('log', data);
     });
-    io.to(project).emit('killProcess', child.pid);
-    io.to(project).emit('log', 'close: ' + data);
-  });
-}
+    processChild.stderr.on('data', function(data) {
+      ROOMS[roomIndex].logs.push(data);
+      io.to(project).emit('log', data);
+    });
+    processChild.on('error', function(data) {
+      ROOMS[roomIndex].logs.push(data);
+      io.to(project).emit('log', data);
+    });
+    processChild.on('close', function(data) {
+      ROOMS[roomIndex].logs.push(data);
+      ROOMS[roomIndex].processes = _.remove(ROOMS[roomIndex].processes, function(process) {
+        return process.pid != child.pid;
+      });
+      io.to(project).emit('killProcess', child.pid);
+      io.to(project).emit('log', 'close: ' + data);
+    });
+  }
 
-module.exports = {
-  add: function(pkgName, path, dev) {
-    var saveEnv = (dev) ? '-D' : '-S';
-    var cmdPath = path || './';
-    return execSync('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName);
-  },
-  infos: function(path) {
-    var cmdPath = path || './';
-    return JSON.parse(fs.readFileSync(cmdPath + '/package.json', 'utf8'));
-  },
-  install: function(path) {
-    var cmdPath = path || './';
-    return execSync('cd ' + cmdPath + ' && npm install');
-  },
-  uninstall: function(pkgName, path, dev) {
-    var saveEnv = (dev) ? '-D' : '-S';
-    var cmdPath = path || './';
-    return execSync('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
-  },
-  exec: function(scriptName, project, io) {
-    var cmdPath = 'projects/' + project;
-    var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);
+  return {
+    add: function(pkgName, dev) {
+      var saveEnv = (dev) ? '-D' : '-S';
+      return execSync('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName);
+    },
+    infos: function() {
+      return JSON.parse(fs.readFileSync(cmdPath + '/package.json', 'utf8'));
+    },
+    install: function() {
+      return execSync('cd ' + cmdPath + ' && npm install');
+    },
+    uninstall: function(pkgName, dev) {
+      var saveEnv = (dev) ? '-D' : '-S';
+      return execSync('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
+    },
+    exec: function(scriptName) {
+      var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);
 
-    streamEventsProcess(project, scriptName, child, io);
-  },
-  kill: function(pid, project, io) {
-    var isWin = /^win/.test(process.platform);
+      streamEventsProcess(scriptName, child);
+    },
+    kill: function(pid) {
+      var isWin = /^win/.test(process.platform);
 
-    if(!isWin) {
-      killProcess(pid);
-    } else {
-      cp.exec('taskkill /PID ' + pid + ' /T /F');
+      if(!isWin) {
+        killProcess(pid);
+      } else {
+        cp.exec('taskkill /PID ' + pid + ' /T /F');
+      }
     }
   }
 }
