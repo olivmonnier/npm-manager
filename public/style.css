@@ -5818,7 +5818,7 @@ button.close {
     display: none !important; } }
 
 #logs {
-  height: 130px;
+  height: 200px;
   overflow: scroll;
   overflow-x: hidden; }
 

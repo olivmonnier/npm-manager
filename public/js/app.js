@@ -46,18 +46,35 @@ socket.on('pkgDelete', function(data) {
   $('.pkg-list.' + data.env).find('[data-pkg=' + data.name + ']').remove();
 });
 
-$(document).on('click', '.btn-ajax', function(e) {
-  e.preventDefault();
-
-  $.get($(this).attr('href'));
+socket.on('packages', function(data) {
+  $('.pkg-list.dev').html(config.renderPackages({
+    data: {packages: data.dev}
+  }));
+  $('.pkg-list.prod').html(config.renderPackages({
+    data: {packages: data.prod}
+  }));
 });
 
-$(document).on('click', '.btn-add-pkg', function() {
-  var parent = $(this).parent();
+socket.on('scripts', function(data) {
+  $('#scriptList').html(config.renderScripts({
+    data: {scripts: data}
+  }));
+});
 
-  $.get('/projects/' + parent.find('[name=name]').val() + '/packages', {
-    action: 'add',
-    name: parent.find('[name=pkgName]').val(),
-    env: parent.find('[name=env]').val()
+$(document).ready(function() {
+  config.init();
+
+  $(document).on('click', '.btn-ajax', function(e) {
+    e.preventDefault();
+
+    $.get($(this).attr('href'));
+  });
+  $(document).on('click', '.submit-ajax', function(e) {
+    e.preventDefault();
+
+    var form = $(this).closest('form');
+    var datas = form.serialize();
+
+    $[form.attr('method').toLowerCase()](form.attr('action'), datas);
   });
 });

@@ -13,25 +13,29 @@ function packageContent(args) {
   }
 }
 
-module.exports = {
-  list: function() {
-    return fs.readdirSync(path.join('projects'));
-  },
-  create: function(project) {
-    if (!project.name) return;
+module.exports = function(projectName, io) {
+  var cmdPath = 'projects/' + projectName;
 
-    fs.mkdirSync(path.join('projects/' + project.name));
-    fs.writeFileSync(path.join('projects/' + project.name +'/package.json'), JSON.stringify(packageContent(project), null, 2), 'utf8');
-  },
-  update: function(project) {
-    if (!project.name) return;
+  return {
+    list: function() {
+      return fs.readdirSync(path.join('projects'));
+    },
+    create: function(project) {
+      fs.mkdirSync(path.join(cmdPath));
+      fs.writeFileSync(path.join(cmdPath +'/package.json'), JSON.stringify(packageContent(project), null, 2), 'utf8');
+    },
+    update: function(config) {
+      if (config) {
+        var datas = JSON.parse(config.configFile);
 
-    if (project.configFile) {
-      fs.writeFileSync(path.join('projects/' + project.name +'/package.json'), JSON.stringify(project.configFile, null, 2), 'utf8');
-      rimraf.sync(path.join('projects/' + projectName + '/node_modules'));
+        fs.writeFileSync(path.join(cmdPath +'/package.json'), config.configFile, 'utf8');
+        rimraf.sync(path.join(cmdPath + '/node_modules'));
+
+        io.to(projectName).emit('scripts', Object.keys(datas.scripts));
+      }
+    },
+    delete: function(projectName) {
+      rimraf.sync(path.join(cmdPath));
     }
-  },
-  delete: function(projectName) {
-    rimraf.sync(path.join('projects/' + projectName));
   }
 }

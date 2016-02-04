@@ -79,6 +79,31 @@ module.exports = function(project, io) {
 
       streamEventsProcess('npmInstall', child, 'Install packages');
     },
+    packages: function() {
+      var pkgs = this.infos();
+      var hashPkgs = {
+        dev: [],
+        prod: []
+      }
+
+      for(var k in pkgs.devDependencies) {
+        hashPkgs.dev.push({
+          name: k,
+          version: pkgs.devDependencies[k],
+          env: 'dev'
+        });
+      }
+
+      for(var i in pkgs.dependencies) {
+        hashPkgs.prod.push({
+          name: k,
+          version: pkgs.dependencies[k],
+          env: 'prod'
+        });
+      }
+
+      io.to(project).emit('packages', hashPkgs);
+    },
     uninstall: function(pkgName, env) {
       var saveEnv = (env == 'dev') ? '-D' : '-S';
       var child = exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);

@@ -10,7 +10,7 @@ module.exports = function(io) {
     .get(function(req, res) {
       return res.render('projects', {
         title: 'Projects',
-        projects: Project.list()
+        projects: Project().list()
       });
     });
 
@@ -21,7 +21,8 @@ module.exports = function(io) {
       });
     })
     .post(function(req, res) {
-      Project.create(req.body);
+      Project(req.body.name).create(req.body);
+
       if (req.body.pkgDev) {
         Pkg(req.body.name, io).add(req.body.pkgDev, true);
       }
@@ -39,15 +40,16 @@ module.exports = function(io) {
       });
     })
     .post(function(req, res) {
-      Project.update(req.body);
-      Pkg(req.body.name, io).install();
+      Project(req.params.name, io).update(req.body);
+      Pkg(req.params.name, io).install();
+      Pkg(req.params.name, io).packages();
 
-      return res.redirect('/projects/' + req.params.name);
+      return res.status(200).end();
     });
 
   router.route('/:name/delete')
     .post(function(req, res) {
-      Project.delete(req.params.name);
+      Project(req.params.name).delete();
       return res.redirect('/projects');
     });
 

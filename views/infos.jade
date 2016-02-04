@@ -28,7 +28,7 @@ block content
               h3 Running
               ul.list-inline#processes
               h3 List
-              ul.list-inline
+              ul.list-inline#scriptList
                 each script, task in infos.scripts
                   li: a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task + "&action=exec")= task
         
@@ -80,9 +80,8 @@ block content
           #collapseThree.panel-collapse.collapse(role="tabpanel")
             .panel-body
               form(action="/projects/" + infos.name, method="POST")
-                input(type="hidden", name="name", value= infos.name)
                 .form-group
                   label package.json
-                  textarea.form-control(rows="20", name="configFile")!= JSON.stringify(infos, null, 4)
+                  textarea.form-control(rows="20", name="configFile")!= JSON.stringify(infos, null, 2)
                 .form-group
-                  input.btn.btn-primary(type="submit", value="Update")
+                  input.btn.btn-primary.submit-ajax(type="submit", value="Update")
