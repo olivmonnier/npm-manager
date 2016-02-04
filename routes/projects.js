@@ -70,12 +70,8 @@ module.exports = function(io) {
     .get(function(req, res) {
       var action = req.query.action;
 
-      if(action == 'delete') {
-        Pkg(req.params.name, io).uninstall(req.query.name, req.query.env);
-      }
-      if (action == 'add') {
-        Pkg(req.params.name, io).add(req.query.name, req.query.env);
-      }
+      Pkg(req.params.name, io)[action](req.query.name, req.query.env);
+      
       return res.status(200).end();
     });
   return router;

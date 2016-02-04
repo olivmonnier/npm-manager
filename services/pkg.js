@@ -104,7 +104,7 @@ module.exports = function(project, io) {
 
       io.to(project).emit('packages', hashPkgs);
     },
-    uninstall: function(pkgName, env) {
+    delete: function(pkgName, env) {
       var saveEnv = (env == 'dev') ? '-D' : '-S';
       var child = exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName);
 
