@@ -50,11 +50,13 @@ block content
                         i.glyphicon.glyphicon-trash
               .form-group
                 label Add packages in dev env (separate by a whitespace)
-                .form-inline
-                  input(type="hidden", name="name", value= infos.name)
+                .row.margin-bottom
                   input(type="hidden", name="env", value= "dev")
-                  input.form-control(type="text", name="pkgName")
-                  button.btn.btn-primary.btn-add-pkg Add
+                  .col-xs-8
+                    input.form-control(type="text", name="pkgName", placeholder="package name")
+                  .col-xs-4.no-gutter-left
+                    input.form-control(type="text", name="version", placeholder="version", value="latest")  
+                button.btn.btn-primary.btn-add-pkg Add
               h3 Production
               ul.list-group.pkg-list.prod
                 each version, pkgName in infos.dependencies
@@ -65,11 +67,13 @@ block content
                         i.glyphicon.glyphicon-trash
               .form-group
                 label Add packages in prod env (separate by a whitespace)
-                .form-inline
-                  input(type="hidden", name="name", value= infos.name)
+                .row.margin-bottom
                   input(type="hidden", name="env", value= "prod")
-                  input.form-control(type="text", name="pkgName")              
-                  button.btn.btn-primary.btn-add-pkg Add
+                  .col-xs-8
+                    input.form-control(type="text", name="pkgName", placeholder="package name")
+                  .col-xs-4.no-gutter-left
+                    input.form-control(type="text", name="version", placeholder="version", value="latest")         
+                button.btn.btn-primary.btn-add-pkg Add
         
         .panel.panel-default  
           .panel-heading

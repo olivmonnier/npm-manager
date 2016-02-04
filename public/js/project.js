@@ -6,9 +6,10 @@
           $(document).on('click', '.btn-add-pkg', function() {
             var parent = $(this).parent();
 
-            $.get('/projects/' + parent.find('[name=name]').val() + '/packages', {
+            $.get('/projects/' + ROOM + '/packages', {
               action: 'add',
               name: parent.find('[name=pkgName]').val(),
+              version: parent.find('[name=version]').val(),
               env: parent.find('[name=env]').val()
             });
           });

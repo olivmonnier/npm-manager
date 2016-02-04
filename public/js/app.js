@@ -7,6 +7,10 @@ socket.on('connect', function(data) {
   }
 });
 
+socket.on('config', function(data) {
+  $('textarea[name=configFile]').html(JSON.stringify(data, null, 2));
+});
+
 socket.on('init', function(data) {
   var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
 

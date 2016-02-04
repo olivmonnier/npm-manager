@@ -69,9 +69,15 @@ module.exports = function(io) {
   router.route('/:name/packages')
     .get(function(req, res) {
       var action = req.query.action;
+      var version = req.query.version || 'latest';
 
-      Pkg(req.params.name, io)[action](req.query.name, req.query.env);
-      
+      if (action == 'delete') {
+        Pkg(req.params.name, io).delete(req.query.name, req.query.env);
+      }
+      if (action == 'add') {      
+        Pkg(req.params.name, io).add(req.query.name, version, req.query.env);
+      }
+
       return res.status(200).end();
     });
   return router;
