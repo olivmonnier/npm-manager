@@ -1,4 +1,5 @@
 var socket = io.connect();
+var config = Project().config;
 
 socket.on('connect', function(data) {
   if (ROOM !== null) {
@@ -10,35 +11,25 @@ socket.on('init', function(data) {
   var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
 
   if (data[roomIndex]) {
-    data[roomIndex].logs.forEach(function(log) {
-      $('#logs').append(log + '<br/>');
-    });
-    data[roomIndex].processes.forEach(function(process) {
-      $('#processes').append(
-        '<li data-process="' + process.pid + '">' +
-          '<a href="/projects/' + ROOM + '/scripts?name=' + process.name + '&action=kill&pid=' + process.pid + '" class="btn btn-link btn-ajax">' +
-            process.name +
-            ' <i class="glyphicon glyphicon-remove"></i>' +
-          '</a>' +
-        '</li>'
-      );
-    });
+    $('#logs').append(config.renderLogs({
+      data: {logs: data[roomIndex].logs}
+    }));
+    $('#processes').append(config.renderProcesses({
+      data: {processes: data[roomIndex].processes}
+    }));
   }
 });
 
 socket.on('log', function(data) {
-   $('#logs').append(data + '<br/>');
+   $('#logs').append(config.renderLogs({
+     data: {logs: [data]}
+   }));
 });
 
 socket.on('process', function(data) {
-  $('#processes').append(
-    '<li data-process="' + data.pid + '">' +
-      '<a href="/projects/' + ROOM + '/scripts?name=' + data.name + '&action=kill&pid=' + data.pid + '" class="btn btn-link btn-ajax">' +
-        data.name +
-        ' <i class="glyphicon glyphicon-remove"></i>' +
-      '</a>' +
-    '</li>'
-  );
+  $('#processes').append(config.renderProcesses({
+    data: {processes: [data]}
+  }));
 });
 
 socket.on('killProcess', function(pid) {
@@ -46,16 +37,9 @@ socket.on('killProcess', function(pid) {
 });
 
 socket.on('pkgAdd', function(data) {
-  $('.pkg-list.' + data.env).append(
-    '<li class="list-group-item" data-pkg="' + data.name + '">' +
-      '<a href="https://www.npmjs.com/search?q=' + data.name + '" target="_blank">' + data.name + '</a>' +
-      '<div class="pull-right">' +
-        '<a class="btn btn-warning btn-ajax" href="/projects/' + ROOM + '/packages?name=' + data.name + '&env=' + data.env + '&action=delete">' +
-          '<i class="glyphicon glyphicon-trash"></i>' +
-        '</a>' +
-      '</div>' +
-    '</li>'
-  );
+  $('.pkg-list.' + data.env).append(config.renderPackages({
+    data: {packages: [data]}
+  }));
 });
 
 socket.on('pkgDelete', function(data) {
