@@ -9,6 +9,7 @@ Socket.on('connect', function(data) {
 
 $(document).ready(function() {
   Project().config.init();
+  Project().list.init();
 
   $(document).on('click', '.btn-ajax', function(e) {
     e.preventDefault();

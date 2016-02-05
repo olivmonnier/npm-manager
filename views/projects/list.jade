@@ -3,6 +3,10 @@ extends ../layout
 block content
   .page-header
     h1 Projects
-  ul.list-group
+  ul.list-group.project-list
     each project in projects
-      li.list-group-item: a(href="/projects/" + project)= project
+      li.list-group-item
+        a(href="/projects/" + project)= project
+        .pull-right(data-project= project)
+          strong Running:
+          ul.list-inline

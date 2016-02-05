@@ -14,6 +14,31 @@ function packageContent(args) {
   }
 }
 
+var formatTreeview = function(data) {
+  var tree = [];
+
+  loopChildren(data.children, tree);
+  return tree;
+}
+function loopChildren(children, parent) {
+  children.forEach(function(child) {
+    parent.push(insertChild(child));
+  });
+}
+function insertChild(child) {
+  var newChild = {
+    text: child.name,
+    href: '#/' + child.path,
+    icon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-close' : 'glyphicon glyphicon-file',
+    selectedIcon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-open' : 'glyphicon glyphicon-open-file'
+  }
+  if (child.children) {
+    newChild['nodes'] = [];
+    loopChildren(child.children, newChild.nodes);
+  }
+  return newChild;
+}
+
 module.exports = function(projectName, io) {
   var cmdPath = 'projects/' + projectName;
 
@@ -39,7 +64,9 @@ module.exports = function(projectName, io) {
       rimraf.sync(path.join(cmdPath));
     },
     tree: function() {
-      return dirTree.directoryTree(cmdPath);
+      var dirTreeHash = dirTree.directoryTree(cmdPath);
+
+      return formatTreeview(dirTreeHash);
     },
     fileContent: function(filePath) {
       return fs.readFileSync(path.join(cmdPath + filePath), 'utf8');

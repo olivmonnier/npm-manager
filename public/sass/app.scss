@@ -23,6 +23,13 @@ $icon-font-path: "public/fonts/";
     margin-top: -7px;
   }
 }
+.project-list .list-group-item {
+  .list-inline {
+    display: inline;
+    margin-left: 15px;
+  }
+}
+
 .treeview span.icon {
   font-size: 80%;
 }

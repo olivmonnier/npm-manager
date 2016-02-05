@@ -1,31 +1,31 @@
 (function($, _) {
-  var formatTreeview = function(data) {
-    var tree = [];
-
-    loopChildren(data.children, tree);
-    return tree;
-  }
-  function loopChildren(children, parent) {
-    children.forEach(function(child) {
-      parent.push(insertChild(child));
-    });
-  }
-  function insertChild(child) {
-    var newChild = {
-      text: child.name,
-      href: '#/' + child.path,
-      icon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-close' : 'glyphicon glyphicon-file',
-      selectedIcon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-open' : 'glyphicon glyphicon-open-file'
-    }
-    if (child.children) {
-      newChild['nodes'] = [];
-      loopChildren(child.children, newChild.nodes);
-    }
-    return newChild;
-  }
-
   var Project = function() {
     return {
+      list: {
+        init: function() {
+          var list = this;
+
+          Socket.on('init', function(data) {
+            data.forEach(function(project) {
+              if (project.processes.length > 0) {
+                $('[data-project=' + project.name + '] ul').append(list.renderProcesses({
+                  data: {project: project.name, processes: project.processes}
+                }));
+              }
+            })
+          });
+        },
+        renderProcesses: _.template(
+          '<% _.forEach(data.processes, function(process) { %>' +
+            '<li data-process="<%= process.pid %>">' +
+              '<a href="/projects/<%= data.project %>/scripts?name=<%= process.name %>&action=kill&pid=<%= process.pid %>" class="btn-ajax">' +
+                '<%= process.name %>' +
+                ' <i class="glyphicon glyphicon-remove"></i>' +
+              '</a>' +
+            '</li>' +
+          '<% }); %>'
+        )
+      },
       config: {
         init: function() {
           var config = this;
@@ -80,7 +80,7 @@
             }));
           });
           $('#tree').treeview({
-            data: formatTreeview(TreeDir),
+            data: TreeDir,
             showBorder: false,
             collapseIcon: 'glyphicon glyphicon-triangle-bottom',
             expandIcon: 'glyphicon glyphicon-triangle-right',
