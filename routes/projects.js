@@ -8,7 +8,7 @@ var Project = require('../services/project');
 module.exports = function(io) {
   router.route('/')
     .get(function(req, res) {
-      return res.render('projects', {
+      return res.render('projects/list', {
         title: 'Projects',
         projects: Project().list()
       });
@@ -16,7 +16,7 @@ module.exports = function(io) {
 
   router.route('/new')
     .get(function(req, res) {
-      return res.render('new', {
+      return res.render('projects/new', {
         title: 'New Project'
       });
     })
@@ -34,9 +34,10 @@ module.exports = function(io) {
 
   router.route('/:name')
     .get(function(req, res) {
-      return res.render('infos', {
+      return res.render('projects/view', {
         title: 'Project ' + req.params.name,
-        infos: Pkg(req.params.name).infos()
+        infos: Pkg(req.params.name).infos(),
+        tree: Project(req.params.name).tree()
       });
     })
     .post(function(req, res) {
@@ -74,7 +75,7 @@ module.exports = function(io) {
       if (action == 'delete') {
         Pkg(req.params.name, io).delete(req.query.name, req.query.env);
       }
-      if (action == 'add') {      
+      if (action == 'add') {
         Pkg(req.params.name, io).add(req.query.name, version, req.query.env);
       }
 

@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  script. 
+    ROOM = "#{infos.name}";
+    TreeDir= !{JSON.stringify(tree)};
+
+  nav.pull-right
+    form(action="/projects/" + infos.name + "/delete", method="POST")
+      input.btn.btn-danger(type="submit", value="Delete") 
+  .page-header
+    h1= capitalize(infos.name)
+  
+  .row
+    .col-xs-12
+      #logs.well
+  .row
+    .col-sm-3
+      #tree
+    .col-sm-6
+    .col-sm-3
+      include ./config.jade
+    

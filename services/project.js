@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var rimraf = require('rimraf');
+var dirTree = require('directory-tree');
 
 function packageContent(args) {
   return {
@@ -34,8 +35,11 @@ module.exports = function(projectName, io) {
         io.to(projectName).emit('scripts', Object.keys(datas.scripts));
       }
     },
-    delete: function(projectName) {
+    delete: function() {
       rimraf.sync(path.join(cmdPath));
+    },
+    tree: function() {
+      return dirTree.directoryTree(cmdPath);
     }
   }
 }

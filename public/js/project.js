@@ -1,8 +1,85 @@
 (function($, _) {
+  var formatTreeview = function(data) {
+    var tree = [];
+
+    loopChildren(data.children, tree);
+    return tree;
+  }
+  function loopChildren(children, parent) {
+    children.forEach(function(child) {
+      parent.push(insertChild(child));
+    });
+  }
+  function insertChild(child) {
+    var newChild = {
+      text: child.name,
+      href: child.path,
+      icon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-close' : 'glyphicon glyphicon-file',
+      selectedIcon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-open' : 'glyphicon glyphicon-open-file'  
+    }
+    if (child.children) {
+      newChild['nodes'] = [];
+      loopChildren(child.children, newChild.nodes);
+    }
+    return newChild;
+  }
+
   var Project = function() {
     return {
       config: {
         init: function() {
+          var config = this;
+
+          Socket.on('init', function(data) {
+            var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
+
+            if (data[roomIndex]) {
+              $('#logs').append(config.renderLogs({
+                data: {logs: data[roomIndex].logs}
+              }));
+              $('#processes').append(config.renderProcesses({
+                data: {processes: data[roomIndex].processes}
+              }));
+            }
+          })
+          .on('config', function(data) {
+              $('textarea[name=configFile]').html(JSON.stringify(data, null, 2));
+          })
+          .on('log', function(data) {
+             $('#logs').append(config.renderLogs({
+               data: {logs: [data]}
+             }));
+          })
+          .on('process', function(data) {
+            $('#processes').append(config.renderProcesses({
+              data: {processes: [data]}
+            }));
+          })
+          .on('killProcess', function(pid) {
+            $('[data-process=' + pid + ']').remove();
+          })
+          .on('pkgAdd', function(data) {
+            $('.pkg-list.' + data.env).append(config.renderPackages({
+              data: {packages: [data]}
+            }));
+          })
+          .on('pkgDelete', function(data) {
+            $('.pkg-list.' + data.env).find('[data-pkg=' + data.name + ']').remove();
+          })
+          .on('packages', function(data) {
+            $('.pkg-list.dev').html(config.renderPackages({
+              data: {packages: data.dev}
+            }));
+            $('.pkg-list.prod').html(config.renderPackages({
+              data: {packages: data.prod}
+            }));
+          })
+          .on('scripts', function(data) {
+            $('#scriptList').html(config.renderScripts({
+              data: {scripts: data}
+            }));
+          });
+          $('#tree').treeview({data: formatTreeview(TreeDir), showBorder: false, collapseIcon: 'glyphicon glyphicon-triangle-bottom', expandIcon: 'glyphicon glyphicon-triangle-right' });
           $(document).on('click', '.btn-add-pkg', function() {
             var parent = $(this).parent();
 

@@ -5833,6 +5833,9 @@ button.close {
 .pkg-list .btn {
   margin-top: -7px; }
 
+.treeview span.icon {
+  font-size: 80%; }
+
 .margin-bottom {
   margin-bottom: 10px; }
 
