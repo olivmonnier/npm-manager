@@ -40,6 +40,9 @@ module.exports = function(projectName, io) {
     },
     tree: function() {
       return dirTree.directoryTree(cmdPath);
+    },
+    fileContent: function(filePath) {
+      return fs.readFileSync(path.join(cmdPath + filePath), 'utf8');
     }
   }
 }

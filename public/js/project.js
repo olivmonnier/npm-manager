@@ -13,9 +13,9 @@
   function insertChild(child) {
     var newChild = {
       text: child.name,
-      href: child.path,
+      href: '#/' + child.path,
       icon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-close' : 'glyphicon glyphicon-file',
-      selectedIcon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-open' : 'glyphicon glyphicon-open-file'  
+      selectedIcon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-open' : 'glyphicon glyphicon-open-file'
     }
     if (child.children) {
       newChild['nodes'] = [];
@@ -79,7 +79,23 @@
               data: {scripts: data}
             }));
           });
-          $('#tree').treeview({data: formatTreeview(TreeDir), showBorder: false, collapseIcon: 'glyphicon glyphicon-triangle-bottom', expandIcon: 'glyphicon glyphicon-triangle-right' });
+          $('#tree').treeview({
+            data: formatTreeview(TreeDir),
+            showBorder: false,
+            collapseIcon: 'glyphicon glyphicon-triangle-bottom',
+            expandIcon: 'glyphicon glyphicon-triangle-right',
+            enableLinks: true,
+            onNodeSelected: function(event, data) {
+              if(!data.nodes) {
+                var filePath = '/' + data.href.slice(2).replace(/\\/g, '/');
+
+                $.get('/projects/' + ROOM + '/files', {filepath: filePath})
+                  .done(function(data) {
+                    $('#fileView').html(data.fileContent);
+                  });
+              }
+            }
+          });
           $(document).on('click', '.btn-add-pkg', function() {
             var parent = $(this).parent();
 

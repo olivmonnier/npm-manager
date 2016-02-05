@@ -81,5 +81,13 @@ module.exports = function(io) {
 
       return res.status(200).end();
     });
+  router.route('/:name/files')
+    .get(function(req, res) {
+      var filePath = req.query.filepath;
+
+      return res.status(200)
+        .json({fileContent: Project(req.params.name).fileContent(filePath)})
+        .end();
+    });
   return router;
 }
