@@ -5,20 +5,19 @@ block content
     ROOM = "#{infos.name}";
     TreeDir= !{JSON.stringify(tree)};
 
-  .row.row-height
+  #appView.row.row-height
     .col-sm-3.no-gutter-right
-      #tree
-    .col-sm-9
+      #tree.bordered
+    #contentPrimary.col-sm-9
       .row
         .col-sm-12
           h1.title-app= capitalize(infos.name)
           a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") Delete 
-      .row.row-height
-        #view.col-sm-8
-          #fileView
-        .col-sm-4.no-gutter-left
+      #view.row.row-height
+        .col-sm-8
+          #fileView.bordered
+        #config.col-sm-4.no-gutter-left.bordered
           include ./config.jade
-      .row
-        .col-xs-12
-          #logs.well
+      #logs.well
+                  
     

@@ -1,27 +1,60 @@
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 $icon-font-path: "public/fonts/";
 
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
 h3 { font-size: 20px; }
+#appView {
+  position: absolute;
+  top: 40px;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-#view {
-  position:relative;
-  margin-bottom: 20px;
+  #contentPrimary {
+    height: 100%;
 
-  #fileView {
+    #view {
+      height: 60%;
+      margin-bottom: 20px;
+
+      #fileView {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 15px;
+        right: 15px;
+        overflow: auto;
+      }
+    }
+    #config {
+      overflow: auto;
+
+      #accordion {
+        margin-bottom: 0;
+      }
+    }
+    #logs {
+      height: 28%;
+      margin: 0;
+      overflow: scroll;
+      overflow-x:hidden;
+    }
+  }
+
+  #tree {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 15px;
     right: 15px;
+    overflow: auto;;
   }
-}
-#logs {
-  height: 200px;
-  overflow: scroll;
-  overflow-x:hidden;
-}
-#tree {
-  margin-top: 20px;
 }
 .form-inline {
   input.form-control + .btn {
@@ -33,6 +66,7 @@ h3 { font-size: 20px; }
 .title-app {
   display: inline-block;
   vertical-align: middle;
+  margin-top: 0;
   margin-right: 15px;
 
   &::first-letter { text-transform: uppercase; }
@@ -65,6 +99,10 @@ h3 { font-size: 20px; }
 }
 .no-gutter-right {
   padding-right: 0;
+}
+.bordered {
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 .row-height {
   display: -webkit-box;
