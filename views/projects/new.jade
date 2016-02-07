@@ -1,23 +1,24 @@
 extends ../layout
 
 block content
-  .page-header
-    h1 New Project
-  form(method="POST" action="/projects/new")
-    .form-group
-      label Name
-      input.form-control(type="text", name="name")
-    .form-group
-      label Description
-      input.form-control(type="text", name="description")
-    .form-group
-      label Author
-      input.form-control(type="text", name="author")
-    .form-group
-      label Packages in dev env (separate by a whitespace)
-      input.form-control(type="text", name="pkgDev")
-    .form-group
-      label Packages in prod env (separate by a whitespace)
-      input.form-control(type="text", name"pkgProd")
-    .form-group
-      input.btn.btn-primary(type="submit", value="Submit") 
+  .container
+    .page-header
+      h1 New Project
+    form(method="POST" action="/projects/new")
+      .form-group
+        label Name
+        input.form-control(type="text", name="name")
+      .form-group
+        label Description
+        input.form-control(type="text", name="description")
+      .form-group
+        label Author
+        input.form-control(type="text", name="author")
+      .form-group
+        label Packages in dev env (separate by a whitespace)
+        input.form-control(type="text", name="pkgDev")
+      .form-group
+        label Packages in prod env (separate by a whitespace)
+        input.form-control(type="text", name"pkgProd")
+      .form-group
+        input.btn.btn-primary(type="submit", value="Submit") 

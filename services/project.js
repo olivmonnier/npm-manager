@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var rimraf = require('rimraf');
 var dirTree = require('directory-tree');
+var junk = require('junk');
 
 function packageContent(args) {
   return {
@@ -44,7 +45,8 @@ module.exports = function(projectName, io) {
 
   return {
     list: function() {
-      return fs.readdirSync(path.join('projects'));
+      var files = fs.readdirSync(path.join('projects'));
+      return files.filter(junk.not);
     },
     create: function(project) {
       fs.mkdirSync(path.join(cmdPath));

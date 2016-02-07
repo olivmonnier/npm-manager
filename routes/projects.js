@@ -49,7 +49,7 @@ module.exports = function(io) {
     });
 
   router.route('/:name/delete')
-    .post(function(req, res) {
+    .get(function(req, res) {
       Project(req.params.name).delete();
       return res.redirect('/projects');
     });

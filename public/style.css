@@ -5817,14 +5817,37 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+h3 {
+  font-size: 20px; }
+
+#view {
+  position: relative;
+  margin-bottom: 20px; }
+  #view #fileView {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    right: 15px; }
+
 #logs {
   height: 200px;
   overflow: scroll;
   overflow-x: hidden; }
 
+#tree {
+  margin-top: 20px; }
+
 @media (min-width: 767px) {
   .form-inline input.form-control + .btn {
     margin-left: 4px; } }
+
+.title-app {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 15px; }
+  .title-app::first-letter {
+    text-transform: uppercase; }
 
 .pkg-list .list-group-item {
   padding-top: 15px;
@@ -5833,7 +5856,7 @@ button.close {
 .pkg-list .btn {
   margin-top: -7px; }
 
-.project-list .list-group-item .list-inline {
+#project-list .list-group-item .list-inline {
   display: inline;
   margin-left: 15px; }
 
@@ -5848,3 +5871,9 @@ button.close {
 
 .no-gutter-right {
   padding-right: 0; }
+
+.row-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }

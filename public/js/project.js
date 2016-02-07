@@ -29,6 +29,9 @@
       config: {
         init: function() {
           var config = this;
+          var fileView = ace.edit('fileView');
+
+          fileView.setReadOnly(true);
 
           Socket.on('init', function(data) {
             var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
@@ -91,7 +94,7 @@
 
                 $.get('/projects/' + ROOM + '/files', {filepath: filePath})
                   .done(function(data) {
-                    $('#fileView').html(data.fileContent);
+                    fileView.setValue(data.fileContent, -1);
                   });
               }
             }

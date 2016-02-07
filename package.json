@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ace-builds": "^1.2.2",
     "body-parser": "^1.14.2",
     "bootstrap-sass": "^3.3.6",
     "bootstrap-treeview": "^1.2.0",
@@ -22,6 +23,7 @@
     "express": "^4.13.4",
     "jade": "^1.11.0",
     "jquery": "^2.2.0",
+    "junk": "^1.0.2",
     "lodash": "^4.0.1",
     "node-sass": "^3.4.2",
     "ps-tree": "^1.0.1",

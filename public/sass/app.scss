@@ -1,10 +1,27 @@
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 $icon-font-path: "public/fonts/";
 
+h3 { font-size: 20px; }
+
+#view {
+  position:relative;
+  margin-bottom: 20px;
+
+  #fileView {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+  }
+}
 #logs {
   height: 200px;
   overflow: scroll;
   overflow-x:hidden;
+}
+#tree {
+  margin-top: 20px;
 }
 .form-inline {
   input.form-control + .btn {
@@ -12,6 +29,13 @@ $icon-font-path: "public/fonts/";
       margin-left: 4px;
     }
   }
+}
+.title-app {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 15px;
+
+  &::first-letter { text-transform: uppercase; }
 }
 .pkg-list {
   .list-group-item {
@@ -23,7 +47,7 @@ $icon-font-path: "public/fonts/";
     margin-top: -7px;
   }
 }
-.project-list .list-group-item {
+#project-list .list-group-item {
   .list-inline {
     display: inline;
     margin-left: 15px;
@@ -41,4 +65,10 @@ $icon-font-path: "public/fonts/";
 }
 .no-gutter-right {
   padding-right: 0;
+}
+.row-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
 }
