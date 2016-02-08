@@ -30,6 +30,7 @@
         init: function() {
           var config = this;
           var fileView = ace.edit('fileView');
+          var navPath = '';
 
           //fileView.setReadOnly(true);
           fileView.$blockScrolling = Infinity;
@@ -96,16 +97,39 @@
             expandIcon: 'glyphicon glyphicon-triangle-right',
             enableLinks: true,
             onNodeSelected: function(event, data) {
-              if(!data.nodes) {
-                var filePath = '/' + data.href.slice(2).replace(/\\/g, '/');
+              navPath = '/' + data.href.slice(2).replace(/\\/g, '/');
 
-                $.get('/projects/' + ROOM + '/files', {filepath: filePath})
+              if(!data.nodes) {
+
+                $('#folderView').fadeOut('slow');
+                $.get('/projects/' + ROOM + '/files', {filePath: navPath})
                   .done(function(data) {
                     fileView.setValue(data.fileContent, -1);
                     fileView.session.setMode('ace/mode/' + data.extension);
+                    $('#fileView').fadeIn('slow');
                   });
+              } else {
+                $('#folderView h2').text('Folder: ' + navPath);
+                $('#fileView').fadeOut('slow');
+                $('#folderView').fadeIn('slow');
               }
             }
+          });
+          $(document).on('click', '.btn-add-folder', function() {
+            var folderName = $(this).closest('form').find('input[name="folderName"]').val();
+
+            $.get('/projects/' + ROOM + '/folders', {
+              folderPath: navPath + '/' + folderName,
+              action: 'add'
+            });
+          });
+          $(document).on('click', '.btn-add-file', function() {
+            var fileName = $(this).closest('form').find('input[name="fileName"]').val();
+
+            $.get('/projects/' + ROOM + '/files', {
+              filePath: navPath + '/' + fileName,
+              action: 'add'
+            });
           });
           $(document).on('click', '.btn-add-pkg', function() {
             var parent = $(this).parent();

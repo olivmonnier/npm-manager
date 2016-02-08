@@ -83,15 +83,38 @@ module.exports = function(io) {
     });
   router.route('/:name/files')
     .get(function(req, res) {
-      var filePath = req.query.filepath;
+      var filePath = req.query.filePath;
       var project = Project(req.params.name);
+      var action = req.query.action || '';
 
-      return res.status(200)
-        .json({
-          fileContent: project.fileContent(filePath),
-          extension: project.fileExtension(filePath)
-        })
-        .end();
+      if (action == 'add') {
+        project.file.new(filePath);
+
+        return res.status(200).json({ tree: project.tree() }).end();
+      } else {
+        return res.status(200)
+          .json({
+            fileContent: project.file.content(filePath),
+            extension: project.file.extension(filePath)
+          })
+          .end();
+      }
     });
+
+  router.route('/:name/folders')
+    .get(function(req, res) {
+      var folderPath = req.query.folderPath;
+      var project = Project(req.params.name);
+      var action = req.query.action || '';
+
+      if (action == 'add') {
+        project.folder.new(folderPath);
+
+        return res.status(200).json({ tree: project.tree() }).end();
+      } else {
+
+      }
+    });
+
   return router;
 }

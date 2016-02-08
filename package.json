@@ -18,7 +18,7 @@
     "bootstrap-sass": "^3.3.6",
     "bootstrap-treeview": "^1.2.0",
     "concat": "^1.0.0",
-    "directory-tree": "^0.1.1",
+    "directory-tree": "git+https://git@github.com/olivmonnier/node-directory-tree.git",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "jade": "^1.11.0",

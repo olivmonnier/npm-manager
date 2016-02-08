@@ -5,7 +5,7 @@ block content
     ROOM = "#{infos.name}";
     TreeDir= !{JSON.stringify(tree)};
 
-  #appView.row.row-height.position-full
+  #appView.row.row-height.position-full.no-margin-side
     .col-sm-3.no-gutter-right.bordered
       #tree.position-full
     #contentPrimary.col-sm-9
@@ -13,10 +13,45 @@ block content
         .col-sm-12
           h1.title-app= capitalize(infos.name)
           a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") Delete 
-      #view.row.row-height
-        .col-sm-8
-          #fileView.position-full.bordered
-        #config.col-sm-4.no-gutter-left.bordered
+      #rowPrimary.row.row-height
+        #view.col-sm-8
+          #fileView(style="display:none;").position-full.bordered
+          #folderView
+            h2 Folder: /
+            ul#folderActions.list-inline
+              li: button.btn.btn-link(data-toggle="modal", data-target="#modalNewFolder") New folder
+              li: button.btn.btn-link(data-toggle="modal", data-target="#modalNewFile") New file
+              li: button.btn.btn-link Delete folder
+            
+            #modalNewFolder.modal.fade
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    button.close(data-dismiss="modal"): span(aria-hidden="true") &times;
+                    h4 New folder
+                  .modal-body
+                    form
+                      .form-group
+                        label Folder name
+                        input.form-control.input-lg(type="text", name="folderName")
+                      .form-group
+                        button.btn.btn-primary.btn-add-folder Create
+                  
+            #modalNewFile.modal.fade
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    button.close(data-dismiss="modal"): span(aria-hidden="true") &times;
+                    h4 New file
+                  .modal-body
+                    form
+                      .form-group
+                        label File name
+                        input.form-control.input-lg(type="text", name="fileName")
+                      .form-group
+                        button.btn.btn-primary.btn-add-file Create
+                  
+        #config.col-sm-4.no-gutter.bordered
           include ./config.jade
       #logs.well
                   

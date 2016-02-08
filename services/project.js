@@ -71,11 +71,21 @@ module.exports = function(projectName, io) {
 
       return formatTreeview(dirTreeHash);
     },
-    fileContent: function(filePath) {
-      return fs.readFileSync(path.join(cmdPath + filePath), 'utf8');
+    file: {
+      new: function(filePath) {
+        fs.writeFileSync(path.join(cmdPath + filePath), '', 'utf8');
+      },
+      content: function(filePath) {
+        return fs.readFileSync(path.join(cmdPath + filePath), 'utf8');
+      },
+      extension: function(filePath) {
+        return formatFile(path.join(cmdPath + filePath));
+      }
     },
-    fileExtension: function(filePath) {
-      return formatFile(path.join(cmdPath + filePath));
+    folder: {
+      new: function(folderPath) {
+        fs.mkdirSync(path.join(cmdPath + folderPath));
+      }
     }
   }
 }

@@ -5831,10 +5831,10 @@ h3 {
   top: 40px; }
   #appView #contentPrimary {
     height: 100%; }
-    #appView #contentPrimary #view {
+    #appView #contentPrimary #rowPrimary {
       height: 60%;
       margin-bottom: 20px; }
-      #appView #contentPrimary #view #fileView {
+      #appView #contentPrimary #rowPrimary #fileView {
         left: 15px;
         right: 15px;
         overflow: auto; }
@@ -5886,6 +5886,14 @@ h3 {
   bottom: 0;
   left: 0;
   right: 0; }
+
+.no-margin-side {
+  margin-left: 0;
+  margin-right: 0; }
+
+.no-gutter {
+  padding-left: 0;
+  padding-right: 0; }
 
 .no-gutter-left {
   padding-left: 0; }
