@@ -111,6 +111,10 @@ module.exports = function(io) {
         project.folder.new(folderPath);
 
         return res.status(200).json({ tree: project.tree() }).end();
+      } else if(action == 'delete') {
+        project.folder.delete(folderPath);
+
+        return res.status(200).json({ tree: project.tree() }).end();
       } else {
 
       }

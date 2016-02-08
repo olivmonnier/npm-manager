@@ -16,12 +16,16 @@ block content
       #rowPrimary.row.row-height
         #view.col-sm-8
           #fileView(style="display:none;").position-full.bordered
+            #editor.position-full
+            ul#fileActions.list-inline
+              li: button.btn.btn-xs.btn-primary.btn-edit-file Edit
+              li: button.btn.btn-xs.btn-primary.btn-delete-file Delete
           #folderView
             h2 Folder: /
             ul#folderActions.list-inline
               li: button.btn.btn-link(data-toggle="modal", data-target="#modalNewFolder") New folder
               li: button.btn.btn-link(data-toggle="modal", data-target="#modalNewFile") New file
-              li: button.btn.btn-link Delete folder
+              li: button.btn.btn-link.btn-delete-folder Delete folder
             
             #modalNewFolder.modal.fade
               .modal-dialog

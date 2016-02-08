@@ -69,7 +69,13 @@ module.exports = function(projectName, io) {
     tree: function() {
       var dirTreeHash = dirTree.directoryTree(cmdPath);
 
-      return formatTreeview(dirTreeHash);
+      return [{
+        text: projectName,
+        href: '#/',
+        icon: 'glyphicon glyphicon-folder-close',
+        selectedIcon: 'glyphicon glyphicon-folder-open',
+        nodes: formatTreeview(dirTreeHash)
+      }];
     },
     file: {
       new: function(filePath) {
@@ -85,6 +91,9 @@ module.exports = function(projectName, io) {
     folder: {
       new: function(folderPath) {
         fs.mkdirSync(path.join(cmdPath + folderPath));
+      },
+      delete: function(folderPath) {
+        rimraf.sync(path.join(path.join(cmdPath + folderPath)));
       }
     }
   }

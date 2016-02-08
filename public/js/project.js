@@ -29,10 +29,42 @@
       config: {
         init: function() {
           var config = this;
-          var fileView = ace.edit('fileView');
+          var fileView = ace.edit('editor');
           var navPath = '';
+          var optionsTree = {
+            data: TreeDir,
+            showBorder: false,
+            collapseIcon: 'glyphicon glyphicon-triangle-bottom',
+            expandIcon: 'glyphicon glyphicon-triangle-right',
+            enableLinks: true,
+            onNodeSelected: function(event, data) {
+              navPath = '/' + data.href.slice(2).replace(/\\/g, '/');
 
-          //fileView.setReadOnly(true);
+              if(!data.nodes) {
+
+                $('#folderView').fadeOut('slow');
+                $.get('/projects/' + ROOM + '/files', {filePath: navPath})
+                  .done(function(data) {
+                    fileView.setValue(data.fileContent, -1);
+                    fileView.session.setMode('ace/mode/' + data.extension);
+                    fileView.setReadOnly(true);
+                    $('#fileView').fadeIn('slow');
+                  });
+              } else {
+                $('#folderView h2').text('Folder: ' + navPath);
+                $('#fileView').fadeOut('slow');
+                $('#folderView').fadeIn('slow');
+              }
+            }
+          };
+
+          function updateTreeDir(data) {
+            optionsTree.data = data.tree;
+            TreeDir = data.tree;
+            $('#tree').treeview(optionsTree);
+          }
+
+          fileView.setReadOnly(true);
           fileView.$blockScrolling = Infinity;
           fileView.setTheme("ace/theme/tomorrow_night");
           fileView.setOptions({
@@ -90,45 +122,34 @@
               data: {scripts: data}
             }));
           });
-          $('#tree').treeview({
-            data: TreeDir,
-            showBorder: false,
-            collapseIcon: 'glyphicon glyphicon-triangle-bottom',
-            expandIcon: 'glyphicon glyphicon-triangle-right',
-            enableLinks: true,
-            onNodeSelected: function(event, data) {
-              navPath = '/' + data.href.slice(2).replace(/\\/g, '/');
-
-              if(!data.nodes) {
-
-                $('#folderView').fadeOut('slow');
-                $.get('/projects/' + ROOM + '/files', {filePath: navPath})
-                  .done(function(data) {
-                    fileView.setValue(data.fileContent, -1);
-                    fileView.session.setMode('ace/mode/' + data.extension);
-                    $('#fileView').fadeIn('slow');
-                  });
-              } else {
-                $('#folderView h2').text('Folder: ' + navPath);
-                $('#fileView').fadeOut('slow');
-                $('#folderView').fadeIn('slow');
-              }
-            }
+          $('#tree').treeview(optionsTree);
+          $(document).on('click', '.btn-edit-file', function() {
+            fileView.setReadOnly(false);
           });
-          $(document).on('click', '.btn-add-folder', function() {
+          $(document).on('click', '.btn-add-folder', function(e) {
+            e.preventDefault();
+            var $this = $(this);
             var folderName = $(this).closest('form').find('input[name="folderName"]').val();
 
             $.get('/projects/' + ROOM + '/folders', {
               folderPath: navPath + '/' + folderName,
               action: 'add'
+            }).done(function(data) {
+              updateTreeDir(data);
+              $this.closest('.modal').modal('hide');
             });
           });
-          $(document).on('click', '.btn-add-file', function() {
+          $(document).on('click', '.btn-add-file', function(e) {
+            e.preventDefault();
+            var $this = $(this);
             var fileName = $(this).closest('form').find('input[name="fileName"]').val();
 
             $.get('/projects/' + ROOM + '/files', {
               filePath: navPath + '/' + fileName,
               action: 'add'
+            }).done(function(data) {
+              updateTreeDir(data);
+              $this.closest('.modal').modal('hide');
             });
           });
           $(document).on('click', '.btn-add-pkg', function() {
@@ -139,6 +160,15 @@
               name: parent.find('[name=pkgName]').val(),
               version: parent.find('[name=version]').val(),
               env: parent.find('[name=env]').val()
+            });
+          });
+          $(document).on('click', '.btn-delete-folder', function() {
+            $.get('/projects/' + ROOM + '/folders', {
+              action: 'delete',
+              folderPath: navPath
+            }).done(function(data) {
+              updateTreeDir(data);
+              $('#tree').treeview('selectNode', [0, { silent: false }]);
             });
           });
         },

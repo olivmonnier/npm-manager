@@ -5838,6 +5838,11 @@ h3 {
         left: 15px;
         right: 15px;
         overflow: auto; }
+        #appView #contentPrimary #rowPrimary #fileView #fileActions {
+          position: absolute;
+          top: 0;
+          right: 12px;
+          z-index: 1; }
     #appView #contentPrimary #config {
       overflow: auto; }
       #appView #contentPrimary #config #accordion {
