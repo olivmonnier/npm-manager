@@ -5828,20 +5828,13 @@ h3 {
   font-size: 20px; }
 
 #appView {
-  position: absolute;
-  top: 40px;
-  bottom: 0;
-  left: 0;
-  right: 0; }
+  top: 40px; }
   #appView #contentPrimary {
     height: 100%; }
     #appView #contentPrimary #view {
       height: 60%;
       margin-bottom: 20px; }
       #appView #contentPrimary #view #fileView {
-        position: absolute;
-        top: 0;
-        bottom: 0;
         left: 15px;
         right: 15px;
         overflow: auto; }
@@ -5855,11 +5848,7 @@ h3 {
       overflow: scroll;
       overflow-x: hidden; }
   #appView #tree {
-    position: absolute;
-    top: 0;
-    bottom: 0;
     left: 15px;
-    right: 0;
     overflow: auto; }
 
 @media (min-width: 767px) {
@@ -5890,6 +5879,13 @@ h3 {
 
 .margin-bottom {
   margin-bottom: 10px; }
+
+.position-full {
+  position: absolute !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
 
 .no-gutter-left {
   padding-left: 0; }

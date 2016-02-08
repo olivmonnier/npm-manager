@@ -3,6 +3,7 @@ var path = require('path');
 var rimraf = require('rimraf');
 var dirTree = require('directory-tree');
 var junk = require('junk');
+var formatFile = require('./formatFile');
 
 function packageContent(args) {
   return {
@@ -72,6 +73,9 @@ module.exports = function(projectName, io) {
     },
     fileContent: function(filePath) {
       return fs.readFileSync(path.join(cmdPath + filePath), 'utf8');
+    },
+    fileExtension: function(filePath) {
+      return formatFile(path.join(cmdPath + filePath));
     }
   }
 }

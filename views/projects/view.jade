@@ -5,9 +5,9 @@ block content
     ROOM = "#{infos.name}";
     TreeDir= !{JSON.stringify(tree)};
 
-  #appView.row.row-height
+  #appView.row.row-height.position-full
     .col-sm-3.no-gutter-right.bordered
-      #tree
+      #tree.position-full
     #contentPrimary.col-sm-9
       .row
         .col-sm-12
@@ -15,7 +15,7 @@ block content
           a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") Delete 
       #view.row.row-height
         .col-sm-8
-          #fileView.bordered
+          #fileView.position-full.bordered
         #config.col-sm-4.no-gutter-left.bordered
           include ./config.jade
       #logs.well

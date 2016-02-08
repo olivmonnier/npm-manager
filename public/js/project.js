@@ -31,7 +31,14 @@
           var config = this;
           var fileView = ace.edit('fileView');
 
-          fileView.setReadOnly(true);
+          //fileView.setReadOnly(true);
+          fileView.$blockScrolling = Infinity;
+          fileView.setTheme("ace/theme/tomorrow_night");
+          fileView.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+          });
 
           Socket.on('init', function(data) {
             var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
@@ -95,6 +102,7 @@
                 $.get('/projects/' + ROOM + '/files', {filepath: filePath})
                   .done(function(data) {
                     fileView.setValue(data.fileContent, -1);
+                    fileView.session.setMode('ace/mode/' + data.extension);
                   });
               }
             }

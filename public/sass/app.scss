@@ -10,11 +10,7 @@ body {
 }
 h3 { font-size: 20px; }
 #appView {
-  position: absolute;
   top: 40px;
-  bottom: 0;
-  left: 0;
-  right: 0;
 
   #contentPrimary {
     height: 100%;
@@ -24,9 +20,6 @@ h3 { font-size: 20px; }
       margin-bottom: 20px;
 
       #fileView {
-        position: absolute;
-        top: 0;
-        bottom: 0;
         left: 15px;
         right: 15px;
         overflow: auto;
@@ -48,11 +41,7 @@ h3 { font-size: 20px; }
   }
 
   #tree {
-    position: absolute;
-    top: 0;
-    bottom: 0;
     left: 15px;
-    right: 0;
     overflow: auto;;
   }
 }
@@ -93,6 +82,13 @@ h3 { font-size: 20px; }
 }
 .margin-bottom {
   margin-bottom: 10px;
+}
+.position-full {
+  position: absolute !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .no-gutter-left {
   padding-left: 0;
