@@ -42,26 +42,36 @@
 
               if(!data.nodes) {
 
-                $('#folderView').fadeOut('slow');
                 $.get('/projects/' + ROOM + '/files', {filePath: navPath})
                   .done(function(data) {
                     fileView.setValue(data.fileContent, -1);
                     fileView.session.setMode('ace/mode/' + data.extension);
                     fileView.setReadOnly(true);
-                    $('#fileView').fadeIn('slow');
+                    $('#fileActions').html(config.renderFileEditAction());
+                    showFileView();
                   });
               } else {
                 $('#folderView h2').text('Folder: ' + navPath);
-                $('#fileView').fadeOut('slow');
-                $('#folderView').fadeIn('slow');
+                showFolderView();
               }
             }
           };
+
+          function showFileView() {
+            $('#folderView').fadeOut('slow');
+            $('#fileView').fadeIn('slow');
+          }
+
+          function showFolderView() {
+            $('#fileView').fadeOut('slow');
+            $('#folderView').fadeIn('slow');
+          }
 
           function updateTreeDir(data) {
             optionsTree.data = data.tree;
             TreeDir = data.tree;
             $('#tree').treeview(optionsTree);
+            $('#folderView h2').text('Folder: /');
           }
 
           fileView.setReadOnly(true);
@@ -125,6 +135,7 @@
           $('#tree').treeview(optionsTree);
           $(document).on('click', '.btn-edit-file', function() {
             fileView.setReadOnly(false);
+            $('#fileActions').html(config.renderFileActions());
           });
           $(document).on('click', '.btn-add-folder', function(e) {
             e.preventDefault();
@@ -152,6 +163,31 @@
               $this.closest('.modal').modal('hide');
             });
           });
+          $(document).on('click', '.btn-save-file', function() {
+            $.post('/projects/' + ROOM + '/files', {
+              filePath: navPath,
+              fileContent: fileView.getValue()
+            }).done(function() {
+              $('#fileActions').html(config.renderFileEditAction());
+            });
+          });
+          $(document).on('click', '.btn-cancel-file', function() {
+            $.get('/projects/' + ROOM + '/files', {filePath: navPath})
+              .done(function(data) {
+                fileView.setReadOnly(true);
+                fileView.setValue(data.fileContent);
+                $('#fileActions').html(config.renderFileEditAction());
+              });
+          });
+          $(document).on('click', '.btn-delete-file', function() {
+            $.get('/projects/' + ROOM + '/files', {
+              filePath: navPath,
+              action: 'delete'
+            }).done(function(data) {
+              updateTreeDir(data);
+              showFolderView();
+            });
+          });
           $(document).on('click', '.btn-add-pkg', function() {
             var parent = $(this).parent();
 
@@ -172,6 +208,32 @@
             });
           });
         },
+        renderFileActions: _.template(
+          '<li>' +
+            '<button class="btn btn-xs btn-warning btn-cancel-file">' +
+              '<i class="glyphicon glyphicon-remove"></i>' +
+              '<span>Cancel</span>' +
+            '</button>' +
+          '</li>' +
+          '<li>' +
+            '<button class="btn btn-xs btn-primary btn-save-file">' +
+              '<i class="glyphicon glyphicon-save"></i>' +
+              '<span>Save</span>' +
+            '</button>' +
+          '</li>' +
+          '<li>' +
+            '<button class="btn btn-xs btn-danger btn-delete-file">' +
+              '<i class="glyphicon glyphicon-trash"></i>' +
+              '<span>Delete</span>' +
+            '</button>' +
+          '</li>'
+        ),
+        renderFileEditAction: _.template(
+          '<li><button class="btn btn-xs btn-primary btn-edit-file">' +
+            '<i class="glyphicon glyphicon-edit"></i>' +
+            '<span>Edit</span>' +
+          '</button></li>'
+        ),
         renderLogs: _.template(
           '<% _.forEach(data.logs, function(log) { %>' +
             '<%= log %><br/>' +

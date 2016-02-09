@@ -6,26 +6,30 @@ block content
     TreeDir= !{JSON.stringify(tree)};
 
   #appView.row.row-height.position-full.no-margin-side
-    .col-sm-3.no-gutter-right.bordered
-      #tree.position-full
-    #contentPrimary.col-sm-9
-      .row
-        .col-sm-12
+    #contentLeft
+      #tree.position-full.bordered
+    #contentPrimary
+      #rowHeader
           h1.title-app= capitalize(infos.name)
           a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") Delete 
-      #rowPrimary.row.row-height
-        #view.col-sm-8
+      #rowPrimary
+        #view
           #fileView(style="display:none;").position-full.bordered
             #editor.position-full
             ul#fileActions.list-inline
-              li: button.btn.btn-xs.btn-primary.btn-edit-file Edit
-              li: button.btn.btn-xs.btn-primary.btn-delete-file Delete
+
           #folderView
             h2 Folder: /
-            ul#folderActions.list-inline
-              li: button.btn.btn-link(data-toggle="modal", data-target="#modalNewFolder") New folder
-              li: button.btn.btn-link(data-toggle="modal", data-target="#modalNewFile") New file
-              li: button.btn.btn-link.btn-delete-folder Delete folder
+            ul#folderActions.list-inline.text-center
+              li: button.btn.btn-lg.btn-link(data-toggle="modal", data-target="#modalNewFolder")
+                i.glyphicon.glyphicon-folder-close 
+                span New folder
+              li: button.btn.btn-lg.btn-link(data-toggle="modal", data-target="#modalNewFile")
+                i.glyphicon.glyphicon-file
+                span New file
+              li: button.btn.btn-lg.btn-link.btn-delete-folder
+                i.glyphicon.glyphicon-folder-close
+                span Delete folder
             
             #modalNewFolder.modal.fade
               .modal-dialog
@@ -55,8 +59,9 @@ block content
                       .form-group
                         button.btn.btn-primary.btn-add-file Create
                   
-        #config.col-sm-4.no-gutter.bordered
+        #config.bordered
           include ./config.jade
-      #logs.well
+      #rowfooter
+        #logs.well
                   
     

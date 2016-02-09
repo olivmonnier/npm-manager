@@ -74,12 +74,21 @@ module.exports = function(projectName, io) {
         href: '#/',
         icon: 'glyphicon glyphicon-folder-close',
         selectedIcon: 'glyphicon glyphicon-folder-open',
+        state: {
+          selected: true
+        },
         nodes: formatTreeview(dirTreeHash)
       }];
     },
     file: {
       new: function(filePath) {
         fs.writeFileSync(path.join(cmdPath + filePath), '', 'utf8');
+      },
+      edit: function(filePath, fileContent) {
+        fs.writeFileSync(path.join(cmdPath + filePath), fileContent, 'utf8');
+      },
+      delete: function(filePath) {
+        rimraf.sync(path.join(path.join(cmdPath + filePath)));
       },
       content: function(filePath) {
         return fs.readFileSync(path.join(cmdPath + filePath), 'utf8');

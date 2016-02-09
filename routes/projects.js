@@ -91,6 +91,10 @@ module.exports = function(io) {
         project.file.new(filePath);
 
         return res.status(200).json({ tree: project.tree() }).end();
+      } else if (action == 'delete') {
+        project.file.delete(filePath);
+
+        return res.status(200).json({ tree: project.tree() }).end();
       } else {
         return res.status(200)
           .json({
@@ -99,6 +103,13 @@ module.exports = function(io) {
           })
           .end();
       }
+    })
+    .post(function(req, res) {
+      var filePath = req.body.filePath;
+      var fileContent = req.body.fileContent;
+
+      Project(req.params.name).file.edit(filePath, fileContent);
+      return res.status(200).end();
     });
 
   router.route('/:name/folders')

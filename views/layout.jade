@@ -9,10 +9,11 @@ html(lang="en")
       window.ROOM = '';
       window.TreeDir = {};
   body
-    .container
-      ul.nav.nav-pills
-        li: a(href="/projects") Projects
-        li: a(href="/projects/new") New
+    .navbar.navbar-default
+      .container
+        ul.nav.nav-pills
+          li: a(href="/projects") Projects
+          li: a(href="/projects/new") New
     block content
       
     script(src="/vendor.js")
