@@ -5837,7 +5837,20 @@ i + span {
   margin-left: 8px; }
 
 #appView {
-  top: 40px; }
+  top: 40px;
+  position: relative; }
+  #appView #contentAppShow {
+    position: absolute;
+    top: 0;
+    bottom: 999px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #ddd; }
+    #appView #contentAppShow iframe {
+      width: 100%;
+      height: 100%;
+      background-color: #fff; }
   #appView #contentLeft {
     position: relative;
     width: 15%; }
@@ -5850,8 +5863,7 @@ i + span {
     width: 85%; }
     #appView #contentPrimary #rowPrimary {
       height: calc(80%);
-      margin-bottom: 20px;
-      margin-left: 15px; }
+      margin-bottom: 15px; }
       #appView #contentPrimary #rowPrimary > * {
         display: inline-block;
         height: 100%;
@@ -5868,7 +5880,8 @@ i + span {
             z-index: 1; }
         #appView #contentPrimary #rowPrimary #view #folderView {
           position: relative;
-          height: 100%; }
+          height: 100%;
+          margin-left: 15px; }
           #appView #contentPrimary #rowPrimary #view #folderView #folderActions {
             position: absolute;
             top: 50%;
@@ -5881,7 +5894,7 @@ i + span {
         #appView #contentPrimary #rowPrimary #config #accordion {
           margin-bottom: 0; }
     #appView #contentPrimary #rowfooter {
-      height: calc(20% - 20px); }
+      height: calc(20% - 15px); }
       #appView #contentPrimary #rowfooter #logs {
         height: 100%;
         margin: 0;
@@ -5897,6 +5910,9 @@ i + span {
 
 .breadcrumb {
   margin-top: 20px; }
+
+.btn + .btn {
+  margin-left: 4px; }
 
 .title-app {
   display: inline-block;

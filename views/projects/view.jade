@@ -4,7 +4,13 @@ block title
   h1.title-app= capitalize(infos.name)
 
 block actions
-  a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") Delete 
+  if infos.urlLocal
+    a.btn.btn-xs.btn-primary.btn-show-app(href=infos.urlLocal)
+      i.glyphicon.glyphicon-eye-open 
+      span Show
+  a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") 
+    i.glyphicon.glyphicon-trash
+    span Delete
 
 block content
   script. 
@@ -12,6 +18,8 @@ block content
     TreeDir= !{JSON.stringify(tree)};
 
   #appView.row.row-height.position-full.no-margin-side
+    if infos.urlLocal
+      #contentAppShow.hide
     #contentLeft
       #tree.position-full.bordered
     #contentPrimary
@@ -25,13 +33,16 @@ block content
             .breadcrumb
             ul#folderActions.list-inline.text-center
               li: button.btn.btn-lg.btn-link(data-toggle="modal", data-target="#modalNewFolder")
-                i.glyphicon.glyphicon-folder-close 
+                i.glyphicon.glyphicon-plus 
                 span New folder
               li: button.btn.btn-lg.btn-link(data-toggle="modal", data-target="#modalNewFile")
                 i.glyphicon.glyphicon-file
                 span New file
+              li: button.btn.btn-lg.btn-link(data-toggle="modal", data-target="#modalRenameFolder")
+                i.glyphicon.glyphicon-pencil
+                span Rename folder
               li: button.btn.btn-lg.btn-link.btn-delete-folder
-                i.glyphicon.glyphicon-folder-close
+                i.glyphicon.glyphicon-trash
                 span Delete folder
             
             #modalNewFolder.modal.fade
@@ -61,6 +72,20 @@ block content
                         input.form-control.input-lg(type="text", name="fileName")
                       .form-group
                         button.btn.btn-primary.btn-add-file Create
+                        
+            #modalRenameFolder.modal.fade
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    button.close(data-dismiss="modal"): span(aria-hidden="true") &times;
+                    h4 Rename folder
+                  .modal-body
+                    form
+                      .form-group
+                        label Folder name
+                        input.form-control.input-lg(type="text", name="folderName")
+                      .form-group
+                        button.btn.btn-primary.btn-rename-folder Rename
                   
         #config.bordered
           include ./config.jade

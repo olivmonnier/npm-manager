@@ -113,6 +113,7 @@ module.exports = function(io) {
       var fileContent = req.body.fileContent;
 
       Project(req.params.name).file.edit(filePath, fileContent);
+
       return res.status(200).end();
     });
 
@@ -128,6 +129,14 @@ module.exports = function(io) {
         return res.status(200).json({ tree: project.tree() }).end();
       } else if(action == 'delete') {
         project.folder.delete(folderPath);
+
+        return res.status(200).json({ tree: project.tree() }).end();
+      } else if(action == 'rename') {
+        var projectPath = 'projects/' + req.params.name;
+        var folderPath = projectPath + '/' + req.query.folderPath;
+        var path = folderPath.slice(0, folderPath.lastIndexOf('/'));
+
+        project.folder.rename(folderPath, path + '/' + req.query.folderName);
 
         return res.status(200).json({ tree: project.tree() }).end();
       } else {

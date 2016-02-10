@@ -115,7 +115,7 @@ module.exports = function(projectName, io) {
         rimraf.sync(path.join(path.join(cmdPath + folderPath)));
       },
       rename: function(oldPath, newPath) {
-        fs.renameSync(oldPath, newPath);
+        fs.renameSync(path.join(oldPath), path.join(newPath));
       }
     }
   }

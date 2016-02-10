@@ -28,9 +28,9 @@
       },
       config: {
         init: function() {
+          window.NavPath = '';
           var config = this;
           var fileView = ace.edit('editor');
-          var navPath = '';
           var optionsTree = {
             data: TreeDir,
             showBorder: false,
@@ -38,21 +38,21 @@
             expandIcon: 'glyphicon glyphicon-triangle-right',
             enableLinks: true,
             onNodeSelected: function(event, data) {
-              navPath = '/' + data.href.slice(2).replace(/\\/g, '/');
+              NavPath = '/' + data.href.slice(2).replace(/\\/g, '/');
 
               if(!data.nodes) {
 
-                $.get('/projects/' + ROOM + '/files', {filePath: navPath})
+                $.get('/projects/' + ROOM + '/files', {filePath: NavPath})
                   .done(function(data) {
                     fileView.setValue(data.fileContent, -1);
                     fileView.session.setMode('ace/mode/' + data.extension);
                     fileView.setReadOnly(true);
-                    $('#fileActions').html(config.renderFileEditAction());
+                    $('#fileActions').html(File().renderFileEditAction());
                     showFileView();
                   });
               } else {
                 $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
-                  data: {files: formatNavPath(navPath)}
+                  data: {files: formatNavPath(NavPath)}
                 }));
                 showFolderView();
               }
@@ -82,7 +82,7 @@
             TreeDir = data.tree;
             $('#tree').treeview(optionsTree);
             $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
-              data: {files: formatNavPath(navPath)}
+              data: {files: formatNavPath(NavPath)}
             }));
           }
 
@@ -149,11 +149,19 @@
           });
           $('#tree').treeview(optionsTree);
           $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
-            data: {files: formatNavPath(navPath)}
+            data: {files: formatNavPath(NavPath)}
           }));
-          $(document).on('click', '.btn-edit-file', function() {
-            fileView.setReadOnly(false);
-            $('#fileActions').html(config.renderFileActions());
+          File().events(fileView);
+          $(document).on('click', '.btn-show-app', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            
+            $('#contentAppShow').removeClass('hide').animate({bottom: 0}, 1000, function() {
+              $(this).html(_.template(
+                '<iframe src="<%= data.url %>"></iframe>'
+              )({data: {url: url}}));
+            });
+
           });
           $(document).on('click', '.btn-add-folder', function(e) {
             e.preventDefault();
@@ -161,49 +169,11 @@
             var folderName = $(this).closest('form').find('input[name="folderName"]').val();
 
             $.get('/projects/' + ROOM + '/folders', {
-              folderPath: navPath + '/' + folderName,
+              folderPath: NavPath + '/' + folderName,
               action: 'add'
             }).done(function(data) {
               updateTreeDir(data);
               $this.closest('.modal').modal('hide');
-            });
-          });
-          $(document).on('click', '.btn-add-file', function(e) {
-            e.preventDefault();
-            var $this = $(this);
-            var fileName = $(this).closest('form').find('input[name="fileName"]').val();
-
-            $.get('/projects/' + ROOM + '/files', {
-              filePath: navPath + '/' + fileName,
-              action: 'add'
-            }).done(function(data) {
-              updateTreeDir(data);
-              $this.closest('.modal').modal('hide');
-            });
-          });
-          $(document).on('click', '.btn-save-file', function() {
-            $.post('/projects/' + ROOM + '/files', {
-              filePath: navPath,
-              fileContent: fileView.getValue()
-            }).done(function() {
-              $('#fileActions').html(config.renderFileEditAction());
-            });
-          });
-          $(document).on('click', '.btn-cancel-file', function() {
-            $.get('/projects/' + ROOM + '/files', {filePath: navPath})
-              .done(function(data) {
-                fileView.setReadOnly(true);
-                fileView.setValue(data.fileContent);
-                $('#fileActions').html(config.renderFileEditAction());
-              });
-          });
-          $(document).on('click', '.btn-delete-file', function() {
-            $.get('/projects/' + ROOM + '/files', {
-              filePath: navPath,
-              action: 'delete'
-            }).done(function(data) {
-              updateTreeDir(data);
-              showFolderView();
             });
           });
           $(document).on('click', '.btn-add-pkg', function() {
@@ -216,11 +186,28 @@
               env: parent.find('[name=env]').val()
             });
           });
+          $(document).on('click', '.btn-rename-folder', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var folderName = $(this).closest('form').find('input[name="folderName"]').val();
+
+            $.get('/projects/' + ROOM + '/folders', {
+              action: 'rename',
+              folderPath: NavPath,
+              folderName: folderName
+            }).done(function(data) {
+              NavPath = '';
+              updateTreeDir(data);
+              $('#tree').treeview('selectNode', [0, { silent: false }]);
+              $this.closest('.modal').modal('hide');
+            });
+          });
           $(document).on('click', '.btn-delete-folder', function() {
             $.get('/projects/' + ROOM + '/folders', {
               action: 'delete',
-              folderPath: navPath
+              folderPath: NavPath
             }).done(function(data) {
+              NavPath = '';
               updateTreeDir(data);
               $('#tree').treeview('selectNode', [0, { silent: false }]);
             });
@@ -230,32 +217,6 @@
           '<% _.forEach(data.files, function(file) { %>' +
             '<li><%= file %></li>' +
           '<% }); %>'
-        ),
-        renderFileActions: _.template(
-          '<li>' +
-            '<button class="btn btn-xs btn-warning btn-cancel-file">' +
-              '<i class="glyphicon glyphicon-remove"></i>' +
-              '<span>Cancel</span>' +
-            '</button>' +
-          '</li>' +
-          '<li>' +
-            '<button class="btn btn-xs btn-primary btn-save-file">' +
-              '<i class="glyphicon glyphicon-save"></i>' +
-              '<span>Save</span>' +
-            '</button>' +
-          '</li>' +
-          '<li>' +
-            '<button class="btn btn-xs btn-danger btn-delete-file">' +
-              '<i class="glyphicon glyphicon-trash"></i>' +
-              '<span>Delete</span>' +
-            '</button>' +
-          '</li>'
-        ),
-        renderFileEditAction: _.template(
-          '<li><button class="btn btn-xs btn-primary btn-edit-file">' +
-            '<i class="glyphicon glyphicon-edit"></i>' +
-            '<span>Edit</span>' +
-          '</button></li>'
         ),
         renderLogs: _.template(
           '<% _.forEach(data.logs, function(log) { %>' +

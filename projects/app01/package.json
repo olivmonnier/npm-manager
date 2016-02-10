@@ -8,6 +8,7 @@
   },
   "author": "",
   "license": "ISC",
+  "urlLocal": "http://localhost:4000/",
   "devDependencies": {
     "lodash": "^4.0.0"
   },
