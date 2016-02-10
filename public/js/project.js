@@ -155,13 +155,17 @@
           $(document).on('click', '.btn-show-app', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            
+
             $('#contentAppShow').removeClass('hide').animate({bottom: 0}, 1000, function() {
-              $(this).html(_.template(
+              $(this).append(_.template(
                 '<iframe src="<%= data.url %>"></iframe>'
               )({data: {url: url}}));
             });
-
+          });
+          $(document).on('click', '.btn-notshow-app', function(e) {
+            $('#contentAppShow').animate({bottom: '999px'}, 1000, function() {
+              $(this).addClass('hide').find('iframe').remove();
+            });
           });
           $(document).on('click', '.btn-add-folder', function(e) {
             e.preventDefault();

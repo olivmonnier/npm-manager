@@ -32,6 +32,12 @@ i + span {
       height: 100%;
       background-color: #fff;
     }
+
+    .btn-notshow-app {
+      position:absolute;
+      top: 0;
+      right: 0;
+    }
   }
   #contentLeft {
     position: relative;
@@ -103,6 +109,8 @@ i + span {
         margin: 0;
         overflow: scroll;
         overflow-x:hidden;
+        background-color: #000;
+        color: #fff;
       }
     }
   }
