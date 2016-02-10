@@ -1,9 +1,10 @@
 extends ../layout
 
+block title
+  h1.title-app New Project
+  
 block content
   .container
-    .page-header
-      h1 New Project
     form(method="POST" action="/projects/new")
       .form-group
         label Name

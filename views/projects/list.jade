@@ -1,9 +1,10 @@
 extends ../layout
 
+block title
+  h1.title-app Projects
+  
 block content
-  .container
-    .page-header
-      h1 Projects
+  .container    
     ul#project-list.list-group
       each project in projects
         li.list-group-item

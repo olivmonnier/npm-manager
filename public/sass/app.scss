@@ -22,19 +22,19 @@ i + span {
     width: 15%;
 
     #tree {
-      overflow-y: scroll;
+      overflow: scroll;
+
+      .node-tree {
+        white-space: nowrap;
+      }
     }
   }
   #contentPrimary {
     height: 100%;
     width: 85%;
 
-    #rowHeader {
-      height: 50px;
-      margin-left: 15px;
-    }
     #rowPrimary {
-      height: calc(80% - 50px);
+      height: calc(80%);
       margin-bottom: 20px;
       margin-left: 15px;
 
@@ -45,7 +45,7 @@ i + span {
       }
       #view {
         position: relative;
-        width: 80%;
+        width: 70%;
 
         #fileView {
           overflow: auto;
@@ -57,9 +57,20 @@ i + span {
             z-index: 1;
           }
         }
+        #folderView {
+          position: relative;
+          height: 100%;
+
+          #folderActions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
       }
       #config {
-        width: calc(20% - 15px);
+        width: calc(30% - 15px);
         margin-left: 15px;
         overflow: auto;
 
@@ -89,6 +100,9 @@ i + span {
 }
 .navbar {
   min-height: 40px;
+}
+.breadcrumb {
+  margin-top: 20px;
 }
 .title-app {
   display: inline-block;
@@ -152,4 +166,23 @@ i + span {
   display: -webkit-flex;
   display: -ms-flexbox;
   display:         flex;
+}
+.primary-title {
+  h1 {
+    font-size: 18px;
+  }
+}
+.page-actions {
+  padding-top: 8px;
+}
+.flexbox {
+  display: flex;
+
+  &.space-around {
+    justify-content: space-around;
+
+    .item {
+      flex: auto;
+    }
+  }
 }

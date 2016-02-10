@@ -51,11 +51,21 @@
                     showFileView();
                   });
               } else {
-                $('#folderView h2').text('Folder: ' + navPath);
+                $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
+                  data: {files: formatNavPath(navPath)}
+                }));
                 showFolderView();
               }
             }
           };
+
+          function formatNavPath(path) {
+            var formatPath = path.slice(1).split('/');
+
+            (formatPath[0]) ? formatPath.unshift(ROOM) : formatPath = [ROOM];
+
+            return formatPath;
+          }
 
           function showFileView() {
             $('#folderView').fadeOut('slow');
@@ -71,7 +81,9 @@
             optionsTree.data = data.tree;
             TreeDir = data.tree;
             $('#tree').treeview(optionsTree);
-            $('#folderView h2').text('Folder: /');
+            $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
+              data: {files: formatNavPath(navPath)}
+            }));
           }
 
           fileView.setReadOnly(true);
@@ -94,6 +106,9 @@
                 data: {processes: data[roomIndex].processes}
               }));
             }
+          })
+          .on('redirect', function(data) {
+            document.location.href = data;
           })
           .on('config', function(data) {
               $('textarea[name=configFile]').html(JSON.stringify(data, null, 2));
@@ -133,6 +148,9 @@
             }));
           });
           $('#tree').treeview(optionsTree);
+          $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
+            data: {files: formatNavPath(navPath)}
+          }));
           $(document).on('click', '.btn-edit-file', function() {
             fileView.setReadOnly(false);
             $('#fileActions').html(config.renderFileActions());
@@ -208,6 +226,11 @@
             });
           });
         },
+        renderBreadcrumbs: _.template(
+          '<% _.forEach(data.files, function(file) { %>' +
+            '<li><%= file %></li>' +
+          '<% }); %>'
+        ),
         renderFileActions: _.template(
           '<li>' +
             '<button class="btn btn-xs btn-warning btn-cancel-file">' +

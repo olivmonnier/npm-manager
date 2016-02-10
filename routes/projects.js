@@ -41,9 +41,13 @@ module.exports = function(io) {
       });
     })
     .post(function(req, res) {
-      Project(req.params.name, io).update(req.body);
-      Pkg(req.params.name, io).install();
-      Pkg(req.params.name, io).packages();
+      var project = Project(req.params.name, io);
+      var config = JSON.parse(req.body.configFile) || '';
+
+      project.update(req.body);
+
+      Pkg((config) ? config.name : req.params.name, io).install();
+      Pkg((config) ? config.name : req.params.name, io).packages();
 
       return res.status(200).end();
     });

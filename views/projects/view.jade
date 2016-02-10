@@ -1,5 +1,11 @@
 extends ../layout
 
+block title
+  h1.title-app= capitalize(infos.name)
+
+block actions
+  a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") Delete 
+
 block content
   script. 
     ROOM = "#{infos.name}";
@@ -9,9 +15,6 @@ block content
     #contentLeft
       #tree.position-full.bordered
     #contentPrimary
-      #rowHeader
-          h1.title-app= capitalize(infos.name)
-          a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") Delete 
       #rowPrimary
         #view
           #fileView(style="display:none;").position-full.bordered
@@ -19,7 +22,7 @@ block content
             ul#fileActions.list-inline
 
           #folderView
-            h2 Folder: /
+            .breadcrumb
             ul#folderActions.list-inline.text-center
               li: button.btn.btn-lg.btn-link(data-toggle="modal", data-target="#modalNewFolder")
                 i.glyphicon.glyphicon-folder-close 

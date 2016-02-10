@@ -10,10 +10,15 @@ html(lang="en")
       window.TreeDir = {};
   body
     .navbar.navbar-default
-      .container
-        ul.nav.nav-pills
+      .flexbox.space-around.container
+        ul.nav.nav-pills.item
           li: a(href="/projects") Projects
           li: a(href="/projects/new") New
+        .primary-title.item
+          block title
+        .page-actions.item
+          block actions
+          
     block content
       
     script(src="/vendor.js")

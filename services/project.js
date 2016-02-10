@@ -3,6 +3,7 @@ var path = require('path');
 var rimraf = require('rimraf');
 var dirTree = require('directory-tree');
 var junk = require('junk');
+var _ = require('lodash');
 var formatFile = require('./formatFile');
 
 function packageContent(args) {
@@ -59,12 +60,21 @@ module.exports = function(projectName, io) {
 
         fs.writeFileSync(path.join(cmdPath +'/package.json'), config.configFile, 'utf8');
         rimraf.sync(path.join(cmdPath + '/node_modules'));
+        this.folder.rename(path.join(cmdPath), path.join('projects/' + datas.name));
 
-        io.to(projectName).emit('scripts', Object.keys(datas.scripts));
+        ROOMS = _.remove(ROOMS, function(room) {
+          return room.name != projectName;
+        });
+        ROOMS.push({ name: datas.name, logs: [], processes: [] });
+
+        io.to(projectName).emit('redirect', '/projects/' + datas.name);
       }
     },
     delete: function() {
       rimraf.sync(path.join(cmdPath));
+      ROOMS = _.remove(ROOMS, function(room) {
+        return room.name != projectName;
+      });
     },
     tree: function() {
       var dirTreeHash = dirTree.directoryTree(cmdPath);
@@ -103,6 +113,9 @@ module.exports = function(projectName, io) {
       },
       delete: function(folderPath) {
         rimraf.sync(path.join(path.join(cmdPath + folderPath)));
+      },
+      rename: function(oldPath, newPath) {
+        fs.renameSync(oldPath, newPath);
       }
     }
   }
