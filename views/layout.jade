@@ -4,27 +4,25 @@ html(lang="en")
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width')
     title= title
-    link(rel="stylesheet", href="/style.css")
+    link(rel="stylesheet", href="/dist/style.css")
     script.      
       window.ROOM = '';
       window.TreeDir = {};
   body
     .navbar.navbar-default
       .flexbox.space-around.container
-        ul.nav.nav-pills.item
+        ul.nav.nav-pills.item.text-left
           li: a(href="/projects") Projects
           li: a(href="/projects/new") New
-        .primary-title.item
+        .primary-title.item.text-center
           block title
-        .page-actions.item
+        .page-actions.item.text-right
           block actions
           
     block content
       
-    script(src="/vendor.js")
+    script(src="/vendor/build.js")
     script(src="/socket.io/socket.io.js")
-    script(src="/js/ace/ace.js")
-    script(src="/js/ace/ext-language_tools.js")
-    script(src="/js/file.js")
-    script(src="/js/project.js")
-    script(src="/js/app.js")
+    script(src="/vendor/ace/ace.js")
+    script(src="/vendor/ace/ext-language_tools.js")
+    script(src="/dist/build.js")
