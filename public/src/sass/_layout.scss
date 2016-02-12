@@ -1,0 +1,191 @@
+#appView {
+  top: 40px;
+  position: relative;
+
+  #contentAppShow {
+    position: absolute;
+    top: 0;
+    bottom: 999px;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background-color: #ddd;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+    }
+
+    .btn-notshow-app {
+      position:absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+  #contentLeft {
+    position: relative;
+    width: 15%;
+    background-color: #336E7B;
+
+    #tree {
+      overflow: scroll;
+
+      .node-tree {
+        white-space: nowrap;
+      }
+      .list-group-item {
+        background-color: transparent;
+        color: #22313F;
+      }
+    }
+  }
+  #contentPrimary {
+    height: 100%;
+    width: 85%;
+
+    #rowPrimary {
+      height: calc(80%);
+      margin-bottom: 15px;
+
+      & > * {
+        display: inline-block;
+        height: 100%;
+        vertical-align: top;
+      }
+      #view {
+        position: relative;
+        width: 70%;
+
+        #fileView {
+          overflow: auto;
+
+          #fileActions {
+            position: absolute;
+            top: 0;
+            right: 12px;
+            z-index: 1;
+          }
+        }
+        #folderView {
+          position: relative;
+          height: 100%;
+          margin-left: 15px;
+
+          #folderActions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+      #config {
+        width: calc(30% - 15px);
+        margin-left: 15px;
+        overflow: auto;
+
+        #accordion {
+          margin-bottom: 0;
+        }
+      }
+    }
+    #rowfooter {
+      height: calc(20% - 15px);
+
+      #logs {
+        height: 100%;
+        margin: 0;
+        overflow: scroll;
+        overflow-x:hidden;
+        background-color: #000;
+        border: none;
+        color: #fff;
+      }
+    }
+  }
+}
+#project-list .list-group-item {
+  .list-inline {
+    display: inline;
+    margin-left: 15px;
+  }
+}
+.form-inline input.form-control + .btn {
+  @media (min-width: $screen-xs-max) {
+    margin-left: 4px;
+  }
+}
+body {
+  background-color: #22313F;
+  color: #22313F;
+}
+label {
+  color: #C5EFF7;
+}
+.breadcrumb {
+  background-color: #34495E;
+  color: #fff;
+}
+.btn + .btn {
+  margin-left: 4px;
+}
+.panel {
+  background-color: #336E7B;
+  border: none;
+}
+.panel-default > .panel-heading {
+  background-color: #34495E;
+  border: none;
+  color: #fff;
+
+  & + .panel-collapse > .panel-body {
+    border-top-color: transparent;
+
+    &, & label { color: #22313F; }
+    
+    .btn-link {
+      &, &:hover, &:focus, &:visited {
+        color: #22313F;
+      }
+    }
+  }
+}
+.list-group-item, .form-control {
+  background-color: #C5EFF7;
+}
+.title-app {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 15px;
+
+  &::first-letter { text-transform: uppercase; }
+}
+.treeview span.icon {
+  font-size: 80%;
+}
+
+.primary-title {
+  h1 {
+    font-size: 18px;
+  }
+}
+.page-actions {
+  padding-top: 8px;
+}
+.navbar-default {
+  background-color: #2C3E50;
+  border: 1px solid #2C3E50;
+  border-radius: 0;
+
+  .nav > li > a {
+    color: #fff;
+
+    &:hover {
+      background-color: transparent;
+      opacity: .5;
+    }
+  }
+}

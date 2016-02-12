@@ -5836,6 +5836,60 @@ h3 {
 i + span {
   margin-left: 8px; }
 
+.flexbox {
+  display: flex; }
+  .flexbox.space-around {
+    justify-content: space-around; }
+    .flexbox.space-around .item {
+      flex: auto; }
+
+.margin-bottom {
+  margin-bottom: 10px; }
+
+.position-full {
+  position: absolute !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+.no-margin-side {
+  margin-left: 0;
+  margin-right: 0; }
+
+.no-gutter {
+  padding-left: 0;
+  padding-right: 0; }
+
+.no-gutter-left {
+  padding-left: 0; }
+
+.no-gutter-right {
+  padding-right: 0; }
+
+.bordered {
+  border: 1px solid #ddd;
+  border-radius: 4px; }
+
+.row-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.navbar {
+  min-height: 40px; }
+
+.breadcrumb {
+  margin-top: 20px; }
+
+.pkg-list .list-group-item {
+  padding-top: 15px;
+  padding-bottom: 15px; }
+
+.pkg-list .btn {
+  margin-top: -7px; }
+
 #appView {
   top: 40px;
   position: relative; }
@@ -5857,11 +5911,15 @@ i + span {
       right: 0; }
   #appView #contentLeft {
     position: relative;
-    width: 15%; }
+    width: 15%;
+    background-color: #336E7B; }
     #appView #contentLeft #tree {
       overflow: scroll; }
       #appView #contentLeft #tree .node-tree {
         white-space: nowrap; }
+      #appView #contentLeft #tree .list-group-item {
+        background-color: transparent;
+        color: #22313F; }
   #appView #contentPrimary {
     height: 100%;
     width: 85%; }
@@ -5905,20 +5963,48 @@ i + span {
         overflow: scroll;
         overflow-x: hidden;
         background-color: #000;
+        border: none;
         color: #fff; }
+
+#project-list .list-group-item .list-inline {
+  display: inline;
+  margin-left: 15px; }
 
 @media (min-width: 767px) {
   .form-inline input.form-control + .btn {
     margin-left: 4px; } }
 
-.navbar {
-  min-height: 40px; }
+body {
+  background-color: #22313F;
+  color: #22313F; }
+
+label {
+  color: #C5EFF7; }
 
 .breadcrumb {
-  margin-top: 20px; }
+  background-color: #34495E;
+  color: #fff; }
 
 .btn + .btn {
   margin-left: 4px; }
+
+.panel {
+  background-color: #336E7B;
+  border: none; }
+
+.panel-default > .panel-heading {
+  background-color: #34495E;
+  border: none;
+  color: #fff; }
+  .panel-default > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: transparent; }
+    .panel-default > .panel-heading + .panel-collapse > .panel-body, .panel-default > .panel-heading + .panel-collapse > .panel-body label {
+      color: #22313F; }
+    .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:hover, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:focus, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:visited {
+      color: #22313F; }
+
+.list-group-item, .form-control {
+  background-color: #C5EFF7; }
 
 .title-app {
   display: inline-block;
@@ -5929,53 +6015,8 @@ i + span {
   .title-app::first-letter {
     text-transform: uppercase; }
 
-.pkg-list .list-group-item {
-  padding-top: 15px;
-  padding-bottom: 15px; }
-
-.pkg-list .btn {
-  margin-top: -7px; }
-
-#project-list .list-group-item .list-inline {
-  display: inline;
-  margin-left: 15px; }
-
 .treeview span.icon {
   font-size: 80%; }
-
-.margin-bottom {
-  margin-bottom: 10px; }
-
-.position-full {
-  position: absolute !important;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0; }
-
-.no-margin-side {
-  margin-left: 0;
-  margin-right: 0; }
-
-.no-gutter {
-  padding-left: 0;
-  padding-right: 0; }
-
-.no-gutter-left {
-  padding-left: 0; }
-
-.no-gutter-right {
-  padding-right: 0; }
-
-.bordered {
-  border: 1px solid #ddd;
-  border-radius: 4px; }
-
-.row-height {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex; }
 
 .primary-title h1 {
   font-size: 18px; }
@@ -5983,12 +6024,12 @@ i + span {
 .page-actions {
   padding-top: 8px; }
 
-.flexbox {
-  display: flex; }
-  .flexbox.space-around {
-    justify-content: space-around; }
-    .flexbox.space-around .item {
-      flex: auto; }
-
-.test {
-  font-size: 0; }
+.navbar-default {
+  background-color: #2C3E50;
+  border: 1px solid #2C3E50;
+  border-radius: 0; }
+  .navbar-default .nav > li > a {
+    color: #fff; }
+    .navbar-default .nav > li > a:hover {
+      background-color: transparent;
+      opacity: .5; }

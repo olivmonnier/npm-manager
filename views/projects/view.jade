@@ -22,11 +22,11 @@ block content
       #contentAppShow.hide
         button.btn.btn-lg.btn-link.btn-notshow-app: i.glyphicon.glyphicon-eye-close
     #contentLeft
-      #tree.position-full.bordered
+      #tree.position-full
     #contentPrimary
       #rowPrimary
         #view
-          #fileView(style="display:none;").position-full.bordered
+          #fileView(style="display:none;").position-full
             #editor.position-full
             ul#fileActions.list-inline
 
@@ -88,7 +88,7 @@ block content
                       .form-group
                         button.btn.btn-primary.btn-rename-folder Rename
                   
-        #config.bordered
+        #config
           include ./config.jade
       #rowfooter
         #logs.well
