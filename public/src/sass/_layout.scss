@@ -130,6 +130,7 @@ label {
 .btn + .btn {
   margin-left: 4px;
 }
+.modal label { color: #22313F; }
 .panel {
   background-color: #336E7B;
   border: none;
@@ -192,4 +193,6 @@ label {
       opacity: .5;
     }
   }
+
+  .title-app { color: #fff; }
 }

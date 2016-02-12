@@ -7,19 +7,6 @@ module.exports = function() {
         fileView.setReadOnly(false);
         $('#fileActions').html(file.renderFileActions());
       });
-      $(document).on('click', '.btn-add-file', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var fileName = $(this).closest('form').find('input[name="fileName"]').val();
-
-        $.get('/projects/' + ROOM + '/files', {
-          filePath: NavPath + '/' + fileName,
-          action: 'add'
-        }).done(function(data) {
-          updateTreeDir(data);
-          $this.closest('.modal').modal('hide');
-        });
-      });
       $(document).on('click', '.btn-save-file', function() {
         $.post('/projects/' + ROOM + '/files', {
           filePath: NavPath,
@@ -32,19 +19,10 @@ module.exports = function() {
         $.get('/projects/' + ROOM + '/files', {filePath: NavPath})
         .done(function(data) {
           fileView.setReadOnly(true);
-          fileView.setValue(data.fileContent);
+          fileView.setValue(data.fileContent, -1);
           $('#fileActions').html(file.renderFileEditAction());
         });
-      });
-      $(document).on('click', '.btn-delete-file', function() {
-        $.get('/projects/' + ROOM + '/files', {
-          filePath: NavPath,
-          action: 'delete'
-        }).done(function(data) {
-          updateTreeDir(data);
-          showFolderView();
-        });
-      });
+      });    
     },
     renderFileActions: _.template(
       '<li>' +

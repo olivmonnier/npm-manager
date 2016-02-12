@@ -5988,6 +5988,9 @@ label {
 .btn + .btn {
   margin-left: 4px; }
 
+.modal label {
+  color: #22313F; }
+
 .panel {
   background-color: #336E7B;
   border: none; }
@@ -6034,3 +6037,5 @@ label {
     .navbar-default .nav > li > a:hover {
       background-color: transparent;
       opacity: .5; }
+  .navbar-default .title-app {
+    color: #fff; }

@@ -29,7 +29,9 @@ module.exports = function() {
     },
     config: {
       init: function() {
-        window.NavPath = '';
+        window.NavPath = '/';
+        var nodeSelected = 0;
+        var parentNodeSelected = 0;
         var config = this;
         var fileView = ace.edit('editor');
         var optionsTree = {
@@ -40,6 +42,8 @@ module.exports = function() {
           enableLinks: true,
           onNodeSelected: function(event, data) {
             NavPath = '/' + data.href.slice(2).replace(/\\/g, '/');
+            nodeSelected = data.nodeId;
+            parentNodeSelected = $('#tree').treeview('getParent', data.nodeId).nodeId;
 
             if(!data.nodes) {
 
@@ -55,10 +59,16 @@ module.exports = function() {
               $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
                 data: {files: formatNavPath(NavPath)}
               }));
+              folderActionsAuth();
               showFolderView();
             }
           }
         };
+
+        function folderActionsAuth() {
+          $('#folderActions li [data-target="#modalRenameFolder"]')[(NavPath == '/') ? 'addClass' : 'removeClass']('hidden');
+          $('#folderActions li .btn-delete-folder')[(NavPath == '/') ? 'addClass' : 'removeClass']('hidden');
+        }
 
         function formatNavPath(path) {
           var formatPath = path.slice(1).split('/');
@@ -78,10 +88,14 @@ module.exports = function() {
           $('#folderView').fadeIn('slow');
         }
 
-        function updateTreeDir(data) {
+        function updateTreeDir(data, nodeExist) {
+          nodeExist = nodeExist || false;
           optionsTree.data = data.tree;
           TreeDir = data.tree;
           $('#tree').treeview(optionsTree);
+          $('#tree').treeview('revealNode', [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
+          $('#tree').treeview('selectNode', [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
+          $('#tree').treeview('expandNode', [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
           $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
             data: {files: formatNavPath(NavPath)}
           }));
@@ -153,6 +167,7 @@ module.exports = function() {
           data: {files: formatNavPath(NavPath)}
         }));
         File().events(fileView);
+        folderActionsAuth();
         $(document).on('click', '.btn-show-app', function(e) {
           e.preventDefault();
           var url = $(this).attr('href');
@@ -177,7 +192,7 @@ module.exports = function() {
             folderPath: NavPath + '/' + folderName,
             action: 'add'
           }).done(function(data) {
-            updateTreeDir(data);
+            updateTreeDir(data, true);
             $this.closest('.modal').modal('hide');
           });
         });
@@ -202,8 +217,7 @@ module.exports = function() {
             folderName: folderName
           }).done(function(data) {
             NavPath = '';
-            updateTreeDir(data);
-            $('#tree').treeview('selectNode', [0, { silent: false }]);
+            updateTreeDir(data, true);
             $this.closest('.modal').modal('hide');
           });
         });
@@ -213,8 +227,29 @@ module.exports = function() {
             folderPath: NavPath
           }).done(function(data) {
             NavPath = '';
+            updateTreeDir(data, false);
+          });
+        });
+        $(document).on('click', '.btn-add-file', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          var fileName = $(this).closest('form').find('input[name="fileName"]').val();
+
+          $.get('/projects/' + ROOM + '/files', {
+            filePath: NavPath + '/' + fileName,
+            action: 'add'
+          }).done(function(data) {
             updateTreeDir(data);
-            $('#tree').treeview('selectNode', [0, { silent: false }]);
+            $this.closest('.modal').modal('hide');
+          });
+        });
+        $(document).on('click', '.btn-delete-file', function() {
+          $.get('/projects/' + ROOM + '/files', {
+            filePath: NavPath,
+            action: 'delete'
+          }).done(function(data) {
+            updateTreeDir(data, false);
+            showFolderView();
           });
         });
       },
