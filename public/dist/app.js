@@ -45,6 +45,7 @@ module.exports = function() {
           fileContent: fileView.getValue()
         }).done(function() {
           $('#fileActions').html(file.renderFileEditAction());
+          fileView.setReadOnly(true);
         });
       });
       $(document).on('click', '.btn-cancel-file', function() {
@@ -54,7 +55,7 @@ module.exports = function() {
           fileView.setValue(data.fileContent, -1);
           $('#fileActions').html(file.renderFileEditAction());
         });
-      });    
+      });
     },
     renderFileActions: _.template(
       '<li>' +

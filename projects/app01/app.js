@@ -14,6 +14,11 @@ app.locals.capitalize = function(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
+app.route('/')
+    .get(function(req, res) {
+       return res.render('index'); 
+    });
+    
 var server = http.createServer(app);
 
 server.listen(app.get('port'), function() {
