@@ -9829,6 +9829,7 @@ if ( !noGlobal ) {
 
 return jQuery;
 }));
+
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -12192,6 +12193,7 @@ if (typeof jQuery === 'undefined') {
   })
 
 }(jQuery);
+
 /**
  * @license
  * lodash 4.0.1 (Custom Build) <https://lodash.com/>
@@ -26622,6 +26624,7 @@ if (typeof jQuery === 'undefined') {
     root._ = _;
   }
 }.call(this));
+
 /* =========================================================
  * bootstrap-treeview.js v1.2.0
  * =========================================================

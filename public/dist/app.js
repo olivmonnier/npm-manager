@@ -1,3 +1,113 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Project = require('./project');
+
+window.Socket = io.connect();
+
+Socket.on('connect', function(data) {
+  if (ROOM !== null) {
+    Socket.emit('room', ROOM);
+  }
+});
+
+
+$(document).ready(function() {
+  if ($('#accordion').length > 0) Project().config.init();
+  if ($('#project-list').length > 0) Project().list.init();
+
+  $(document).on('click', '.btn-ajax', function(e) {
+    e.preventDefault();
+
+    $.get($(this).attr('href'));
+  });
+  $(document).on('click', '.submit-ajax', function(e) {
+    e.preventDefault();
+
+    var form = $(this).closest('form');
+    var datas = form.serialize();
+
+    $[form.attr('method').toLowerCase()](form.attr('action'), datas);
+  });
+});
+
+},{"./project":3}],2:[function(require,module,exports){
+module.exports = function() {
+  return {
+    events: function(fileView) {
+      var file = this;
+
+      $(document).on('click', '.btn-edit-file', function() {
+        fileView.setReadOnly(false);
+        $('#fileActions').html(file.renderFileActions());
+      });
+      $(document).on('click', '.btn-add-file', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var fileName = $(this).closest('form').find('input[name="fileName"]').val();
+
+        $.get('/projects/' + ROOM + '/files', {
+          filePath: NavPath + '/' + fileName,
+          action: 'add'
+        }).done(function(data) {
+          updateTreeDir(data);
+          $this.closest('.modal').modal('hide');
+        });
+      });
+      $(document).on('click', '.btn-save-file', function() {
+        $.post('/projects/' + ROOM + '/files', {
+          filePath: NavPath,
+          fileContent: fileView.getValue()
+        }).done(function() {
+          $('#fileActions').html(file.renderFileEditAction());
+        });
+      });
+      $(document).on('click', '.btn-cancel-file', function() {
+        $.get('/projects/' + ROOM + '/files', {filePath: NavPath})
+        .done(function(data) {
+          fileView.setReadOnly(true);
+          fileView.setValue(data.fileContent);
+          $('#fileActions').html(file.renderFileEditAction());
+        });
+      });
+      $(document).on('click', '.btn-delete-file', function() {
+        $.get('/projects/' + ROOM + '/files', {
+          filePath: NavPath,
+          action: 'delete'
+        }).done(function(data) {
+          updateTreeDir(data);
+          showFolderView();
+        });
+      });
+    },
+    renderFileActions: _.template(
+      '<li>' +
+      '<button class="btn btn-xs btn-warning btn-cancel-file">' +
+      '<i class="glyphicon glyphicon-remove"></i>' +
+      '<span>Cancel</span>' +
+      '</button>' +
+      '</li>' +
+      '<li>' +
+      '<button class="btn btn-xs btn-primary btn-save-file">' +
+      '<i class="glyphicon glyphicon-save"></i>' +
+      '<span>Save</span>' +
+      '</button>' +
+      '</li>' +
+      '<li>' +
+      '<button class="btn btn-xs btn-danger btn-delete-file">' +
+      '<i class="glyphicon glyphicon-trash"></i>' +
+      '<span>Delete</span>' +
+      '</button>' +
+      '</li>'
+    ),
+    renderFileEditAction: _.template(
+      '<li><button class="btn btn-xs btn-primary btn-edit-file">' +
+      '<i class="glyphicon glyphicon-edit"></i>' +
+      '<span>Edit</span>' +
+      '</button></li>'
+    )
+  }
+}
+
+},{}],3:[function(require,module,exports){
 var File = require('./file');
 
 module.exports = function() {
@@ -262,3 +372,5 @@ module.exports = function() {
     }
   }
 };
+
+},{"./file":2}]},{},[1]);

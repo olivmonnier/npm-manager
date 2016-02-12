@@ -5989,3 +5989,6 @@ i + span {
     justify-content: space-around; }
     .flexbox.space-around .item {
       flex: auto; }
+
+.test {
+  font-size: 0; }

@@ -18,6 +18,7 @@ app.set('view engine', 'jade');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('connect-livereload')());
 
 app.locals.capitalize = function(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -29,6 +30,7 @@ app.use('/projects', projects);
 if ('development' == app.get('env')) {
   app.use(errorHandler());
 }
+
 
 server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
