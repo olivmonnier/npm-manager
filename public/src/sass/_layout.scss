@@ -137,13 +137,17 @@ label {
 .panel-default > .panel-heading {
   background-color: #34495E;
   border: none;
-  color: #fff;
+  a {
+    &, &:hover, &:focus, &:visited {
+      color: #337ab7;
+    }
+  }
 
   & + .panel-collapse > .panel-body {
     border-top-color: transparent;
 
     &, & label { color: #22313F; }
-    
+
     .btn-link {
       &, &:hover, &:focus, &:visited {
         color: #22313F;

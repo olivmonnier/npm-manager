@@ -5994,8 +5994,9 @@ label {
 
 .panel-default > .panel-heading {
   background-color: #34495E;
-  border: none;
-  color: #fff; }
+  border: none; }
+  .panel-default > .panel-heading a, .panel-default > .panel-heading a:hover, .panel-default > .panel-heading a:focus, .panel-default > .panel-heading a:visited {
+    color: #337ab7; }
   .panel-default > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: transparent; }
     .panel-default > .panel-heading + .panel-collapse > .panel-body, .panel-default > .panel-heading + .panel-collapse > .panel-body label {
