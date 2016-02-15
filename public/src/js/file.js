@@ -1,4 +1,4 @@
-module.exports = function() {
+module.exports = function(full) {
   var fileView;
 
   return {
@@ -12,15 +12,17 @@ module.exports = function() {
         enableSnippets: true,
         enableLiveAutocompletion: true
       });
-      this.events();
+      this.events(full);
       return fileView;
     },
-    events: function() {
+    events: function(full) {
       var file = this;
 
       $(document).on('click', '.btn-edit-file', function() {
         fileView.setReadOnly(false);
-        $('#fileActions').html(file.renderFileActions());
+        $('#fileActions').html(file.renderFileActions({
+          data: {project: ROOM, filePath: NavPath, advance: full}
+        }));
       });
       $(document).on('click', '.btn-save-file', function() {
         $.post('/projects/' + ROOM + '/files', {
@@ -53,12 +55,20 @@ module.exports = function() {
       '<span>Save</span>' +
       '</button>' +
       '</li>' +
+      '<% if (data.advance){ %>' +
+      '<li>' +
+      '<a class="btn btn-xs btn-default btn-toggle-file" href="/projects/<%= data.project %>/file?path=<%= data.filePath %>" target="_blank">' +
+      '<i class="glyphicon glyphicon-new-window"></i>' +
+      '<span>Window</span>' +
+      '</a>' +
+      '</li>' +
       '<li>' +
       '<button class="btn btn-xs btn-danger btn-delete-file">' +
       '<i class="glyphicon glyphicon-trash"></i>' +
       '<span>Delete</span>' +
       '</button>' +
-      '</li>'
+      '</li>' +
+      '<% } %>'
     ),
     renderFileEditAction: _.template(
       '<li><button class="btn btn-xs btn-primary btn-edit-file">' +

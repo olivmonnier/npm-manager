@@ -85,7 +85,6 @@ module.exports = function(io) {
         Pkg(projectName, io).install();
       }
 
-
       return res.status(200).end();
     });
   router.route('/:name/files')
@@ -120,6 +119,20 @@ module.exports = function(io) {
       return res.status(200).end();
     });
 
+  router.route('/:name/file')
+    .get(function(req, res) {
+      var filePath = req.query.path;
+      var project = Project(req.params.name);
+
+      return res.render('projects/file', {
+        title: req.params.name,
+        project: req.params.name,
+        fileContent: project.file.content(filePath),
+        extension: project.file.extension(filePath),
+        navPath: filePath
+      });
+    });
+
   router.route('/:name/folders')
     .get(function(req, res) {
       var folderPath = req.query.folderPath;
@@ -129,22 +142,18 @@ module.exports = function(io) {
       if (action == 'add') {
         project.folder.new(folderPath);
 
-        return res.status(200).json({ tree: project.tree() }).end();
       } else if(action == 'delete') {
         project.folder.delete(folderPath);
 
-        return res.status(200).json({ tree: project.tree() }).end();
       } else if(action == 'rename') {
         var projectPath = 'projects/' + req.params.name;
         var folderPath = projectPath + '/' + req.query.folderPath;
         var path = folderPath.slice(0, folderPath.lastIndexOf('/'));
 
         project.folder.rename(folderPath, path + '/' + req.query.folderName);
-
-        return res.status(200).json({ tree: project.tree() }).end();
-      } else {
-
       }
+
+      return res.status(200).json({ tree: project.tree() }).end();
     });
 
   return router;

@@ -42,8 +42,9 @@ function showFolderView() {
 }
 
 module.exports = function() {
+  window.NavPath = '/';
   var project;
-  var fileView = File().initialize();
+  var fileView = File(true).initialize();
   var optionsTree = {
     data: TreeDir,
     showBorder: false,
@@ -62,7 +63,7 @@ module.exports = function() {
           fileView.setValue(data.fileContent, -1);
           fileView.session.setMode('ace/mode/' + data.extension);
           fileView.setReadOnly(true);
-          $('#fileActions').html(File().renderFileEditAction());
+          $('#fileActions').html(File(true).renderFileEditAction());
           showFileView();
         });
       } else {
@@ -76,7 +77,6 @@ module.exports = function() {
   };
   return {
     initialize: function() {
-      window.NavPath = '/';
       project = this;
       var nodeSelected = 0;
       var parentNodeSelected = 0;

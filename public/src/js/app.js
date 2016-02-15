@@ -1,5 +1,6 @@
 var Projects = require('./projects');
 var Project = require('./project');
+var File = require('./file');
 
 window.Socket = io.connect();
 
@@ -9,10 +10,16 @@ Socket.on('connect', function(data) {
   }
 });
 
-
 $(document).ready(function() {
   if ($('#accordion').length > 0) Project().initialize();
   if ($('#project-list').length > 0) Projects().initialize();
+
+  if ($('body > #fileView').length > 0) {
+    var fileEdit = File(false);
+
+    fileEdit.initialize();
+    $('#fileActions').html(fileEdit.renderFileEditAction());
+  };
 
   $(document).on('click', '.btn-ajax', function(e) {
     e.preventDefault();

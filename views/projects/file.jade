@@ -1,0 +1,15 @@
+extends ../layout-min
+
+block content
+  #fileView
+    #editor.position-full!= fileContent
+    ul#fileActions.list-inline
+  
+block script
+  script.
+    window.NavPath = "#{navPath}";
+    window.ROOM = "#{project}";
+    var fileView = ace.edit('editor');
+    fileView.session.setMode('ace/mode/#{extension}');
+    
+    
