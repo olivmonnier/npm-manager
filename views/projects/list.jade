@@ -9,7 +9,9 @@ block content
       each project in projects
         li.list-group-item
           a.title-app(href="/projects/" + project)= project
-          a.btn.btn-xs.btn-danger(href="/projects/" + project + "/delete") Delete 
-          .pull-right(data-project= project)
+          a.btn.btn-xs.btn-danger(href="/projects/" + project + "/delete") 
+            span Delete 
+            i.glyphicon.glyphicon-trash
+          .pull-right.processes(data-project= project)
             strong Running:
             ul.list-inline

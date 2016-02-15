@@ -16,9 +16,9 @@ module.exports = function() {
     renderProcesses: _.template(
       '<% _.forEach(data.processes, function(process) { %>' +
       '<li data-process="<%= process.pid %>">' +
-      '<a href="/projects/<%= data.project %>/scripts?name=<%= process.name %>&action=kill&pid=<%= process.pid %>" class="btn-ajax">' +
+      '<a href="/projects/<%= data.project %>/scripts?name=<%= process.name %>&action=kill&pid=<%= process.pid %>" class="badge btn-ajax">' +
       '<%= process.name %>' +
-      ' <i class="glyphicon glyphicon-remove"></i>' +
+      ' <i class="glyphicon glyphicon-remove-circle"></i>' +
       '</a>' +
       '</li>' +
       '<% }); %>'

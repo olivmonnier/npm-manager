@@ -71,6 +71,7 @@
           position: relative;
           height: 100%;
           margin-left: 15px;
+          margin-right: 15px;
 
           #folderActions {
             position: absolute;
@@ -115,9 +116,21 @@
   }
 }
 #project-list .list-group-item {
+  background-color: $backgroundSecondary;
+  border: none;
+  color: $textPrimary;
+
+  .title-app {
+    display: inline-block;
+    font-weight: bold;
+    color: $textPrimary;
+  }
   .list-inline {
     display: inline;
     margin-left: 15px;
+  }
+  .processes {
+    margin-top: 8px;
   }
 }
 .form-inline input.form-control + .btn {
@@ -134,8 +147,8 @@ label {
   color: #C5EFF7;
 }
 .breadcrumb {
-  background-color: #34495E;
-  color: #fff;
+  background-color: $backgroundSecondary;
+  color: $textPrimary;
 }
 .btn + .btn {
   margin-left: 4px;
