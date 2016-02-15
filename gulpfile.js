@@ -3,6 +3,7 @@ var browserify = require('gulp-browser').browserify;
 var sass = require('gulp-sass');
 var server = require('gulp-express');
 var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
 
 gulp.task('concat:vendor', function() {
   return gulp.src([
@@ -12,12 +13,14 @@ gulp.task('concat:vendor', function() {
     './node_modules/bootstrap-treeview/src/js/bootstrap-treeview.js'
   ])
     .pipe(concat('build.js'))
+    .pipe(uglify())
     .pipe(gulp.dest('./public/vendor/'));
 });
 
 gulp.task('build:js', function() {
   return gulp.src('./public/src/js/app.js')
     .pipe(browserify())
+    .pipe(uglify())
     .pipe(gulp.dest('./public/dist/'));
 });
 
@@ -27,7 +30,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./public/dist/'));
 });
 
-gulp.task('server', ['concat:vendor'], function () {
+gulp.task('server', ['sass', 'concat:vendor', 'build:js'], function () {
     server.run(['app.js']);
 
     // Restart the server when file changes

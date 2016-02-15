@@ -1,3 +1,4 @@
+var Projects = require('./projects');
 var Project = require('./project');
 
 window.Socket = io.connect();
@@ -10,8 +11,8 @@ Socket.on('connect', function(data) {
 
 
 $(document).ready(function() {
-  if ($('#accordion').length > 0) Project().config.init();
-  if ($('#project-list').length > 0) Project().list.init();
+  if ($('#accordion').length > 0) Project().initialize();
+  if ($('#project-list').length > 0) Projects().initialize();
 
   $(document).on('click', '.btn-ajax', function(e) {
     e.preventDefault();

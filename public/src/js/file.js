@@ -1,6 +1,21 @@
 module.exports = function() {
+  var fileView;
+
   return {
-    events: function(fileView) {
+    initialize: function() {
+      fileView = ace.edit('editor');
+      fileView.setReadOnly(true);
+      fileView.$blockScrolling = Infinity;
+      fileView.setTheme("ace/theme/tomorrow_night");
+      fileView.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+      });
+      this.events();
+      return fileView;
+    },
+    events: function() {
       var file = this;
 
       $(document).on('click', '.btn-edit-file', function() {
