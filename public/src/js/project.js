@@ -41,7 +41,7 @@ module.exports = function() {
           expandIcon: 'glyphicon glyphicon-triangle-right',
           enableLinks: true,
           onNodeSelected: function(event, data) {
-            NavPath = '/' + data.href.slice(2).replace(/\\/g, '/');
+            NavPath = '/' + data.href.slice(2);
             nodeSelected = data.nodeId;
             parentNodeSelected = $('#tree').treeview('getParent', data.nodeId).nodeId;
 
@@ -64,6 +64,24 @@ module.exports = function() {
             }
           }
         };
+
+        function selectNodeIdByUrl() {
+          var hashUrl = $(location).attr('hash');
+          var arrayUrl = hashUrl.split(/\//);
+          var nodeEl = [];
+          var nodeId = 0;
+          arrayUrl.shift();
+
+          arrayUrl.forEach(function(node) {
+            nodeEl = $('#tree a:contains("' + node + '")');
+            if(nodeEl.length > 0) {
+              nodeId = nodeEl.closest('li').data('nodeid');
+              $('#tree').treeview('revealNode', [nodeId, {silent: false }]);
+              $('#tree').treeview('selectNode', [nodeId, {silent: false }]);
+              $('#tree').treeview('expandNode', [nodeId, {silent: false }]);
+            }
+          });
+        }
 
         function folderActionsAuth() {
           $('#folderActions li [data-target="#modalRenameFolder"]')[(NavPath == '/') ? 'addClass' : 'removeClass']('hidden');
@@ -163,6 +181,7 @@ module.exports = function() {
           }));
         });
         $('#tree').treeview(optionsTree);
+        selectNodeIdByUrl();
         $('#folderView .breadcrumb').html(config.renderBreadcrumbs({
           data: {files: formatNavPath(NavPath)}
         }));
@@ -266,7 +285,7 @@ module.exports = function() {
       renderPackages: _.template(
         '<% _.forEach(data.packages, function(pkg) { %>' +
         '<li class="list-group-item" data-pkg="<%= pkg.name %>">' +
-        '<a href="https://www.npmjs.com/search?q=<%= pkg.name %>" target="_blank"><%= pkg.name %> - <%= pkg.version %></a>' +
+        '<a href="https://www.npmjs.com/package/<%= pkg.name %>" target="_blank"><%= pkg.name %> - <%= pkg.version %></a>' +
         '<div class="pull-right">' +
         '<a class="btn btn-warning btn-ajax" href="/projects/' + ROOM + '/packages?name=<%= pkg.name %>&env=<%= pkg.env %>&action=delete">' +
         '<i class="glyphicon glyphicon-trash"></i>' +

@@ -11,6 +11,9 @@ block actions
   a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") 
     i.glyphicon.glyphicon-trash
     span Delete
+  a.btn.btn-xs.btn-success.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")
+    i.glyphicon.glyphicon-circle-arrow-down
+    span Install
 
 block content
   script. 

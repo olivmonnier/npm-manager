@@ -26,7 +26,7 @@
         ul.list-group.pkg-list.dev
           each version, pkgName in infos.devDependencies
             li.list-group-item(data-pkg=pkgName)
-              a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
+              a(href="https://www.npmjs.com/package/" + pkgName, target="_blank")= pkgName + " - " + version
               .pull-right
                 a.btn.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=dev&action=delete")
                   i.glyphicon.glyphicon-trash
@@ -43,7 +43,7 @@
         ul.list-group.pkg-list.prod
           each version, pkgName in infos.dependencies
             li.list-group-item(data-pkg=pkgName)
-              a(href="https://www.npmjs.com/search?q=" + pkgName, target="_blank")= pkgName + " - " + version
+              a(href="https://www.npmjs.com/package/" + pkgName, target="_blank")= pkgName + " - " + version
               .pull-right
                 a.btn.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=prod&action=delete")
                   i.glyphicon.glyphicon-trash

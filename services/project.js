@@ -31,7 +31,7 @@ function loopChildren(children, parent) {
 function insertChild(child) {
   var newChild = {
     text: child.name,
-    href: '#/' + child.path,
+    href: '#/' + child.path.replace(/\\/g, '/'),
     icon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-close' : 'glyphicon glyphicon-file',
     selectedIcon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-open' : 'glyphicon glyphicon-open-file'
   }

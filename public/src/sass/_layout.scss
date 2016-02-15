@@ -29,14 +29,19 @@
     background-color: #336E7B;
 
     #tree {
-      overflow: scroll;
+      overflow: auto;
 
       .node-tree {
         white-space: nowrap;
       }
-      .list-group-item {
-        background-color: transparent;
-        color: #22313F;
+      .list-group {
+        display: block;
+        width: 100%;
+
+        .list-group-item {
+          background-color: transparent;
+          color: #22313F;
+        }
       }
     }
   }

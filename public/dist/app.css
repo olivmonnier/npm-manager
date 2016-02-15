@@ -5914,12 +5914,15 @@ i + span {
     width: 15%;
     background-color: #336E7B; }
     #appView #contentLeft #tree {
-      overflow: scroll; }
+      overflow: auto; }
       #appView #contentLeft #tree .node-tree {
         white-space: nowrap; }
-      #appView #contentLeft #tree .list-group-item {
-        background-color: transparent;
-        color: #22313F; }
+      #appView #contentLeft #tree .list-group {
+        display: block;
+        width: 100%; }
+        #appView #contentLeft #tree .list-group .list-group-item {
+          background-color: transparent;
+          color: #22313F; }
   #appView #contentPrimary {
     height: 100%;
     width: 85%; }

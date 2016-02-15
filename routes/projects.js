@@ -75,13 +75,16 @@ module.exports = function(io) {
     .get(function(req, res) {
       var action = req.query.action;
       var version = req.query.version || 'latest';
+      var projectName = req.params.name;
 
       if (action == 'delete') {
-        Pkg(req.params.name, io).delete(req.query.name, req.query.env);
+        Pkg(projectName, io).delete(req.query.name, req.query.env);
+      } else if (action == 'add') {
+        Pkg(projectName, io).add(req.query.name, version, req.query.env);
+      } else if (action == 'install') {
+        Pkg(projectName, io).install();
       }
-      if (action == 'add') {
-        Pkg(req.params.name, io).add(req.query.name, version, req.query.env);
-      }
+
 
       return res.status(200).end();
     });
