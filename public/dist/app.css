@@ -5912,7 +5912,8 @@ i + span {
   #appView #contentLeft {
     position: relative;
     width: 15%;
-    background-color: #336E7B; }
+    background-color: #303030;
+    color: #0ce3ac; }
     #appView #contentLeft #tree {
       overflow: auto; }
       #appView #contentLeft #tree .node-tree {
@@ -5921,18 +5922,16 @@ i + span {
         display: block;
         width: 100%; }
         #appView #contentLeft #tree .list-group .list-group-item {
-          background-color: transparent;
-          color: #22313F; }
-          #appView #contentLeft #tree .list-group .list-group-item.node-selected {
-            background: #336E7B;
-            filter: brightness(0.9);
-            -webkit-filter: brightness(0.9); }
+          background-color: transparent; }
+          #appView #contentLeft #tree .list-group .list-group-item.node-selected, #appView #contentLeft #tree .list-group .list-group-item:hover {
+            background: #222222;
+            filter: contrast(0.7);
+            -webkit-filter: contrast(0.7); }
   #appView #contentPrimary {
     height: 100%;
     width: 85%; }
     #appView #contentPrimary #rowPrimary {
-      height: calc(80%);
-      margin-bottom: 15px; }
+      height: 80%; }
       #appView #contentPrimary #rowPrimary > * {
         display: inline-block;
         height: 100%;
@@ -5950,13 +5949,12 @@ i + span {
             left: 50%;
             transform: translate(-50%, -50%); }
       #appView #contentPrimary #rowPrimary #config {
-        width: calc(30% - 15px);
-        margin-left: 15px;
+        width: 30%;
         overflow: auto; }
         #appView #contentPrimary #rowPrimary #config #accordion {
           margin-bottom: 0; }
     #appView #contentPrimary #rowfooter {
-      height: calc(20% - 15px); }
+      height: 20%; }
       #appView #contentPrimary #rowfooter #logs {
         height: 100%;
         margin: 0;
@@ -5984,7 +5982,7 @@ i + span {
 
 body {
   position: relative;
-  background-color: #22313F;
+  background-color: #222222;
   color: #22313F; }
 
 label {
@@ -6001,20 +5999,23 @@ label {
   color: #22313F; }
 
 .panel {
-  background-color: #336E7B;
-  border: none; }
+  background-color: #303030;
+  border: none;
+  color: #0ce3ac; }
 
 .panel-default > .panel-heading {
-  background-color: #34495E;
+  background-color: #303030;
+  filter: contrast(0.7);
+  -webkit-filter: contrast(0.7);
   border: none; }
   .panel-default > .panel-heading a, .panel-default > .panel-heading a:hover, .panel-default > .panel-heading a:focus, .panel-default > .panel-heading a:visited {
-    color: #337ab7; }
+    color: #fff; }
   .panel-default > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: transparent; }
     .panel-default > .panel-heading + .panel-collapse > .panel-body, .panel-default > .panel-heading + .panel-collapse > .panel-body label {
-      color: #22313F; }
+      color: #fff; }
     .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:hover, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:focus, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:visited {
-      color: #22313F; }
+      color: #0ce3ac; }
 
 .list-group-item, .form-control {
   background-color: #C5EFF7; }
