@@ -5923,6 +5923,10 @@ i + span {
         #appView #contentLeft #tree .list-group .list-group-item {
           background-color: transparent;
           color: #22313F; }
+          #appView #contentLeft #tree .list-group .list-group-item.node-selected {
+            background: #336E7B;
+            filter: brightness(0.9);
+            -webkit-filter: brightness(0.9); }
   #appView #contentPrimary {
     height: 100%;
     width: 85%; }

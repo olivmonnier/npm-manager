@@ -51,6 +51,7 @@ module.exports = function() {
     collapseIcon: 'glyphicon glyphicon-triangle-bottom',
     expandIcon: 'glyphicon glyphicon-triangle-right',
     enableLinks: true,
+    highlightSelected: false,
     onNodeSelected: function(event, data) {
       NavPath = '/' + data.href.slice(2);
       nodeSelected = data.nodeId;

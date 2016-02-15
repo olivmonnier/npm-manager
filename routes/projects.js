@@ -123,9 +123,11 @@ module.exports = function(io) {
     .get(function(req, res) {
       var filePath = req.query.path;
       var project = Project(req.params.name);
+      var lastIndexChar = filePath.lastIndexOf('/');
+      var filename = filePath.substring(lastIndexChar + 1);
 
       return res.render('projects/file', {
-        title: req.params.name,
+        title: req.params.name + ' - ' + filename,
         project: req.params.name,
         fileContent: project.file.content(filePath),
         extension: project.file.extension(filePath),
