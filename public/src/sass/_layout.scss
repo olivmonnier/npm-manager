@@ -87,6 +87,13 @@
 
         #accordion {
           margin-bottom: 0;
+
+          #scriptList {
+            li {
+              margin-top: 5px;
+              margin-bottom: 5px;
+            }
+          }
         }
       }
     }
@@ -141,7 +148,7 @@
 body {
   position: relative;
   background-color: $backgroundPrimary;
-  color: #22313F;
+  color: $textPrimary;
 }
 label {
   color: #C5EFF7;
@@ -224,4 +231,8 @@ label {
 }
 .monitor {
   color: $textPrimary;
+}
+.well {
+  background-color: $sidebar;
+  border: none;
 }

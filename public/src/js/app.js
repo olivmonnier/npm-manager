@@ -31,7 +31,12 @@ $(document).ready(function() {
 
     var form = $(this).closest('form');
     var datas = form.serialize();
+    var url = $(this).data('url');
+    var redirect = $(this).data('redirect');
 
-    $[form.attr('method').toLowerCase()](form.attr('action'), datas);
+    $.post(url, datas)
+      .done(function() {
+        if(redirect) document.location.href = redirect;
+      });
   });
 });

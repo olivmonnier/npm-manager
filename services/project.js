@@ -1,17 +1,19 @@
 var fs = require('fs');
 var path = require('path');
+var execSync = require('child_process').execSync;
 var rimraf = require('rimraf');
 var dirTree = require('directory-tree');
 var junk = require('junk');
 var _ = require('lodash');
 var formatFile = require('./formatFile');
+var Pkg = require('./pkg.js');
 
 function packageContent(args) {
   return {
     "name": args.name,
     "version": args.version || "0.0.1",
     "description": args.description || "",
-    "main": "index.js",
+    "main": args.main || "index.js",
     "scripts": {},
     "author": args.author || ""
   }
@@ -54,12 +56,20 @@ module.exports = function(projectName, io) {
       fs.mkdirSync(path.join(cmdPath));
       fs.writeFileSync(path.join(cmdPath +'/package.json'), JSON.stringify(packageContent(project), null, 2), 'utf8');
     },
+    clone: function(gitUrl) {
+      var self = this;
+      fs.mkdirSync(path.join(cmdPath));
+      execSync('cd ' + cmdPath + ' && git clone ' + gitUrl + ' ./');
+      var config = Pkg('.tmp', io).infos();
+      self.folder.rename(cmdPath, 'projects/' + config.name);
+    },
     update: function(config) {
       if (config) {
         var datas = JSON.parse(config.configFile);
 
         fs.writeFileSync(path.join(cmdPath +'/package.json'), config.configFile, 'utf8');
         rimraf.sync(path.join(cmdPath + '/node_modules'));
+        execSync('cd ' + cmdPath + ' && npm cache clean ./');
         this.folder.rename(path.join(cmdPath), path.join('projects/' + datas.name));
 
         ROOMS = _.remove(ROOMS, function(room) {

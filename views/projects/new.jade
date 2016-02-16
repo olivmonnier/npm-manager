@@ -5,21 +5,46 @@ block title
   
 block content
   .container
-    form(method="POST" action="/projects/new")
-      .form-group
-        label Name
-        input.form-control(type="text", name="name")
-      .form-group
-        label Description
-        input.form-control(type="text", name="description")
-      .form-group
-        label Author
-        input.form-control(type="text", name="author")
-      .form-group
-        label Packages in dev env (separate by a whitespace)
-        input.form-control(type="text", name="pkgDev")
-      .form-group
-        label Packages in prod env (separate by a whitespace)
-        input.form-control(type="text", name"pkgProd")
-      .form-group
-        input.btn.btn-primary(type="submit", value="Submit") 
+    .well
+      form
+        .form-group
+          label Git url
+          input.form-control(type="text", name="gitUrl")
+        .form-group
+          input.btn.btn-primary.submit-ajax(type="submit", data-url="/projects/clone", data-redirect="/projects", value="Clone")
+    h4.text-center OR    
+    .well
+      form(method="POST" action="/projects/new")
+        .row
+          .col-xs-4
+            .form-group
+              label Name
+              input.form-control(type="text", name="name")
+          .col-xs-8
+            .form-group
+              label Description
+              input.form-control(type="text", name="description")
+        .row
+          .col-xs-4
+            .form-group
+              label Author
+              input.form-control(type="text", name="author")
+          .col-xs-4
+            .form-group
+              label Version
+              input.form-control(type="text", name="version", placeholder="0.0.1")
+          .col-xs-4
+            .form-group
+              label Main
+              input.form-control(type="text", name="main", placeholder="main.js")
+        .row
+          .col-xs-6
+            .form-group
+              label Packages in dev env (separate by a whitespace)
+              input.form-control(type="text", name="pkgDev")
+          .col-xs-6      
+            .form-group
+              label Packages in prod env (separate by a whitespace)
+              input.form-control(type="text", name"pkgProd")
+        .form-group
+          input.btn.btn-primary(type="submit", value="Submit") 

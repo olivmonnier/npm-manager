@@ -32,6 +32,13 @@ module.exports = function(io) {
       return res.redirect('/projects');
     });
 
+  router.route('/clone')
+    .post(function(req, res) {
+      Project('.tmp', io).clone(req.body.gitUrl);
+
+      return res.status(200).end();
+    });
+
   router.route('/:name')
     .get(function(req, res) {
       return res.render('projects/view', {

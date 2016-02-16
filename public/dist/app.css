@@ -5954,6 +5954,9 @@ i + span {
         overflow: auto; }
         #appView #contentPrimary #rowPrimary #config #accordion {
           margin-bottom: 0; }
+          #appView #contentPrimary #rowPrimary #config #accordion #scriptList li {
+            margin-top: 5px;
+            margin-bottom: 5px; }
     #appView #contentPrimary #rowfooter {
       height: 20%; }
       #appView #contentPrimary #rowfooter #logs {
@@ -5994,7 +5997,7 @@ i + span {
 body {
   position: relative;
   background-color: #222222;
-  color: #22313F; }
+  color: #fff; }
 
 label {
   color: #C5EFF7; }
@@ -6063,3 +6066,7 @@ label {
 
 .monitor {
   color: #fff; }
+
+.well {
+  background-color: #303030;
+  border: none; }

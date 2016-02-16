@@ -23,13 +23,14 @@
     #collapseTwo.panel-collapse.collapse(role="tabpanel")
       .panel-body
         h3 Development
-        ul.list-group.pkg-list.dev
-          each version, pkgName in infos.devDependencies
-            li.list-group-item(data-pkg=pkgName)
-              a(href="https://www.npmjs.com/package/" + pkgName, target="_blank")= pkgName + " - " + version
-              .pull-right
-                a.btn.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=dev&action=delete")
-                  i.glyphicon.glyphicon-trash
+        if infos.devDependencies
+          ul.list-group.pkg-list.dev
+            each version, pkgName in infos.devDependencies
+              li.list-group-item(data-pkg=pkgName)
+                a(href="https://www.npmjs.com/package/" + pkgName, target="_blank")= pkgName + " - " + version
+                .pull-right
+                  a.btn.btn-sm.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=dev&action=delete")
+                    i.glyphicon.glyphicon-trash
         .form-group
           label Add package in dev environment
           .row.margin-bottom
@@ -40,13 +41,14 @@
               input.form-control(type="text", name="version", placeholder="version", value="latest")  
           button.btn.btn-primary.btn-add-pkg Add
         h3 Production
-        ul.list-group.pkg-list.prod
-          each version, pkgName in infos.dependencies
-            li.list-group-item(data-pkg=pkgName)
-              a(href="https://www.npmjs.com/package/" + pkgName, target="_blank")= pkgName + " - " + version
-              .pull-right
-                a.btn.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=prod&action=delete")
-                  i.glyphicon.glyphicon-trash
+        if infos.dependencies
+          ul.list-group.pkg-list.prod
+            each version, pkgName in infos.dependencies
+              li.list-group-item(data-pkg=pkgName)
+                a(href="https://www.npmjs.com/package/" + pkgName, target="_blank")= pkgName + " - " + version
+                .pull-right
+                  a.btn.btn-sm.btn-warning.btn-ajax(href="/projects/" + infos.name + "/packages?name=" + pkgName + "&env=prod&action=delete")
+                    i.glyphicon.glyphicon-trash
         .form-group
           label Add package in prod environment
           .row.margin-bottom
@@ -65,9 +67,9 @@
           span Config file
     #collapseThree.panel-collapse.collapse(role="tabpanel")
       .panel-body
-        form(action="/projects/" + infos.name, method="POST")
+        form
           .form-group
             label package.json
             textarea.form-control(rows="20", name="configFile")!= JSON.stringify(infos, null, 2)
           .form-group
-            input.btn.btn-primary.submit-ajax(type="submit", value="Update")
+            button.btn.btn-primary.submit-ajax(data-url="/projects/" + infos.name) Update

@@ -58,7 +58,7 @@ module.exports = function(project, io) {
       ROOMS[roomIndex].processes = _.remove(ROOMS[roomIndex].processes, function(process) {
         return process.pid != child.pid;
       });
-      io.to(project).emit('killProcess', child.pid);
+      io.emit('killProcess', child.pid);
       io.to(project).emit('log', log);
     });
   }
@@ -115,6 +115,7 @@ module.exports = function(project, io) {
       var child = exec('cd ' + cmdPath + ' && npm uninstall ' + saveEnv + ' ' + pkgName, function(error, stdout, stderr) {
         var config = self.infos();
 
+        execSync('cd ' + cmdPath + ' && npm cache clean ./');
         io.to(project).emit('config', config);
       });
 

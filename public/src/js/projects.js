@@ -6,14 +6,16 @@ module.exports = function() {
       Socket.on('init', function(data) {
         data.forEach(function(project) {
           if (project.processes.length > 0) {
-            $('[data-project=' + project.name + '] ul').append(projects.renderProcesses({
+            $('[data-project=' + project.name + '] ul.processing').append(projects.renderProcesses({
               data: {project: project.name, processes: project.processes}
             }));
           }
         });
-      });
-
-      Socket.on('monitor', function(data) {
+      })
+      .on('killProcess', function(pid) {
+        $('[data-process=' + pid + ']').remove();
+      })
+      .on('monitor', function(data) {
         $('.monitor tbody tr').html(projects.renderMonitor({
           data: {
             memoryTotalUsed: ((data.totalmem - data.freemem) / 1000000).toFixed(2),
