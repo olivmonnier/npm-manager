@@ -6,6 +6,10 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var _ = require('lodash');
+var Monitor = require('monitor');
+var processMonitor = new Monitor({
+  probeClass:'Process'
+});
 
 global.ROOMS = [];
 
@@ -31,6 +35,7 @@ if ('development' == app.get('env')) {
   app.use(errorHandler());
 }
 
+processMonitor.connect();
 
 server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
@@ -44,6 +49,10 @@ io.on('connection', function(socket) {
     if(roomIndex == '-1') {
       ROOMS.push({ name: room, logs: [], processes: [] });
     }
+  });
+
+  processMonitor.on('change', function() {
+    socket.emit('monitor', processMonitor.toJSON());
   });
 
   socket.emit('init', ROOMS);

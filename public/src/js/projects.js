@@ -10,7 +10,16 @@ module.exports = function() {
               data: {project: project.name, processes: project.processes}
             }));
           }
-        })
+        });
+      });
+
+      Socket.on('monitor', function(data) {
+        $('.monitor tbody tr').html(projects.renderMonitor({
+          data: {
+            memoryTotalUsed: ((data.totalmem - data.freemem) / 1000000).toFixed(2),
+            memoryTotal: (data.totalmem / 1000000).toFixed(2),
+            memoryFree: (data.freemem / 1000000).toFixed(2)}
+        }));
       });
     },
     renderProcesses: _.template(
@@ -22,6 +31,11 @@ module.exports = function() {
       '</a>' +
       '</li>' +
       '<% }); %>'
+    ),
+    renderMonitor: _.template(
+      '<td><%= data.memoryTotalUsed %> (<%= (data.memoryTotalUsed / data.memoryTotal * 100).toFixed(2) %>%)</td>' +
+      '<td><%= data.memoryFree %> (<%= (data.memoryFree / data.memoryTotal * 100).toFixed(2) %>%)</td>' +
+      '<td><%= data.memoryTotal %></td>'
     )
   }
 }
