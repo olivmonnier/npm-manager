@@ -59,16 +59,9 @@ if (cluster.isMaster) {
 
   processMonitor.connect();
 
-  if(!sticky.listen(server, 3000)) {
-    server.once('listening', function() {
-      console.log('server started on 3000 port');
-    });
-  } else {
-    server.listen(app.get('port'), function() {
-      console.log('Express server listening on port ' + app.get('port'));
-    });
-  }
-
+  server.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
+  });
 
   io.on('connection', function(socket) {
     socket.on('room', function(room) {
