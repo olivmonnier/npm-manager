@@ -30,6 +30,8 @@
     "monitor": "^0.6.10",
     "ps-tree": "^1.0.1",
     "rimraf": "^2.5.1",
-    "socket.io": "^1.4.5"
+    "socket.io": "^1.4.5",
+    "sticky-session": "^1.0.2",
+    "utf8": "^2.1.1"
   }
 }

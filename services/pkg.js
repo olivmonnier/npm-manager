@@ -3,7 +3,6 @@ var execSync = require('child_process').execSync;
 var fs = require('fs');
 var psTree = require('ps-tree');
 var _ = require('lodash');
-var cp = require('child_process');
 
 function killProcess(pid, signal, callback) {
   signal = signal || 'SIGKILL';
@@ -32,7 +31,7 @@ module.exports = function(project, io) {
   var cmdPath = 'projects/' + project;
   var streamEventsProcess = function (scriptName, processChild, logRun) {
     var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
-    var logRun = logRun || 'Command running';
+    var logRun = logRun || '<br/>Command running';
     var child = {name: scriptName, pid: processChild.pid};
 
     ROOMS[roomIndex].logs.push(logRun);
@@ -40,11 +39,11 @@ module.exports = function(project, io) {
     io.to(project).emit('log', logRun);
     io.to(project).emit('process', child);
 
-    processChild.stdout.on('data', function(data) {
+    processChild.stdout.setEncoding('utf8').on('data', function(data) {
       ROOMS[roomIndex].logs.push(data);
       io.to(project).emit('log', data);
     });
-    processChild.stderr.on('data', function(data) {
+    processChild.stderr.setEncoding('utf8').on('data', function(data) {
       ROOMS[roomIndex].logs.push(data);
       io.to(project).emit('log', data);
     });
@@ -53,7 +52,7 @@ module.exports = function(project, io) {
       io.to(project).emit('log', data);
     });
     processChild.on('close', function(data) {
-      var log = 'Process finished';
+      var log = 'Process finished <br/>';
       ROOMS[roomIndex].logs.push(log);
       ROOMS[roomIndex].processes = _.remove(ROOMS[roomIndex].processes, function(process) {
         return process.pid != child.pid;
@@ -133,7 +132,8 @@ module.exports = function(project, io) {
       if(!isWin) {
         killProcess(pid);
       } else {
-        cp.exec('taskkill /PID ' + pid + ' /T /F');
+        var child = exec('taskkill /PID ' + pid + ' /T /F');
+        streamEventsProcess('killProcess', child);
       }
     }
   }

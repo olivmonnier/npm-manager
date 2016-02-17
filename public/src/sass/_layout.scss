@@ -98,16 +98,16 @@
       }
     }
     #rowfooter {
+      position: relative;
       height: 20%;
 
       #logs {
         height: 100%;
-        margin: 0;
-        overflow: scroll;
-        overflow-x:hidden;
-        background-color: #000;
-        border: none;
-        color: #fff;
+      }
+      .btn-show-console {
+        position: absolute;
+        top: 0;
+        right: 15px;
       }
     }
   }
@@ -160,7 +160,10 @@ label {
 .btn + .btn {
   margin-left: 4px;
 }
-.modal label { color: #22313F; }
+.modal {
+  h4 { color: $textSecondary; }
+  label { color: #22313F; }
+}
 .panel {
   background-color: $sidebar;
   border: none;
@@ -191,6 +194,15 @@ label {
 }
 .list-group-item, .form-control {
   background-color: #C5EFF7;
+}
+.console {
+  max-height: 400px;
+  margin: 0;
+  overflow: scroll;
+  overflow-x:hidden;
+  background-color: #000 !important;
+  border: none;
+  color: #fff;
 }
 .title-app {
   display: inline-block;

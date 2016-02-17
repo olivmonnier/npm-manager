@@ -5958,15 +5958,14 @@ i + span {
             margin-top: 5px;
             margin-bottom: 5px; }
     #appView #contentPrimary #rowfooter {
+      position: relative;
       height: 20%; }
       #appView #contentPrimary #rowfooter #logs {
-        height: 100%;
-        margin: 0;
-        overflow: scroll;
-        overflow-x: hidden;
-        background-color: #000;
-        border: none;
-        color: #fff; }
+        height: 100%; }
+      #appView #contentPrimary #rowfooter .btn-show-console {
+        position: absolute;
+        top: 0;
+        right: 15px; }
 
 #fileView {
   overflow: auto; }
@@ -6009,6 +6008,9 @@ label {
 .btn + .btn {
   margin-left: 4px; }
 
+.modal h4 {
+  color: #000; }
+
 .modal label {
   color: #22313F; }
 
@@ -6033,6 +6035,15 @@ label {
 
 .list-group-item, .form-control {
   background-color: #C5EFF7; }
+
+.console {
+  max-height: 400px;
+  margin: 0;
+  overflow: scroll;
+  overflow-x: hidden;
+  background-color: #000 !important;
+  border: none;
+  color: #fff; }
 
 .title-app {
   display: inline-block;

@@ -94,6 +94,16 @@ block content
         #config
           include ./config.jade
       #rowfooter
-        #logs.well
+        button.btn.btn-lg.btn-link.btn-show-console(data-toggle="modal", data-target="#modalConsole"): i.glyphicon.glyphicon-eye-open
+        #logs.console.well
+        #modalConsole.modal.fade
+          .modal-dialog.modal-lg
+            .modal-content
+              .modal-header
+                button.close(data-dismiss="modal"): span(aria-hidden="true") &times;
+                h4 Console
+              .modal-body
+                .console.well
+                
                   
     

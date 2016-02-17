@@ -104,7 +104,7 @@ module.exports = function() {
         var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
 
         if (data[roomIndex]) {
-          $('#logs').append(project.renderLogs({
+          $('.console').append(project.renderLogs({
             data: {logs: data[roomIndex].logs}
           }));
           $('#processes').append(project.renderProcesses({
@@ -119,7 +119,7 @@ module.exports = function() {
         $('textarea[name=configFile]').html(JSON.stringify(data, null, 2));
       })
       .on('log', function(data) {
-        $('#logs').append(project.renderLogs({
+        $('.console').append(project.renderLogs({
           data: {logs: [data]}
         }));
       })
