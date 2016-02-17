@@ -11,7 +11,7 @@ function cpuAverage(cpus) {
   return {
     idle: totalIdle / cpus.length,
     total: totalTick / cpus.length,
-    percent: (100 * totalIdle / totalTick).toFixed(2)
+    percent: 100 * totalIdle / totalTick
   };
 }
 module.exports = function() {
@@ -34,7 +34,7 @@ module.exports = function() {
       .on('monitor', function(data) {
         $('.monitor tbody tr').html(projects.renderMonitor({
           data: {
-            cpusUsage: 100 - cpuAverage(data.cpus).percent,
+            cpusUsage: (100 - cpuAverage(data.cpus).percent).toFixed(2),
             memoryTotalUsed: ((data.totalmem - data.freemem) / 1000000).toFixed(2),
             memoryTotal: (data.totalmem / 1000000).toFixed(2),
             memoryFree: (data.freemem / 1000000).toFixed(2)}
