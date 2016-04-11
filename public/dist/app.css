@@ -5881,7 +5881,8 @@ i + span {
   min-height: 40px; }
 
 .breadcrumb {
-  margin-top: 20px; }
+  margin-top: 20px;
+  border-radius: inherit; }
 
 .pkg-list .list-group-item {
   padding-top: 15px;

@@ -11,9 +11,10 @@ function selectNodeIdByUrl() {
     nodeEl = $('#tree a:contains("' + node + '")');
     if(nodeEl.length > 0) {
       nodeId = nodeEl.closest('li').data('nodeid');
-      $('#tree').treeview('revealNode', [nodeId, {silent: false }]);
-      $('#tree').treeview('selectNode', [nodeId, {silent: false }]);
-      $('#tree').treeview('expandNode', [nodeId, {silent: false }]);
+
+      ['revealNode', 'selectNode', 'expandNode'].forEach(function(key) {
+        $('#tree').treeview(key, [nodeId, {silent: false }]);
+      });
     }
   });
 }
@@ -31,14 +32,9 @@ function formatNavPath(path) {
   return formatPath;
 }
 
-function showFileView() {
-  $('#folderView').fadeOut('slow');
-  $('#fileView').fadeIn('slow');
-}
-
-function showFolderView() {
-  $('#fileView').fadeOut('slow');
-  $('#folderView').fadeIn('slow');
+function unfoldView (file) {
+  $('#fileView')[file ? 'fadeIn' : 'fadeOut']('slow');
+  $('#folderView')[file ? 'fadeOut' : 'fadeIn']('slow');
 }
 
 module.exports = function() {
@@ -65,17 +61,18 @@ module.exports = function() {
           fileView.session.setMode('ace/mode/' + data.extension);
           fileView.setReadOnly(true);
           $('#fileActions').html(File(true).renderFileEditAction());
-          showFileView();
+          unfoldView(true);
         });
       } else {
         $('#folderView .breadcrumb').html(project.renderBreadcrumbs({
           data: {files: formatNavPath(NavPath)}
         }));
         folderActionsAuth();
-        showFolderView();
+        unfoldView(false);
       }
     }
   };
+
   return {
     initialize: function() {
       project = this;
@@ -92,9 +89,9 @@ module.exports = function() {
       optionsTree.data = data.tree;
       TreeDir = data.tree;
       $('#tree').treeview(optionsTree);
-      $('#tree').treeview('revealNode', [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
-      $('#tree').treeview('selectNode', [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
-      $('#tree').treeview('expandNode', [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
+      ['revealNode', 'selectNode', 'expandNode'].forEach(function (key) {
+        $('#tree').treeview(key, [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
+      });
       $('#folderView .breadcrumb').html(project.renderBreadcrumbs({
         data: {files: formatNavPath(NavPath)}
       }));
@@ -106,7 +103,8 @@ module.exports = function() {
         if (data[roomIndex]) {
           $('.console').append(project.renderLogs({
             data: {logs: data[roomIndex].logs}
-          }));
+          }))
+          .scrollTop($('.console')[0].scrollHeight);
           $('#processes').append(project.renderProcesses({
             data: {processes: data[roomIndex].processes}
           }));
@@ -121,7 +119,8 @@ module.exports = function() {
       .on('log', function(data) {
         $('.console').append(project.renderLogs({
           data: {logs: [data]}
-        }));
+        }))
+        .scrollTop($('.console')[0].scrollHeight);
       })
       .on('process', function(data) {
         $('#processes').append(project.renderProcesses({
@@ -236,7 +235,7 @@ module.exports = function() {
           action: 'delete'
         }).done(function(data) {
           project.updateTreeDir(data, false);
-          showFolderView();
+          unfoldView(false);
         });
       });
     },
