@@ -31,11 +31,13 @@ module.exports = function () {
         e.preventDefault();
         var url = $(this).attr('href');
 
-        $('#contentAppShow').removeClass('hide').animate({bottom: 0}, 1000, function () {
-          $(this).append(_.template(
-            '<iframe src="<%= data.url %>"></iframe>'
-          )({data: {url: url}}));
-        });
+        if (!$('iframe').is(':visible')) {
+          $('#contentAppShow').removeClass('hide').animate({bottom: 0}, 1000, function () {
+            $(this).append(_.template(
+              '<iframe src="<%= data.url %>"></iframe>'
+            )({data: {url: url}}));
+          });
+        }
       })
       .on('click', '.btn-notshow-app', function (e) {
         $('#contentAppShow').animate({bottom: '999px'}, 1000, function () {
