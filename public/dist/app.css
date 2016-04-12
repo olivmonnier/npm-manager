@@ -5960,7 +5960,8 @@ i + span {
         width: 30%;
         overflow: auto; }
         #appView #contentPrimary #rowPrimary #config #accordion {
-          margin-bottom: 0; }
+          margin-bottom: 0;
+          background-color: #000; }
           #appView #contentPrimary #rowPrimary #config #accordion #scriptList li {
             margin-top: 5px;
             margin-bottom: 5px; }
@@ -6014,6 +6015,9 @@ label {
 
 .btn + .btn {
   margin-left: 4px; }
+
+.btn-config {
+  display: none; }
 
 .modal h4 {
   color: #000; }
@@ -6069,7 +6073,8 @@ label {
   font-size: 18px; }
 
 .page-actions {
-  padding-top: 8px; }
+  padding-top: 8px;
+  padding-right: 15px; }
 
 .navbar-default {
   background-color: #2C3E50;
@@ -6089,3 +6094,26 @@ label {
 .well {
   background-color: #303030;
   border: none; }
+
+@media screen and (max-width: 768px) {
+  #appView #contentLeft {
+    width: 30%; }
+  #appView #contentPrimary {
+    width: 70%; }
+    #appView #contentPrimary #rowPrimary #config {
+      display: none;
+      z-index: 9999;
+      position: fixed;
+      top: 40px;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background-color: #000; }
+    #appView #contentPrimary #rowPrimary #view {
+      width: 100%; }
+  .btn + .btn {
+    margin-left: 8px; }
+  .btn-config {
+    display: inline-block; }
+  .console {
+    max-height: 255px; } }

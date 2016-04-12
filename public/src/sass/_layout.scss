@@ -87,6 +87,7 @@
 
         #accordion {
           margin-bottom: 0;
+          background-color: #000;
 
           #scriptList {
             li {
@@ -160,6 +161,9 @@ label {
 .btn + .btn {
   margin-left: 4px;
 }
+.btn-config {
+  display: none;
+}
 .modal {
   h4 { color: $textSecondary; }
   label { color: #22313F; }
@@ -225,6 +229,7 @@ label {
 }
 .page-actions {
   padding-top: 8px;
+  padding-right: 15px;
 }
 .navbar-default {
   background-color: #2C3E50;

@@ -1,0 +1,33 @@
+@media screen and (max-width: 768px) {
+  #appView {
+    #contentLeft {
+      width: 30%;
+    }
+    #contentPrimary {
+      width: 70%;
+
+      #rowPrimary {
+        #config {
+          display: none;
+          z-index: 9999;
+          position: fixed;
+          top: 40px;
+          left: 0;
+          right: 0;
+          width: 100%;
+          background-color: #000;
+        }
+        #view {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .btn + .btn {
+    margin-left: 8px;
+  }
+  .btn-config {
+    display: inline-block;
+  }
+  .console { max-height: 255px; }
+}

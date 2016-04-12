@@ -51,6 +51,10 @@ module.exports = function () {
           version: parent.find('[name=version]').val(),
           env: parent.find('[name=env]').val()
         });
+      })
+      .on('click', '.btn-config', function () {
+        var $config = $('#config');
+        $config.slideToggle();
       });
     },
     renderBreadcrumbs: _.template(

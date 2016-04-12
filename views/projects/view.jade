@@ -7,13 +7,17 @@ block actions
   if infos.urlLocal
     a.btn.btn-xs.btn-primary.btn-show-app(href=infos.urlLocal)
       i.glyphicon.glyphicon-eye-open 
-      span Show
+      span.hidden-xs Show
   a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") 
     i.glyphicon.glyphicon-trash
-    span Delete
+    span.hidden-xs Delete
   a.btn.btn-xs.btn-success.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")
     i.glyphicon.glyphicon-circle-arrow-down
-    span Install
+    span.hidden-xs Install
+  button.btn.btn-xs.btn-default.btn-config
+    i.glyphicon.glyphicon-cog
+    span.hidden-xs Config
+  
 
 block content
   script. 
