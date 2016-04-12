@@ -171,8 +171,8 @@ label {
 }
 .panel-default > .panel-heading {
   background-color: $sidebar;
-  filter: contrast(0.7);
-  -webkit-filter: contrast(0.7);
+  filter: contrast(0.9);
+  -webkit-filter: contrast(0.9);
   border: none;
   a {
     &, &:hover, &:focus, &:visited {
@@ -193,7 +193,8 @@ label {
   }
 }
 .list-group-item, .form-control {
-  background-color: #C5EFF7;
+  background-color: $sidebar;
+  color: $sidebarText;
 }
 .console {
   max-height: 400px;

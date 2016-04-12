@@ -5884,6 +5884,12 @@ i + span {
   margin-top: 20px;
   border-radius: inherit; }
 
+.list-group-item {
+  border: none; }
+
+.panel-title i + span {
+  margin-left: 16px; }
+
 .pkg-list .list-group-item {
   padding-top: 15px;
   padding-bottom: 15px; }
@@ -5914,7 +5920,7 @@ i + span {
     position: relative;
     width: 15%;
     background-color: #303030;
-    color: #0ce3ac; }
+    color: #e6e6e6; }
     #appView #contentLeft #tree {
       overflow: auto; }
       #appView #contentLeft #tree .node-tree {
@@ -6018,12 +6024,12 @@ label {
 .panel {
   background-color: #303030;
   border: none;
-  color: #0ce3ac; }
+  color: #e6e6e6; }
 
 .panel-default > .panel-heading {
   background-color: #303030;
-  filter: contrast(0.7);
-  -webkit-filter: contrast(0.7);
+  filter: contrast(0.9);
+  -webkit-filter: contrast(0.9);
   border: none; }
   .panel-default > .panel-heading a, .panel-default > .panel-heading a:hover, .panel-default > .panel-heading a:focus, .panel-default > .panel-heading a:visited {
     color: #fff; }
@@ -6032,10 +6038,11 @@ label {
     .panel-default > .panel-heading + .panel-collapse > .panel-body, .panel-default > .panel-heading + .panel-collapse > .panel-body label {
       color: #fff; }
     .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:hover, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:focus, .panel-default > .panel-heading + .panel-collapse > .panel-body .btn-link:visited {
-      color: #0ce3ac; }
+      color: #e6e6e6; }
 
 .list-group-item, .form-control {
-  background-color: #C5EFF7; }
+  background-color: #303030;
+  color: #e6e6e6; }
 
 .console {
   max-height: 400px;
