@@ -1,8 +1,8 @@
-module.exports = function(full) {
+module.exports = function (fullAction) {
   var fileView;
 
   return {
-    initialize: function() {
+    initialize: function () {
       fileView = ace.edit('editor');
       fileView.setReadOnly(true);
       fileView.$blockScrolling = Infinity;
@@ -12,30 +12,30 @@ module.exports = function(full) {
         enableSnippets: true,
         enableLiveAutocompletion: true
       });
-      this.events(full);
+      this.events();
       return fileView;
     },
-    events: function(full) {
+    events: function () {
       var file = this;
 
-      $(document).on('click', '.btn-edit-file', function() {
+      $(document).on('click', '.btn-edit-file', function () {
         fileView.setReadOnly(false);
         $('#fileActions').html(file.renderFileActions({
-          data: {project: ROOM, filePath: NavPath, advance: full}
+          data: {project: ROOM, filePath: NavPath, advance: fullAction}
         }));
       });
-      $(document).on('click', '.btn-save-file', function() {
+      $(document).on('click', '.btn-save-file', function () {
         $.post('/projects/' + ROOM + '/files', {
           filePath: NavPath,
           fileContent: fileView.getValue()
-        }).done(function() {
+        }).done(function () {
           $('#fileActions').html(file.renderFileEditAction());
           fileView.setReadOnly(true);
         });
       });
-      $(document).on('click', '.btn-cancel-file', function() {
+      $(document).on('click', '.btn-cancel-file', function () {
         $.get('/projects/' + ROOM + '/files', {filePath: NavPath})
-        .done(function(data) {
+        .done(function (data) {
           fileView.setReadOnly(true);
           fileView.setValue(data.fileContent, -1);
           $('#fileActions').html(file.renderFileEditAction());

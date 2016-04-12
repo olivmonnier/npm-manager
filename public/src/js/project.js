@@ -1,188 +1,48 @@
-var File = require('./file');
+var formatNavPath = require('./formatNavpath');
 
-function selectNodeIdByUrl() {
-  var hashUrl = $(location).attr('hash');
-  var arrayUrl = hashUrl.split(/\//);
-  var nodeEl = [];
-  var nodeId = 0;
-  arrayUrl.shift();
+var fileEvents = require('./project/file');
+var folderEvents = require('./project/folder');
+var treeDirAction = require('./project/treeDirectory');
+var ws = require('./project/websocket');
 
-  arrayUrl.forEach(function(node) {
-    nodeEl = $('#tree a:contains("' + node + '")');
-    if(nodeEl.length > 0) {
-      nodeId = nodeEl.closest('li').data('nodeid');
-
-      ['revealNode', 'selectNode', 'expandNode'].forEach(function(key) {
-        $('#tree').treeview(key, [nodeId, {silent: false }]);
-      });
-    }
-  });
-}
-
-function folderActionsAuth() {
-  $('#folderActions li [data-target="#modalRenameFolder"]')[(NavPath == '/') ? 'addClass' : 'removeClass']('hidden');
-  $('#folderActions li .btn-delete-folder')[(NavPath == '/') ? 'addClass' : 'removeClass']('hidden');
-}
-
-function formatNavPath(path) {
-  var formatPath = path.slice(1).split('/');
-
-  (formatPath[0]) ? formatPath.unshift(ROOM) : formatPath = [ROOM];
-
-  return formatPath;
-}
-
-function unfoldView (file) {
-  $('#fileView')[file ? 'fadeIn' : 'fadeOut']('slow');
-  $('#folderView')[file ? 'fadeOut' : 'fadeIn']('slow');
-}
-
-module.exports = function() {
+module.exports = function () {
   window.NavPath = '/';
   var project;
-  var fileView = File(true).initialize();
-  var optionsTree = {
-    data: TreeDir,
-    showBorder: false,
-    collapseIcon: 'glyphicon glyphicon-triangle-bottom',
-    expandIcon: 'glyphicon glyphicon-triangle-right',
-    enableLinks: true,
-    highlightSelected: false,
-    onNodeSelected: function(event, data) {
-      NavPath = '/' + data.href.slice(2);
-      nodeSelected = data.nodeId;
-      parentNodeSelected = $('#tree').treeview('getParent', data.nodeId).nodeId;
-
-      if(!data.nodes) {
-
-        $.get('/projects/' + ROOM + '/files', {filePath: NavPath})
-        .done(function(data) {
-          fileView.setValue(data.fileContent, -1);
-          fileView.session.setMode('ace/mode/' + data.extension);
-          fileView.setReadOnly(true);
-          $('#fileActions').html(File(true).renderFileEditAction());
-          unfoldView(true);
-        });
-      } else {
-        $('#folderView .breadcrumb').html(project.renderBreadcrumbs({
-          data: {files: formatNavPath(NavPath)}
-        }));
-        folderActionsAuth();
-        unfoldView(false);
-      }
-    }
-  };
 
   return {
-    initialize: function() {
+    initialize: function () {
       project = this;
-      var nodeSelected = 0;
-      var parentNodeSelected = 0;
 
-      $('#tree').treeview(optionsTree);
-      selectNodeIdByUrl();
-      folderActionsAuth();
+      var treeDir = treeDirAction(project);
+      treeDir.initialize();
       project.events();
+      project.updateBreadcrumb(NavPath);
+      fileEvents(treeDir);
+      folderEvents(treeDir);
+      ws(project);
     },
-    updateTreeDir: function(data, nodeExist) {
-      nodeExist = nodeExist || false;
-      optionsTree.data = data.tree;
-      TreeDir = data.tree;
-      $('#tree').treeview(optionsTree);
-      ['revealNode', 'selectNode', 'expandNode'].forEach(function (key) {
-        $('#tree').treeview(key, [(nodeExist) ? nodeSelected : parentNodeSelected, {silent: false }]);
-      });
+    updateBreadcrumb: function (navPath) {
       $('#folderView .breadcrumb').html(project.renderBreadcrumbs({
-        data: {files: formatNavPath(NavPath)}
+        data: {files: formatNavPath(navPath)}
       }));
     },
-    events: function() {
-      Socket.on('init', function(data) {
-        var roomIndex = _.findIndex(data, function(rooms) {return rooms.name == ROOM; });
-
-        if (data[roomIndex]) {
-          $('.console').append(project.renderLogs({
-            data: {logs: data[roomIndex].logs}
-          }))
-          .scrollTop($('.console')[0].scrollHeight);
-          $('#processes').append(project.renderProcesses({
-            data: {processes: data[roomIndex].processes}
-          }));
-        }
-      })
-      .on('redirect', function(data) {
-        document.location.href = data;
-      })
-      .on('config', function(data) {
-        $('textarea[name=configFile]').html(JSON.stringify(data, null, 2));
-      })
-      .on('log', function(data) {
-        $('.console').append(project.renderLogs({
-          data: {logs: [data]}
-        }))
-        .scrollTop($('.console')[0].scrollHeight);
-      })
-      .on('process', function(data) {
-        $('#processes').append(project.renderProcesses({
-          data: {processes: [data]}
-        }));
-      })
-      .on('killProcess', function(pid) {
-        $('[data-process=' + pid + ']').remove();
-      })
-      .on('pkgAdd', function(data) {
-        $('.pkg-list.' + data.env).append(project.renderPackages({
-          data: {packages: [data]}
-        }));
-      })
-      .on('pkgDelete', function(data) {
-        $('.pkg-list.' + data.env).find('[data-pkg=' + data.name + ']').remove();
-      })
-      .on('packages', function(data) {
-        $('.pkg-list.dev').html(project.renderPackages({
-          data: {packages: data.dev}
-        }));
-        $('.pkg-list.prod').html(project.renderPackages({
-          data: {packages: data.prod}
-        }));
-      })
-      .on('scripts', function(data) {
-        $('#scriptList').html(project.renderScripts({
-          data: {scripts: data}
-        }));
-      });
-      $('#folderView .breadcrumb').html(project.renderBreadcrumbs({
-        data: {files: formatNavPath(NavPath)}
-      }));
-      $(document).on('click', '.btn-show-app', function(e) {
+    events: function () {
+      $(document).on('click', '.btn-show-app', function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
 
-        $('#contentAppShow').removeClass('hide').animate({bottom: 0}, 1000, function() {
+        $('#contentAppShow').removeClass('hide').animate({bottom: 0}, 1000, function () {
           $(this).append(_.template(
             '<iframe src="<%= data.url %>"></iframe>'
           )({data: {url: url}}));
         });
       })
-      .on('click', '.btn-notshow-app', function(e) {
-        $('#contentAppShow').animate({bottom: '999px'}, 1000, function() {
+      .on('click', '.btn-notshow-app', function (e) {
+        $('#contentAppShow').animate({bottom: '999px'}, 1000, function () {
           $(this).addClass('hide').find('iframe').remove();
         });
       })
-      .on('click', '.btn-add-folder', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var folderName = $(this).closest('form').find('input[name="folderName"]').val();
-
-        $.get('/projects/' + ROOM + '/folders', {
-          folderPath: NavPath + '/' + folderName,
-          action: 'add'
-        }).done(function(data) {
-          project.updateTreeDir(data, true);
-          $this.closest('.modal').modal('hide');
-        });
-      })
-      .on('click', '.btn-add-pkg', function() {
+      .on('click', '.btn-add-pkg', function () {
         var parent = $(this).parent();
 
         $.get('/projects/' + ROOM + '/packages', {
@@ -190,52 +50,6 @@ module.exports = function() {
           name: parent.find('[name=pkgName]').val(),
           version: parent.find('[name=version]').val(),
           env: parent.find('[name=env]').val()
-        });
-      })
-      .on('click', '.btn-rename-folder', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var folderName = $(this).closest('form').find('input[name="folderName"]').val();
-
-        $.get('/projects/' + ROOM + '/folders', {
-          action: 'rename',
-          folderPath: NavPath,
-          folderName: folderName
-        }).done(function(data) {
-          NavPath = '';
-          project.updateTreeDir(data, true);
-          $this.closest('.modal').modal('hide');
-        });
-      })
-      .on('click', '.btn-delete-folder', function() {
-        $.get('/projects/' + ROOM + '/folders', {
-          action: 'delete',
-          folderPath: NavPath
-        }).done(function(data) {
-          NavPath = '';
-          project.updateTreeDir(data, false);
-        });
-      })
-      .on('click', '.btn-add-file', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var fileName = $(this).closest('form').find('input[name="fileName"]').val();
-
-        $.get('/projects/' + ROOM + '/files', {
-          filePath: NavPath + '/' + fileName,
-          action: 'add'
-        }).done(function(data) {
-          project.updateTreeDir(data);
-          $this.closest('.modal').modal('hide');
-        });
-      })
-      .on('click', '.btn-delete-file', function() {
-        $.get('/projects/' + ROOM + '/files', {
-          filePath: NavPath,
-          action: 'delete'
-        }).done(function(data) {
-          project.updateTreeDir(data, false);
-          unfoldView(false);
         });
       });
     },

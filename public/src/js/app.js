@@ -1,32 +1,33 @@
 var Projects = require('./projects');
 var Project = require('./project');
-var File = require('./file');
+var Editor = require('./editor');
 
 window.Socket = io.connect();
 
-Socket.on('connect', function(data) {
+Socket.on('connect', function (data) {
   if (ROOM !== null) {
     Socket.emit('room', ROOM);
   }
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
   if ($('#accordion').length > 0) Project().initialize();
   if ($('#project-list').length > 0) Projects().initialize();
 
   if ($('body > #fileView').length > 0) {
-    var fileEdit = File(false);
+    var fileEdit = Editor(false);
 
     fileEdit.initialize();
     $('#fileActions').html(fileEdit.renderFileEditAction());
   };
 
-  $(document).on('click', '.btn-ajax', function(e) {
+  $(document).on('click', '.btn-ajax', function (e) {
     e.preventDefault();
 
     $.get($(this).attr('href'));
   });
-  $(document).on('click', '.submit-ajax', function(e) {
+
+  $(document).on('click', '.submit-ajax', function (e) {
     e.preventDefault();
 
     var form = $(this).closest('form');
@@ -35,8 +36,8 @@ $(document).ready(function() {
     var redirect = $(this).data('redirect');
 
     $.post(url, datas)
-      .done(function() {
-        if(redirect) document.location.href = redirect;
+      .done(function () {
+        if (redirect) document.location.href = redirect;
       });
   });
 });

@@ -1,10 +1,10 @@
-module.exports = function() {
+module.exports = function () {
   return {
-    initialize: function() {
+    initialize: function () {
       var projects = this;
 
-      Socket.on('init', function(data) {
-        data.forEach(function(project) {
+      Socket.on('init', function (data) {
+        data.forEach(function (project) {
           if (project.processes.length > 0) {
             $('[data-project=' + project.name + '] ul.processing').append(projects.renderProcesses({
               data: {project: project.name, processes: project.processes}
@@ -12,7 +12,7 @@ module.exports = function() {
           }
         });
       })
-      .on('killProcess', function(pid) {
+      .on('killProcess', function (pid) {
         $('[data-process=' + pid + ']').remove();
       });
     },
