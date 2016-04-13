@@ -34,7 +34,9 @@ module.exports = function (projectObj) {
             fileView.setValue(data.fileContent, -1);
             fileView.session.setMode('ace/mode/' + data.extension);
             fileView.setReadOnly(true);
-            $('#fileActions').html(Editor(true).renderFileEditAction());
+            $('#fileActions').html(Editor(true).renderFilePrimaryActions({
+              data: {advance: true, project: ROOM, filePath: NavPath}
+            }));
             unfoldView(true);
           });
       } else {

@@ -8,13 +8,13 @@ block actions
     a.btn.btn-xs.btn-primary.btn-show-app(href=infos.urlLocal)
       i.glyphicon.glyphicon-eye-open 
       span.hidden-xs Show
-  a.btn.btn-xs.btn-danger(href="/projects/" + infos.name + "/delete") 
+  a.btn.btn-xs.btn-primary(href="/projects/" + infos.name + "/delete") 
     i.glyphicon.glyphicon-trash
     span.hidden-xs Delete
-  a.btn.btn-xs.btn-success.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")
+  a.btn.btn-xs.btn-primary.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")
     i.glyphicon.glyphicon-circle-arrow-down
     span.hidden-xs Install
-  button.btn.btn-xs.btn-default.btn-config
+  button.btn.btn-xs.btn-primary.btn-config
     i.glyphicon.glyphicon-cog
     span.hidden-xs Config
   

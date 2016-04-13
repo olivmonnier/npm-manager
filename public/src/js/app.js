@@ -18,7 +18,7 @@ $(document).ready(function () {
     var fileEdit = Editor(false);
 
     fileEdit.initialize();
-    $('#fileActions').html(fileEdit.renderFileEditAction());
+    $('#fileActions').html(fileEdit.renderFilePrimaryActions({data: {advance: false}}));
   };
 
   $(document).on('click', '.btn-ajax', function (e) {
