@@ -73,7 +73,7 @@ module.exports = function (fullAction) {
       '<li>' +
       '<a class="btn btn-xs btn-primary btn-toggle-file" href="/projects/<%= data.project %>/file?path=<%= data.filePath %>" target="_blank">' +
       '<i class="glyphicon glyphicon-new-window"></i>' +
-      '<span>Window</span>' +
+      '<span>Fullscreen</span>' +
       '</a>' +
       '</li>' +
       '<% } %>' +
