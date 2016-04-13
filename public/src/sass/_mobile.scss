@@ -36,7 +36,11 @@
   #appView {
     #contentPrimary {
       #rowPrimary { height: 100%; }
-      #rowFooter { display: none; }
+      #rowFooter {
+        height: 0%;
+
+        .btn-show-console, #logs { display: none; }
+      }
     }
   }
   .page-actions {

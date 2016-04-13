@@ -5881,7 +5881,6 @@ i + span {
   min-height: 40px; }
 
 .breadcrumb {
-  margin-top: 20px;
   border-radius: inherit; }
 
 .list-group-item {
@@ -5954,6 +5953,7 @@ i + span {
         #appView #contentPrimary #rowPrimary #view #folderView {
           position: relative;
           height: 100%;
+          padding-top: 20px;
           margin-left: 15px;
           margin-right: 15px; }
           #appView #contentPrimary #rowPrimary #view #folderView #folderActions {
@@ -6130,6 +6130,8 @@ label {
   #appView #contentPrimary #rowPrimary {
     height: 100%; }
   #appView #contentPrimary #rowFooter {
-    display: none; }
+    height: 0%; }
+    #appView #contentPrimary #rowFooter .btn-show-console, #appView #contentPrimary #rowFooter #logs {
+      display: none; }
   .page-actions .btn-logs {
     display: inline-block; } }
