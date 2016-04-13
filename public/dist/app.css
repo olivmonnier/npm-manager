@@ -5890,6 +5890,11 @@ i + span {
 .panel-title i + span {
   margin-left: 16px; }
 
+.btn-link {
+  color: #fff; }
+  .btn-link:hover, .btn-link:focus, .btn-link:visited {
+    color: #e6e6e6; }
+
 .pkg-list .list-group-item {
   padding-top: 15px;
   padding-bottom: 15px; }
@@ -5965,12 +5970,12 @@ i + span {
           #appView #contentPrimary #rowPrimary #config #accordion #scriptList li {
             margin-top: 5px;
             margin-bottom: 5px; }
-    #appView #contentPrimary #rowfooter {
+    #appView #contentPrimary #rowFooter {
       position: relative;
       height: 20%; }
-      #appView #contentPrimary #rowfooter #logs {
+      #appView #contentPrimary #rowFooter #logs {
         height: 100%; }
-      #appView #contentPrimary #rowfooter .btn-show-console {
+      #appView #contentPrimary #rowFooter .btn-show-console {
         position: absolute;
         top: 0;
         right: 15px; }
@@ -6075,6 +6080,8 @@ label {
 .page-actions {
   padding-top: 8px;
   padding-right: 15px; }
+  .page-actions .btn-logs {
+    display: none; }
 
 .navbar-default {
   background-color: #2C3E50;
@@ -6118,3 +6125,11 @@ label {
     display: inline-block; }
   .console {
     max-height: 255px; } }
+
+@media screen and (max-height: 480px) and (min-width: 375px) {
+  #appView #contentPrimary #rowPrimary {
+    height: 100%; }
+  #appView #contentPrimary #rowFooter {
+    display: none; }
+  .page-actions .btn-logs {
+    display: inline-block; } }

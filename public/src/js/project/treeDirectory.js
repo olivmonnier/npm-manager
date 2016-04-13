@@ -25,7 +25,7 @@ module.exports = function (projectObj) {
     highlightSelected: false,
     onNodeSelected: function (event, data) {
       NavPath = '/' + data.href.slice(2);
-      nodeSelected = data.nodeId;
+      nodeSelected = $('#tree').treeview('getNode', data.nodeId);
       parentNodeSelected = $('#tree').treeview('getParent', data.nodeId).nodeId;
 
       if(!data.nodes) {
@@ -43,6 +43,9 @@ module.exports = function (projectObj) {
         $('#folderView .breadcrumb').html(project.renderBreadcrumbs({
           data: {files: formatNavPath(NavPath)}
         }));
+        if (!nodeSelected.state.expanded) {
+          $('#tree').treeview('expandNode', [data.nodeId, {silent: false }]);
+        }
         folderActionsAuth();
         unfoldView(false);
       }

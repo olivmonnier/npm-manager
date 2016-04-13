@@ -37,6 +37,6 @@ gulp.task('server', ['sass', 'concat:vendor', 'build:js'], function () {
     gulp.watch(['./views/**/*.jade'], server.notify);
     gulp.watch(['./public/src/sass/**/*.scss'], ['sass']);
 
-    gulp.watch(['./public/src/js/*.js'], ['build:js']);
+    gulp.watch(['./public/src/js/**/*.js'], ['build:js']);
     gulp.watch(['app.js', 'routes/**/*.js'], [server.run]);
 });

@@ -17,6 +17,9 @@ block actions
   button.btn.btn-xs.btn-primary.btn-config
     i.glyphicon.glyphicon-cog
     span.hidden-xs Config
+  button.btn.btn-xs.btn-primary.btn-logs(data-toggle="modal", data-target="#modalConsole")
+    i.glyphicon.glyphicon-console
+    span.hidden-xs Logs
   
 
 block content
@@ -97,7 +100,7 @@ block content
                   
         #config
           include ./config.jade
-      #rowfooter
+      #rowFooter
         button.btn.btn-lg.btn-link.btn-show-console(data-toggle="modal", data-target="#modalConsole"): i.glyphicon.glyphicon-eye-open
         #logs.console.well
         #modalConsole.modal.fade

@@ -9,3 +9,8 @@
 .panel-title {
   i + span { margin-left: 16px; }
 }
+.btn-link {
+  color: #fff;
+
+  &:hover, &:focus, &:visited { color: #e6e6e6; }
+}

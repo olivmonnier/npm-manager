@@ -32,3 +32,14 @@
   }
   .console { max-height: 255px; }
 }
+@media screen and (max-height: 480px) and (min-width: 375px) {
+  #appView {
+    #contentPrimary {
+      #rowPrimary { height: 100%; }
+      #rowFooter { display: none; }
+    }
+  }
+  .page-actions {
+    .btn-logs { display: inline-block; }
+  }
+}
