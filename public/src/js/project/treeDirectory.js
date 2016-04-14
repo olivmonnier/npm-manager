@@ -11,6 +11,19 @@ function unfoldView (file) {
   $('#folderView')[file ? 'fadeOut' : 'fadeIn']('slow');
 }
 
+function toggleExpandFolder () {
+  $(document).on('click', '.node-tree', function () {
+    var $this = $(this);
+    var nodeId = $this.data('nodeid');
+    var nodeSelected = $('#tree').treeview('getNode', nodeId);
+
+    if (nodeSelected.nodes) {
+      $('#tree').treeview('selectNode', [ nodeSelected, { silent: false } ]);
+      $('#tree').treeview('toggleNodeExpanded', [nodeSelected, {silent: false }]);
+    }
+  });
+}
+
 module.exports = function (projectObj) {
   var project = projectObj;
   var fileView = Editor(true).initialize();
@@ -43,9 +56,6 @@ module.exports = function (projectObj) {
         $('#folderView .breadcrumb').html(project.renderBreadcrumbs({
           data: {files: formatNavPath(NavPath)}
         }));
-        if (!nodeSelected.state.expanded) {
-          $('#tree').treeview('expandNode', [data.nodeId, {silent: false }]);
-        }
         folderActionsAuth();
         unfoldView(false);
       }
@@ -74,6 +84,7 @@ module.exports = function (projectObj) {
         }
       });
 
+      toggleExpandFolder();
       folderActionsAuth();
     },
     updateTreeDir: function (data, nodeExist) {
