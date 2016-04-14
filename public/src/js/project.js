@@ -56,7 +56,23 @@ module.exports = function () {
       })
       .on('click', '.btn-config', function () {
         var $config = $('#config');
-        $config.slideToggle();
+        $config.slideToggle('normal', function () {
+          if (!$config.is(':visible')) {
+            $config.removeAttr('style');
+          }
+        });
+      })
+      .on('click', '.btn-tree', function () {
+        var $contentLeft = $('#contentLeft');
+
+        if ($contentLeft.attr('style')) {
+          $contentLeft.animate({'left': '-250px'}, 'normal', function () {
+            $contentLeft.removeAttr('style');
+          });
+        } else {
+          $contentLeft.animate({'left': '0'}, 'normal');
+        }
+
       });
     },
     renderBreadcrumbs: _.template(

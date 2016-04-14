@@ -5877,6 +5877,11 @@ i + span {
   display: -ms-flexbox;
   display: flex; }
 
+.dropdown-menu {
+  background-color: #34495E; }
+  .dropdown-menu > li > a {
+    color: #e6e6e6; }
+
 .navbar {
   min-height: 40px; }
 
@@ -5890,7 +5895,7 @@ i + span {
   margin-left: 16px; }
 
 .btn-link {
-  color: #fff; }
+  color: #e6e6e6; }
   .btn-link:hover, .btn-link:focus, .btn-link:visited {
     color: #e6e6e6; }
 
@@ -5930,7 +5935,7 @@ i + span {
       #appView #contentLeft #tree .node-tree {
         white-space: nowrap; }
       #appView #contentLeft #tree .list-group {
-        display: block;
+        display: table;
         width: 100%; }
         #appView #contentLeft #tree .list-group .list-group-item {
           background-color: transparent; }
@@ -6080,7 +6085,7 @@ label {
 .page-actions {
   padding-top: 8px;
   padding-right: 15px; }
-  .page-actions .btn-logs {
+  .page-actions .btn-logs, .page-actions .btn-tree {
     display: none; }
 
 .navbar-default {
@@ -6104,12 +6109,17 @@ label {
 
 @media screen and (max-width: 768px) {
   #appView #contentLeft {
-    width: 30%; }
+    z-index: 10;
+    position: fixed;
+    top: 40px;
+    bottom: 0;
+    left: -250px;
+    width: 250px; }
   #appView #contentPrimary {
-    width: 70%; }
+    width: 100%; }
     #appView #contentPrimary #rowPrimary #config {
       display: none;
-      z-index: 9999;
+      z-index: 10;
       position: absolute;
       top: 0;
       bottom: 0;
@@ -6124,7 +6134,9 @@ label {
   .btn-config {
     display: inline-block; }
   .console {
-    max-height: 255px; } }
+    max-height: 255px; }
+  .page-actions .btn-tree {
+    display: inline-block; } }
 
 @media screen and (max-height: 480px) and (min-width: 375px) {
   #appView #contentPrimary #rowPrimary {
