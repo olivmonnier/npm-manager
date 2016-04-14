@@ -32,9 +32,6 @@
   .btn + .btn {
     margin-left: 8px;
   }
-  .btn-config {
-    display: inline-block;
-  }
   .console { max-height: 255px; }
   .page-actions {
     .btn-tree { display: inline-block; }
@@ -50,8 +47,5 @@
         .btn-show-console, #logs { display: none; }
       }
     }
-  }
-  .page-actions {
-    .btn-logs { display: inline-block; }
   }
 }

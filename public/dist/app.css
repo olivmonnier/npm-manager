@@ -6026,9 +6026,6 @@ label {
 .btn + .btn {
   margin-left: 4px; }
 
-.btn-config {
-  display: none; }
-
 .modal h4 {
   color: #000; }
 
@@ -6085,8 +6082,6 @@ label {
 .page-actions {
   padding-top: 8px;
   padding-right: 15px; }
-  .page-actions .btn-logs, .page-actions .btn-tree {
-    display: none; }
 
 .navbar-default {
   background-color: #2C3E50;
@@ -6131,8 +6126,6 @@ label {
       width: 100%; }
   .btn + .btn {
     margin-left: 8px; }
-  .btn-config {
-    display: inline-block; }
   .console {
     max-height: 255px; }
   .page-actions .btn-tree {
@@ -6144,6 +6137,4 @@ label {
   #appView #contentPrimary #rowFooter {
     height: 0%; }
     #appView #contentPrimary #rowFooter .btn-show-console, #appView #contentPrimary #rowFooter #logs {
-      display: none; }
-  .page-actions .btn-logs {
-    display: inline-block; } }
+      display: none; } }
