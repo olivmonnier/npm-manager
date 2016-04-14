@@ -23,11 +23,17 @@ var formatTreeview = function(data) {
   var tree = [];
 
   loopChildren(data.children, tree);
-  return tree;
+
+  return tree.filter(function (k) { return k.text !== 'package.json' });
 }
 function loopChildren(children, parent) {
-  children.forEach(function(child) {
-    parent.push(insertChild(child));
+  var childrenFolders = children.filter(function (child) { return child.type === 'directory' });
+  var childrenFiles = children.filter(function (child) { return child.type === 'file' });
+
+  [childrenFolders, childrenFiles].forEach(function (childrenType) {
+    childrenType.forEach(function (child) {
+      parent.push(insertChild(child));
+    });
   });
 }
 function insertChild(child) {
