@@ -5899,6 +5899,9 @@ i + span {
   .btn-link:hover, .btn-link:focus, .btn-link:visited {
     color: #e6e6e6; }
 
+.btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:visited {
+  background-color: inherit; }
+
 .pkg-list .list-group-item {
   padding-top: 15px;
   padding-bottom: 15px; }
@@ -6102,7 +6105,7 @@ label {
   background-color: #303030;
   border: none; }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 991px) {
   #appView #contentLeft {
     z-index: 10;
     position: fixed;
@@ -6124,14 +6127,19 @@ label {
       background-color: #000; }
     #appView #contentPrimary #rowPrimary #view {
       width: 100%; }
+      #appView #contentPrimary #rowPrimary #view #fileView #fileActions {
+        top: initial;
+        bottom: 0; }
   .btn + .btn {
     margin-left: 8px; }
   .console {
     max-height: 255px; }
-  .page-actions .btn-tree {
-    display: inline-block; } }
+  .page-actions {
+    padding-top: 2px; }
+    .page-actions .btn-tree {
+      display: inline-block; } }
 
-@media screen and (max-height: 480px) and (min-width: 375px) {
+@media screen and (max-height: 600px), (max-width: 480px) {
   #appView #contentPrimary #rowPrimary {
     height: 100%; }
   #appView #contentPrimary #rowFooter {

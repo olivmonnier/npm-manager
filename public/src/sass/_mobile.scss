@@ -1,4 +1,4 @@
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 991px) {
   #appView {
     #contentLeft {
       z-index: 10;
@@ -25,6 +25,13 @@
         }
         #view {
           width: 100%;
+
+          #fileView {
+            #fileActions {
+              top: initial;
+              bottom: 0;
+            }
+          }
         }
       }
     }
@@ -34,10 +41,12 @@
   }
   .console { max-height: 255px; }
   .page-actions {
+    padding-top: 2px;
+
     .btn-tree { display: inline-block; }
   }
 }
-@media screen and (max-height: 480px) and (min-width: 375px) {
+@media screen and (max-height: 600px), (max-width: 480px) {
   #appView {
     #contentPrimary {
       #rowPrimary { height: 100%; }

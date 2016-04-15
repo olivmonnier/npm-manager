@@ -71,13 +71,13 @@ module.exports = function (fullAction) {
     renderFilePrimaryActions: _.template(
       '<% if (data.advance){ %>' +
       '<li>' +
-      '<a class="btn btn-xs btn-primary btn-toggle-file" href="/projects/<%= data.project %>/file?path=<%= data.filePath %>" target="_blank">' +
+      '<a class="btn btn-primary btn-toggle-file" href="/projects/<%= data.project %>/file?path=<%= data.filePath %>" target="_blank">' +
       '<i class="glyphicon glyphicon-new-window"></i>' +
       '<span>Fullscreen</span>' +
       '</a>' +
       '</li>' +
       '<% } %>' +
-      '<li><button class="btn btn-xs btn-primary btn-edit-file">' +
+      '<li><button class="btn btn-primary btn-edit-file">' +
       '<i class="glyphicon glyphicon-edit"></i>' +
       '<span>Edit</span>' +
       '</button></li>'

@@ -7,8 +7,9 @@ var junk = require('junk');
 var _ = require('lodash');
 var formatFile = require('./formatFile');
 var Pkg = require('./pkg.js');
+var formatTreeview = require('./treeDirectory');
 
-function packageContent(args) {
+var packageContent = function (args) {
   return {
     "name": args.name,
     "version": args.version || "0.0.1",
@@ -17,37 +18,6 @@ function packageContent(args) {
     "scripts": {},
     "author": args.author || ""
   }
-}
-
-var formatTreeview = function(data) {
-  var tree = [];
-
-  loopChildren(data.children, tree);
-
-  return tree.filter(function (k) { return k.text !== 'package.json' });
-}
-function loopChildren(children, parent) {
-  var childrenFolders = children.filter(function (child) { return child.type === 'directory' });
-  var childrenFiles = children.filter(function (child) { return child.type === 'file' });
-
-  [childrenFolders, childrenFiles].forEach(function (childrenType) {
-    childrenType.forEach(function (child) {
-      parent.push(insertChild(child));
-    });
-  });
-}
-function insertChild(child) {
-  var newChild = {
-    text: child.name,
-    href: '#/' + child.path.replace(/\\/g, '/'),
-    icon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-close' : 'glyphicon glyphicon-file',
-    selectedIcon: (child.type == 'directory') ? 'glyphicon glyphicon-folder-open' : 'glyphicon glyphicon-open-file'
-  }
-  if (child.children) {
-    newChild['nodes'] = [];
-    loopChildren(child.children, newChild.nodes);
-  }
-  return newChild;
 }
 
 module.exports = function(projectName, io) {

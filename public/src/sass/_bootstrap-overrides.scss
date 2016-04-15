@@ -19,3 +19,8 @@
 
   &:hover, &:focus, &:visited { color: #e6e6e6; }
 }
+.btn-primary {
+  &, &:hover, &:focus, &:visited {
+    background-color: inherit;
+  }
+}
