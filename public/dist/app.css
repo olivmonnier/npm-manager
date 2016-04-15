@@ -5900,7 +5900,8 @@ i + span {
     color: #e6e6e6; }
 
 .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:visited {
-  background-color: inherit; }
+  background-color: inherit;
+  border-color: transparent; }
 
 .pkg-list .list-group-item {
   padding-top: 15px;
