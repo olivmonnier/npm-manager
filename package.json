@@ -1,12 +1,12 @@
 {
-  "name": "npm-manager",
+  "name": "npmpi",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "gulp server"
   },
-  "author": "",
+  "author": "olivmonnier",
   "license": "ISC",
   "dependencies": {
     "ace-builds": "^1.2.2",

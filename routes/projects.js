@@ -41,10 +41,22 @@ module.exports = function(io) {
 
   router.route('/:name')
     .get(function(req, res) {
+      var infos = Pkg(req.params.name).infos();
+      var projectName = req.params.name;
+      var config = {};
+
+      if (infos.name !== projectName) {
+        config.configFile = JSON.stringify(infos);
+        Project(projectName, io).update(config);
+        projectName = infos.name;
+        
+        return res.redirect('/projects/' + projectName);
+      }
+
       return res.render('projects/view', {
-        title: 'Project ' + req.params.name,
-        infos: Pkg(req.params.name).infos(),
-        tree: Project(req.params.name).tree()
+        title: 'Project ' + projectName,
+        infos: infos,
+        tree: Project(projectName).tree()
       });
     })
     .post(function(req, res) {
@@ -94,6 +106,7 @@ module.exports = function(io) {
 
       return res.status(200).end();
     });
+
   router.route('/:name/files')
     .get(function(req, res) {
       var filePath = req.query.filePath;

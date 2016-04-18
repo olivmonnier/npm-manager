@@ -65,14 +65,23 @@ module.exports = function () {
       .on('click', '.btn-tree', function () {
         var $contentLeft = $('#contentLeft');
 
-        if ($contentLeft.attr('style')) {
+        if ($contentLeft.hasClass('opened')) {
           $contentLeft.animate({'left': '-250px'}, 'normal', function () {
-            $contentLeft.removeAttr('style');
+            $contentLeft.removeAttr('style').removeClass('opened');
           });
         } else {
-          $contentLeft.animate({'left': '0'}, 'normal');
+          $contentLeft.animate({'left': '0'}, 'normal').addClass('opened');
         }
 
+      })
+      .on('click', '#contentPrimary', function (e) {
+        var $contentLeft = $('#contentLeft');
+
+        if (e.target.id !== 'tree' && $contentLeft.hasClass('opened')) {
+          $contentLeft.animate({'left': '-250px'}, 'normal', function () {
+            $contentLeft.removeAttr('style').removeClass('opened');
+          });
+        }
       });
     },
     renderBreadcrumbs: _.template(
