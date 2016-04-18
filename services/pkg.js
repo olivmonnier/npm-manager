@@ -9,6 +9,10 @@ module.exports = function(project, io) {
 
   return {
     add: function(pkgName, version, env) {
+      if (arguments.length == 2) {
+        version = 'latest';
+        env = arguments[1];
+      }
       var self = this;
       var saveEnv = (env == 'dev') ? '-D' : '-S';
       var child = exec('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName + '@' + version, function(error, stdout, stderr) {
