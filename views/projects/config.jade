@@ -73,3 +73,11 @@
             textarea.form-control(rows="20", name="configFile")!= JSON.stringify(infos, null, 2)
           .form-group
             button.btn.btn-primary.submit-ajax(data-url="/projects/" + infos.name) Update
+  .panel.panel-default
+    .panel-heading
+      a(role="button", data-toggle="collapse", data-parent="#accordion", href="#collapseFour", expanded="true", aria-controls="collapseFour")
+        h2.panel-title
+          i.glyphicon.glyphicon-edit
+          span Editor
+    #collapseFour.panel-collapse.collapse(role="tabpanel")
+      .panel-body  
