@@ -10,12 +10,14 @@ module.exports = function(project, io) {
   return {
     add: function(pkgName, version, env) {
       if (arguments.length == 2) {
-        version = 'latest';
+        version = '';
         env = arguments[1];
+      } else {
+        version = '@' + version;
       }
       var self = this;
       var saveEnv = (env == 'dev') ? '-D' : '-S';
-      var child = exec('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName + '@' + version, function(error, stdout, stderr) {
+      var child = exec('cd ' + cmdPath + ' && npm install ' + saveEnv + ' ' + pkgName + version, function(error, stdout, stderr) {
         var config = self.infos();
 
         io.to(project).emit('config', config);

@@ -31,6 +31,7 @@ module.exports = function(projectName, io) {
     create: function(project) {
       fs.mkdirSync(path.join(cmdPath));
       fs.writeFileSync(path.join(cmdPath +'/package.json'), JSON.stringify(packageContent(project), null, 2), 'utf8');
+      ROOMS.push({ name: projectName, logs: [], processes: [] });
     },
     clone: function(gitUrl) {
       var self = this;
