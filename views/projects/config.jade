@@ -81,3 +81,16 @@
           span Editor
     #collapseFour.panel-collapse.collapse(role="tabpanel")
       .panel-body  
+        form
+          .form-group
+            label Font size (in px)
+            input.form-control(type="text", name="fontSizeEditor", placeholder="12")
+          .form-group
+            label Tab size
+            input.form-control(type="text", name="tabSizeEditor", placeholder="4")
+          .checkbox
+            label 
+              input(type="checkbox", name="wrapEditor")
+              | Wrap mode
+          .form-group
+            button.btn.btn-primary.btn-editor-options Update

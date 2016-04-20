@@ -15,9 +15,9 @@ app.locals.capitalize = function(value) {
 }
 
 app.route('/')
-    .get(function(req, res) {
-       return res.render('index'); 
-    });
+  .get(function(req, res) {
+    return res.render('index'); 
+  });
     
 var server = http.createServer(app);
 
