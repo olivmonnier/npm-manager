@@ -41,6 +41,9 @@ module.exports = function(io) {
 
   router.route('/:name')
     .get(function(req, res) {
+      if (!Project(req.params.name).hasPackageJson()) {
+        return res.redirect('/projects');
+      }
       var infos = Pkg(req.params.name).infos();
       var projectName = req.params.name;
       var config = {};
@@ -49,7 +52,7 @@ module.exports = function(io) {
         config.configFile = JSON.stringify(infos);
         Project(projectName, io).update(config);
         projectName = infos.name;
-        
+
         return res.redirect('/projects/' + projectName);
       }
 

@@ -1,7 +1,7 @@
 @media screen and (max-width: 991px) {
   #appView {
     #contentLeft {
-      z-index: 10;
+      z-index: 20;
       position: fixed;
       top: 40px;
       bottom: 0;
@@ -14,7 +14,7 @@
       #rowPrimary {
         #config {
           display: none;
-          z-index: 10;
+          z-index: 20;
           position: absolute;
           top: 0;
           bottom: 0;

@@ -24,6 +24,14 @@ module.exports = function(projectName, io) {
   var cmdPath = 'projects/' + projectName;
 
   return {
+    hasPackageJson: function () {
+      try {
+        this.file.content('/package.json');
+      } catch (e) {
+        return false;
+      }
+      return true;
+    },
     list: function() {
       var files = fs.readdirSync(path.join('projects'));
       return files.filter(junk.not);
