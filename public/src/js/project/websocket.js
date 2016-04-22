@@ -24,6 +24,9 @@ module.exports = function (project) {
     }))
     .scrollTop($('.console')[0].scrollHeight);
   })
+  .on('cleanLogs', function (data) {
+    if (data) $('.console').empty();
+  })
   .on('process', function (data) {
     $('#processes').append(project.renderProcesses({
       data: {processes: [data]}

@@ -7,9 +7,13 @@
           span Run scripts
     #collapseOne.panel-collapse.collapse.in(role="tabpanel")
       .panel-body
+        ul.list-inline
+          li: a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/logs?action=clean") 
+            i.glyphicon.glyphicon-erase
+            span Clean logs
         h3 Running
         ul.list-inline#processes
-        h3 List
+        h3 Tasks
         ul.list-inline#scriptList
           each script, task in infos.scripts
             li: a.btn.btn-primary.btn-ajax(href="/projects/" + infos.name + "/scripts?name=" + task + "&action=exec")= task

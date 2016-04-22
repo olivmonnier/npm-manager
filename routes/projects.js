@@ -5,7 +5,7 @@ var router = express.Router();
 var Pkg = require('../services/pkg');
 var Project = require('../services/project');
 
-module.exports = function(io) {
+module.exports = function (io) {
   router.route('/')
     .get(function(req, res) {
       return res.render('projects/list', {
@@ -179,6 +179,18 @@ module.exports = function(io) {
       }
 
       return res.status(200).json({ tree: project.tree() }).end();
+    });
+
+  router.route('/:name/logs')
+    .get(function (req, res) {
+      var projectName = req.params.name;
+      var action = req.query.action || '';
+
+      if (action == 'clean') {
+        Project(projectName, io).cleanLogs();
+      }
+
+      return res.status(200).end();
     });
 
   return router;

@@ -85,6 +85,13 @@ module.exports = function(projectName, io) {
         nodes: formatTreeview(dirTreeHash)
       }];
     },
+    cleanLogs: function () {
+      var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == projectName; });
+
+      ROOMS[roomIndex].logs = [];
+
+      io.to(projectName).emit('cleanLogs', true);
+    },
     file: {
       new: function(filePath) {
         fs.writeFileSync(path.join(cmdPath + filePath), '', 'utf8');
