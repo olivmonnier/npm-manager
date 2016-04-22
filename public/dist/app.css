@@ -5831,7 +5831,8 @@ h2 {
   font-size: 26px; }
 
 h3 {
-  font-size: 20px; }
+  font-size: 20px;
+  border-bottom: 1px solid #fff; }
 
 i + span {
   margin-left: 8px; }
@@ -5975,7 +5976,7 @@ i + span {
         overflow: auto; }
         #appView #contentPrimary #rowPrimary #config #accordion {
           margin-bottom: 0;
-          background-color: #000; }
+          background-color: #303030; }
           #appView #contentPrimary #rowPrimary #config #accordion #scriptList li {
             margin-top: 5px;
             margin-bottom: 5px; }

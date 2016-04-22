@@ -46,11 +46,35 @@ var formats = [{
   "format": "powershell",
   "ext": "ps1"
 }, {
-  "format": "batch",
+  "format": "batchfile",
   "ext": "bat"
 }, {
   "format": "coffee",
   "ext": "coffee"
+}, {
+  "format": "csharp",
+  "ext": "cs"
+}, {
+  "format": "python",
+  "ext": "py"
+}, {
+  "format": "pgsql",
+  "ext": "pgsql"
+}, {
+  "format": "lua",
+  "ext": "lua"
+}, {
+  "format": "jsx",
+  "ext": "jsx"
+}, {
+  "format": "ini",
+  "ext": "ini"
+}, {
+  "format": "dockerfile",
+  "ext": "DockerFile"
+}, {
+  "format": "sh",
+  "ext": "sh"
 }];
 
 module.exports = function(filePath) {

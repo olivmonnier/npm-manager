@@ -21,6 +21,8 @@ $(document).ready(function () {
     $('#fileActions').html(fileEdit.renderFilePrimaryActions({data: {advance: false}}));
   };
 
+  $('[data-toggle="tooltip"]').tooltip();
+
   $(document).on('click', '.btn-ajax', function (e) {
     e.preventDefault();
 

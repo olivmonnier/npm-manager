@@ -4,39 +4,7 @@ block title
   h1.title-app= capitalize(infos.name)
 
 block actions
-  span.hidden-xs.hidden-sm
-    if infos.urlLocal
-      a.btn.btn-xs.btn-primary.btn-show-app(href=infos.urlLocal)
-        i.glyphicon.glyphicon-eye-open 
-        span.hidden-xs Show
-    a.btn.btn-xs.btn-primary(href="/projects/" + infos.name + "/delete") 
-      i.glyphicon.glyphicon-trash
-      span.hidden-xs Delete
-    a.btn.btn-xs.btn-primary.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")
-      i.glyphicon.glyphicon-circle-arrow-down
-      span.hidden-xs Install
-    
-  span.visible-xs-inline-block.visible-sm-inline-block
-    button#optionsProject.btn.btn-primary.dropdown-toggle(data-toggle="dropdown", aria-expanded="false")
-      i.glyphicon.glyphicon-option-horizontal
-    ul.dropdown-menu.dropdown-menu-right(aria-labelledby="optionsProject")
-      if infos.urlLocal
-        li: a.btn-show-app(href=infos.urlLocal)
-          i.glyphicon.glyphicon-eye-open 
-          span Show
-      li: a(href="/projects/" + infos.name + "/delete") 
-        i.glyphicon.glyphicon-trash
-        span Delete
-      li: a.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")
-        i.glyphicon.glyphicon-circle-arrow-down
-        span Install
-      li: a.btn-logs(data-toggle="modal", data-target="#modalConsole")
-        i.glyphicon.glyphicon-console
-        span Logs
-    button.btn.btn-primary.btn-config
-      i.glyphicon.glyphicon-cog
-    button.btn.btn-primary.btn-tree
-      i.glyphicon.glyphicon-menu-hamburger
+  include ./menu-actions.jade
 
 block content
   script. 

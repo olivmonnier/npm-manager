@@ -3,7 +3,11 @@ function formatTreeview (data) {
 
   loopChildren(data.children, tree);
 
-  return tree.filter(function (k) { return k.text !== 'package.json' && k.text !== 'node_modules' });
+  ['package.json', 'node_modules', 'npm-debug.log'].forEach(function (file) {
+    tree = tree.filter(function (k) { return k.text !== file });
+  });
+  
+  return tree;
 }
 
 function loopChildren (children, parent) {

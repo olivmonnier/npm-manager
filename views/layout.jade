@@ -12,8 +12,8 @@ html(lang="en")
     .navbar.navbar-default
       .flexbox.space-around
         ul.nav.nav-pills.item.text-left
-          li: a(href="/projects") Projects
-          li: a(href="/projects/new") New
+          li: a(href="/projects", data-toggle="tooltip", data-placement="bottom", title="List of projects") Projects
+          li: a(href="/projects/new", data-toggle="tooltip", data-placement="bottom", title="Create new one") New
         .primary-title.item.text-center.hidden-xs
           block title
         .page-actions.item.text-right
