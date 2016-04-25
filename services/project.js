@@ -24,6 +24,9 @@ module.exports = function(projectName, io) {
   var cmdPath = 'projects/' + projectName;
 
   return {
+    setPackageJson: function (config) {
+      fs.writeFileSync(path.join(cmdPath +'/package.json'), config, 'utf8');
+    },
     hasPackageJson: function () {
       try {
         this.file.content('/package.json');
@@ -38,7 +41,7 @@ module.exports = function(projectName, io) {
     },
     create: function(project) {
       fs.mkdirSync(path.join(cmdPath));
-      fs.writeFileSync(path.join(cmdPath +'/package.json'), JSON.stringify(packageContent(project), null, 2), 'utf8');
+      this.setPackageJson(JSON.stringify(packageContent(project), null, 2));
       ROOMS.push({ name: projectName, logs: [], processes: [] });
     },
     clone: function(gitUrl) {
@@ -52,7 +55,7 @@ module.exports = function(projectName, io) {
       if (config) {
         var datas = JSON.parse(config.configFile);
 
-        fs.writeFileSync(path.join(cmdPath +'/package.json'), config.configFile, 'utf8');
+        this.setPackageJson(config.configFile);
         rimraf.sync(path.join(cmdPath + '/node_modules'));
         execSync('cd ' + cmdPath + ' && npm cache clean ./');
         this.folder.rename(path.join(cmdPath), path.join('projects/' + datas.name));

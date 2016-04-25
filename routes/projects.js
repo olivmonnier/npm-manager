@@ -48,7 +48,11 @@ module.exports = function (io) {
       var projectName = req.params.name;
       var config = {};
 
-      if (infos.name !== projectName) {
+      if (!infos.hasOwnProperty('name')) {
+
+        return res.redirect('/projects');
+      } else if (infos.name !== projectName) {
+        
         config.configFile = JSON.stringify(infos);
         Project(projectName, io).update(config);
         projectName = infos.name;

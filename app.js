@@ -25,6 +25,10 @@ app.locals.capitalize = function(value) {
 }
 
 // Routes
+app.route('/')
+  .get(function (req, res, next) {
+    res.redirect('/projects');
+  });
 app.use('/projects', projects);
 
 if ('development' == app.get('env')) {
