@@ -30,7 +30,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./public/dist/'));
 });
 
-gulp.task('server', ['sass', 'concat:vendor', 'build:js'], function () {
+gulp.task('dev', ['sass', 'concat:vendor', 'build:js'], function () {
     server.run(['app.js']);
 
     // Restart the server when file changes

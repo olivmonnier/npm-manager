@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "gulp server"
+    "dev": "gulp dev",
+    "start": "node app.js"
   },
   "author": "olivmonnier",
   "license": "ISC",
