@@ -1,5 +1,4 @@
 var bodyParser = require('body-parser');
-var errorHandler = require('errorhandler');
 var path = require('path');
 var _ = require('lodash');
 var express = require('express');
@@ -18,7 +17,10 @@ app.set('view engine', 'jade');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(require('connect-livereload')());
+
+if (process.env.NODE_ENV == 'development') {
+  app.use(require('connect-livereload')());
+}
 
 app.locals.capitalize = function(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -31,7 +33,8 @@ app.route('/')
   });
 app.use('/projects', projects);
 
-if ('development' == app.get('env')) {
+if (process.env.NODE_ENV == 'development') {
+  var errorHandler = require('errorhandler');
   app.use(errorHandler());
 }
 

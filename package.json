@@ -5,31 +5,34 @@
   "main": "app.js",
   "scripts": {
     "dev": "gulp dev",
-    "start": "node app.js"
+    "start": "npm install --production && NODE_ENV=production node ./app",
+    "startWin": "npm install --production && set NODE_ENV=production && node ./app"
   },
   "author": "olivmonnier",
   "license": "ISC",
   "dependencies": {
-    "ace-builds": "^1.2.2",
     "body-parser": "^1.14.2",
+    "directory-tree": "git+https://git@github.com/olivmonnier/node-directory-tree.git",
+    "express": "^4.13.4",
+    "jade": "^1.11.0",
+    "junk": "^1.0.2",
+    "lodash": "^4.0.1",
+    "ps-tree": "^1.0.1",
+    "rimraf": "^2.5.1",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {
+    "ace-builds": "^1.2.2",
     "bootstrap-sass": "^3.3.6",
     "bootstrap-treeview": "^1.2.0",
     "connect-livereload": "^0.5.4",
-    "directory-tree": "git+https://git@github.com/olivmonnier/node-directory-tree.git",
     "errorhandler": "^1.4.3",
-    "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-browser": "^1.0.10",
     "gulp-concat": "^2.6.0",
     "gulp-express": "^0.3.5",
     "gulp-sass": "^2.2.0",
     "gulp-uglify": "^1.5.2",
-    "jade": "^1.11.0",
-    "jquery": "^2.2.0",
-    "junk": "^1.0.2",
-    "lodash": "^4.0.1",
-    "ps-tree": "^1.0.1",
-    "rimraf": "^2.5.1",
-    "socket.io": "^1.4.5"
+    "jquery": "^2.2.0"
   }
 }
