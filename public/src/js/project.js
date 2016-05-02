@@ -44,6 +44,9 @@ module.exports = function () {
           $(this).addClass('hide').find('iframe').remove();
         });
       })
+      .on('click', '.btn-delete-project', function (e) {
+        if (!confirm('Are you shure to remove this project ?')) e.preventDefault();
+      })    
       .on('click', '.btn-add-pkg', function () {
         var parent = $(this).parent();
 

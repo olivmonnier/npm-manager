@@ -15,6 +15,10 @@ module.exports = function () {
       .on('killProcess', function (pid) {
         $('[data-process=' + pid + ']').remove();
       });
+
+      $(document).on('click', '.btn-delete-project', function (e) {
+        if (!confirm('Are you shure to remove this project ?')) e.preventDefault();
+      });
     },
     renderProcesses: _.template(
       '<% _.forEach(data.processes, function(process) { %>' +

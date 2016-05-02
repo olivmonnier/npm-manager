@@ -14,6 +14,7 @@
 .panel-title {
   i + span { margin-left: 16px; }
 }
+.btn { border-radius: 0; }
 .btn-link {
   color: #e6e6e6;
 
@@ -21,7 +22,12 @@
 }
 .btn-primary {
   &, &:hover, &:focus, &:visited {
-    background-color: inherit;
+    background-color: #2C3E50;
     border-color: transparent;
   }
 }
+.modal {
+  &, h4, label, .close { color: #fff !important;}
+}
+.modal-header {border-bottom: none;}
+.modal-content {background-color: #2C3E50;}

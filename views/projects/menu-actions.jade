@@ -3,7 +3,7 @@ span.hidden-xs.hidden-sm
     a.btn.btn-xs.btn-primary.btn-show-app(href=infos.urlLocal)
       i.glyphicon.glyphicon-eye-open 
       span.hidden-xs(data-toggle="tooltip", data-placement="bottom", title="Show webpage") Show
-  a.btn.btn-xs.btn-primary(href="/projects/" + infos.name + "/delete") 
+  a.btn.btn-xs.btn-primary.btn-delete-project(href="/projects/" + infos.name + "/delete") 
     i.glyphicon.glyphicon-trash
     span.hidden-xs(data-toggle="tooltip", data-placement="bottom", title="Remove project") Delete
   a.btn.btn-xs.btn-primary.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")
@@ -18,7 +18,7 @@ span.visible-xs-inline-block.visible-sm-inline-block
       li: a.btn-show-app(href=infos.urlLocal)
         i.glyphicon.glyphicon-eye-open 
         span Show
-    li: a(href="/projects/" + infos.name + "/delete") 
+    li: a.btn-delete-project(href="/projects/" + infos.name + "/delete") 
       i.glyphicon.glyphicon-trash
       span Delete
     li: a.btn-ajax(href="/projects/" + infos.name + "/packages?action=install")

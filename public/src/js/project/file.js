@@ -13,12 +13,14 @@ module.exports = function (treeDir) {
     });
   })
   .on('click', '.btn-delete-file', function () {
-    $.get('/projects/' + ROOM + '/files', {
-      filePath: NavPath,
-      action: 'delete'
-    }).done(function (data) {
-      treeDir.updateTreeDir(data, false);
-      treeDir.unfoldView(false);
-    });
+    if (confirm('Are you shure to delete this file ?')){
+      $.get('/projects/' + ROOM + '/files', {
+        filePath: NavPath,
+        action: 'delete'
+      }).done(function (data) {
+        treeDir.updateTreeDir(data, false);
+        treeDir.unfoldView(false);
+      });
+    };
   });
 }

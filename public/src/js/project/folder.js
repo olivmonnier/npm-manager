@@ -28,12 +28,14 @@ module.exports = function (treeDir) {
     });
   })
   .on('click', '.btn-delete-folder', function () {
-    $.get('/projects/' + ROOM + '/folders', {
-      action: 'delete',
-      folderPath: NavPath
-    }).done(function (data) {
-      NavPath = '';
-      treeDir.updateTreeDir(data, false);
-    });
+    if (confirm('Are you shure to delete this folder ?')) {
+      $.get('/projects/' + ROOM + '/folders', {
+        action: 'delete',
+        folderPath: NavPath
+      }).done(function (data) {
+        NavPath = '';
+        treeDir.updateTreeDir(data, false);
+      });
+    }
   })
 }
