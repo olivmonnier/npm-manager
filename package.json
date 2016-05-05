@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "gulp dev",
-    "start": "npm install --production && NODE_ENV=production node ./app",
-    "startWin": "npm install --production && set NODE_ENV=production && node ./app"
+    "start": "NODE_ENV=production node ./app",
+    "startWin": "set NODE_ENV=production && node ./app"
   },
   "author": "olivmonnier",
   "license": "ISC",
