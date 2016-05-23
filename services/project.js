@@ -59,17 +59,18 @@ module.exports = function(projectName, io) {
         var datas = JSON.parse(config.configFile);
 
         this.setPackageJson(config.configFile);
-        proc.killAll();
-        rimraf.sync(path.join(cmdPath + '/node_modules'));
-        execSync('cd ' + cmdPath + ' && npm cache clean ./');
-        this.folder.rename(path.join(cmdPath), path.join('projects/' + datas.name));
+        proc.killAll().then(function() {
+          rimraf.sync(path.join(cmdPath + '/node_modules'));
+          execSync('cd ' + cmdPath + ' && npm cache clean ./');
+          this.folder.rename(path.join(cmdPath), path.join('projects/' + datas.name));
 
-        ROOMS = _.remove(ROOMS, function(room) {
-          return room.name != projectName;
+          ROOMS = _.remove(ROOMS, function(room) {
+            return room.name != projectName;
+          });
+          ROOMS.push({ name: datas.name, logs: [], processes: [] });
+
+          io.to(projectName).emit('redirect', '/projects/' + datas.name);
         });
-        ROOMS.push({ name: datas.name, logs: [], processes: [] });
-
-        io.to(projectName).emit('redirect', '/projects/' + datas.name);
       }
     },
     delete: function() {

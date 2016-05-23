@@ -6,33 +6,42 @@ module.exports = function (project, io) {
 
   return {
     kill: function (pid, signal, callback) {
-      signal = signal || 'SIGKILL';
-      callback = callback || function () {};
-      var killTree = true;
-      if(killTree) {
-        psTree(pid, function (err, children) {
-          [pid].concat(
-            children.map(function (p) {
-              return p.PID;
-            })
-          ).forEach(function (tpid) {
-            try { process.kill(tpid, signal) }
-            catch (ex) { }
+      var promise = new Promise(function(resolve, reject) {
+        signal = signal || 'SIGKILL';
+        callback = callback || function () {};
+        var killTree = true;
+
+        if(killTree) {
+          psTree(pid, function (err, children) {
+            [pid].concat(
+              children.map(function (p) {
+                return p.PID;
+              })
+            ).forEach(function (tpid) {
+              try { process.kill(tpid, signal) }
+              catch (ex) { }
+            });
+            resolve(callback());
           });
-          callback();
-        });
-      } else {
-        try { process.kill(pid, signal) }
-        catch (ex) { }
-        callback();
-      }
+        } else {
+          try { process.kill(pid, signal) }
+          catch (ex) { }
+          resolve(callback());
+        }
+      });
+
+      return promise;
     },
     killAll: function () {
       var self = this;
-
-      ROOMS[roomIndex].processes.forEach(function(process) {
-        self.kill(process.pid);
+      var pids = ROOMS[roomIndex].processes.map(function(process) {
+        return process.pid;
       });
+
+      return Promise.all(pids.map(function(pid) {
+        self.kill(pid);
+        io.to(project).emit('killProcess', pid);
+      }));
     },
     streamEvents: function (scriptName, processChild, logRun) {
       var logRun = logRun || '<br/>Command running';
