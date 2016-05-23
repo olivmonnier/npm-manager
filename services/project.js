@@ -7,6 +7,7 @@ var junk = require('junk');
 var _ = require('lodash');
 var formatFile = require('./formatFile');
 var Pkg = require('./pkg.js');
+var Process = require('./process');
 var formatTreeview = require('./treeDirectory');
 
 var packageContent = function (args) {
@@ -21,7 +22,9 @@ var packageContent = function (args) {
 }
 
 module.exports = function(projectName, io) {
+  var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == projectName; });
   var cmdPath = 'projects/' + projectName;
+  var proc = Process(projectName, io);
 
   return {
     setPackageJson: function (config) {
@@ -56,6 +59,7 @@ module.exports = function(projectName, io) {
         var datas = JSON.parse(config.configFile);
 
         this.setPackageJson(config.configFile);
+        proc.killAll();
         rimraf.sync(path.join(cmdPath + '/node_modules'));
         execSync('cd ' + cmdPath + ' && npm cache clean ./');
         this.folder.rename(path.join(cmdPath), path.join('projects/' + datas.name));
@@ -70,9 +74,13 @@ module.exports = function(projectName, io) {
     },
     delete: function() {
       rimraf.sync(path.join(cmdPath));
-      ROOMS = _.remove(ROOMS, function(room) {
-        return room.name != projectName;
-      });
+
+      if (ROOMS[roomIndex]) {
+        proc.killAll();
+        ROOMS = _.remove(ROOMS, function(room) {
+          return room.name != projectName;
+        });
+      }
     },
     tree: function() {
       var dirTreeHash = dirTree.directoryTree(cmdPath);

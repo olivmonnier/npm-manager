@@ -2,6 +2,8 @@ var psTree = require('ps-tree');
 var _ = require('lodash');
 
 module.exports = function (project, io) {
+  var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
+
   return {
     kill: function (pid, signal, callback) {
       signal = signal || 'SIGKILL';
@@ -25,8 +27,14 @@ module.exports = function (project, io) {
         callback();
       }
     },
+    killAll: function () {
+      var self = this;
+
+      ROOMS[roomIndex].processes.forEach(function(process) {
+        self.kill(process.pid);
+      });
+    },
     streamEvents: function (scriptName, processChild, logRun) {
-      var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
       var logRun = logRun || '<br/>Command running';
       var child = {name: scriptName, pid: processChild.pid};
 
