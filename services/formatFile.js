@@ -77,7 +77,7 @@ var formats = [{
   "ext": "sh"
 }, {
   "format": "handlebars",
-  "ext": "hbs",
+  "ext": ["hbs", "handlebars"],
 }];
 
 module.exports = function(filePath) {
