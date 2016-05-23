@@ -1,11 +1,11 @@
 var exec = require('child_process').exec;
 var execSync = require('child_process').execSync;
 var fs = require('fs');
-var processFile = require('./process');
+var Process = require('./process');
 
 module.exports = function(project, io) {
   var cmdPath = 'projects/' + project;
-  var proc = processFile(project, io);
+  var proc = Process(project, io);
 
   return {
     add: function(pkgName, version, env) {
@@ -71,21 +71,6 @@ module.exports = function(project, io) {
 
       proc.streamEvents('pkgDelete', child, 'Uninstall ' + pkgName + ' package');
       io.to(project).emit('pkgDelete', {name: pkgName, env: env});
-    },
-    exec: function(scriptName) {
-      var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);
-
-      proc.streamEvents(scriptName, child);
-    },
-    kill: function(pid) {
-      var isWin = /^win/.test(process.platform);
-
-      if(!isWin) {
-        proc.kill(pid);
-      } else {
-        var child = exec('taskkill /PID ' + pid + ' /T /F');
-        proc.streamEvents('killProcess', child);
-      }
     }
   }
 }

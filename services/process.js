@@ -1,17 +1,29 @@
+var exec = require('child_process').exec;
+var execSync = require('child_process').execSync;
 var psTree = require('ps-tree');
 var _ = require('lodash');
 
 module.exports = function (project, io) {
   var roomIndex = _.findIndex(ROOMS, function(rooms) { return rooms.name == project; });
+  var cmdPath = 'projects/' + project;
 
   return {
+    exec: function(scriptName) {
+      var child = exec('cd ' + cmdPath + ' && npm run ' + scriptName);
+
+      this.streamEvents(scriptName, child);
+    },
     kill: function (pid, signal, callback) {
       var promise = new Promise(function(resolve, reject) {
         signal = signal || 'SIGKILL';
         callback = callback || function () {};
-        var killTree = true;
+        var isWin = /^win/.test(process.platform);
 
-        if(killTree) {
+        if (isWin) {
+          resolve(execSync('taskkill /PID ' + pid + ' /T /F'));
+          io.to(project).emit('killProcess', pid);
+          return;
+        } else {
           psTree(pid, function (err, children) {
             [pid].concat(
               children.map(function (p) {
@@ -21,12 +33,9 @@ module.exports = function (project, io) {
               try { process.kill(tpid, signal) }
               catch (ex) { }
             });
+            io.to(project).emit('killProcess', pid);
             resolve(callback());
           });
-        } else {
-          try { process.kill(pid, signal) }
-          catch (ex) { }
-          resolve(callback());
         }
       });
 
@@ -34,8 +43,8 @@ module.exports = function (project, io) {
     },
     killAll: function () {
       var self = this;
-      var pids = ROOMS[roomIndex].processes.map(function(process) {
-        return process.pid;
+      var pids = ROOMS[roomIndex].processes.map(function(proc) {
+        return proc.pid;
       });
 
       return Promise.all(pids.map(function(pid) {

@@ -3,6 +3,7 @@ var router = express.Router();
 
 // Services
 var Pkg = require('../services/pkg');
+var Proc = require('../services/process');
 var Project = require('../services/project');
 
 module.exports = function (io) {
@@ -52,7 +53,7 @@ module.exports = function (io) {
 
         return res.redirect('/projects');
       } else if (infos.name !== projectName) {
-        
+
         config.configFile = JSON.stringify(infos);
         Project(projectName, io).update(config);
         projectName = infos.name;
@@ -89,10 +90,10 @@ module.exports = function (io) {
       var action = req.query.action;
 
       if(action == "exec") {
-        Pkg(req.params.name, io).exec(req.query.name);
+        Proc(req.params.name, io).exec(req.query.name);
       }
       if(action == "kill") {
-        Pkg(req.params.name, io).kill(req.query.pid);
+        Proc(req.params.name, io).kill(req.query.pid);
       }
       return res.status(200).end();
     });
